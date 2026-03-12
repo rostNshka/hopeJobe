@@ -14,7 +14,7 @@
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
     "lint": "run-s lint:js lint:css format",
-    "lint:fix": "run-s lint:js:fix lint:css:fix format:fix"
+    "lint:fix": "run-s lint:js:fix lint:scss:fix format:fix"
   },
   "dependencies": {
     "@a1rth/css-normalize": "^1.2.4",
