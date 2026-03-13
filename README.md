@@ -6,13 +6,13 @@
 
 PS Данная часть проекта будет одной из двух. Первая часть посвящена фронтенд разработке, а вторая будет являться бекендом.
 
-⚙️Технологии hopeJobe(Frontend):
-HTML5,
-CSS3(SCSS, PostCSS),
-React(React Router, Redux),
-Axios,
-npm,
-Eslint, Prettier, Stylelint,
+⚙️Технологии hopeJobe(Frontend): \
+HTML5, \
+CSS3(SCSS, PostCSS), \
+React(React Router, Redux), \
+Axios, \
+npm, \
+Eslint, Prettier, Stylelint, \
 Vite
 
 ## 🚀 Использование:
