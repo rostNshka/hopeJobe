@@ -12,7 +12,7 @@ CSS3(SCSS, PostCSS),
 React(React Router, Redux),
 Axios,
 npm,
-Eslint, Prettier, Stylelint
+Eslint, Prettier, Stylelint,
 Vite
 
 ## 🚀 Использование:
