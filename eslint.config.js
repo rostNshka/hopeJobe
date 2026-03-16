@@ -25,6 +25,7 @@ export default defineConfig([
       curly: 'warn',
       'no-else-return': 'warn',
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
     },
     languageOptions: {
       globals: globals.browser,
