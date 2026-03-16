@@ -1,7 +1,7 @@
 import './BurgerButton.scss'
 
 const BurgerButton = (props) => {
-  const { className } = props
+  const { className, onClick } = props
 
   const title = 'Open menu'
 
@@ -10,7 +10,8 @@ const BurgerButton = (props) => {
       className={`burger-button ${className}`}
       type="button"
       aria-label={title}
-      title={title}>
+      title={title}
+      onClick={onClick}>
       <svg
         className="burger-button__svg"
         width="30"
