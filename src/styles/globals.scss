@@ -19,6 +19,7 @@ html {
 
 main {
   flex-grow: 1;
+  padding-inline: var(--section-padding-y);
 }
 
 h1, .h1,
