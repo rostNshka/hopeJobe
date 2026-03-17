@@ -10,7 +10,6 @@ const Footer = () => {
         функциональности сервиса по поиску работы и размещению вакансий.
       </div>
       <div className="footer__social">
-        <a href="https://github.com/rostNshka">GitHub</a>
         <p>Made with 💜 by rostNshka</p>
       </div>
     </footer>

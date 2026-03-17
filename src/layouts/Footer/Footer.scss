@@ -1,0 +1,46 @@
+.footer {
+  @include fluid-text(12, 8);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding-block: var(--container-padding-x);
+  background-color: var(--color-menu);
+
+  @include mobile-s {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    padding-left: 12px;
+  }
+
+  &__info {
+    width: fluid-to-laptop(630, 270);
+  }
+
+  &__social {
+    p {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      padding-left: 38px;
+    }
+
+    p::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -30px;
+      width: 120px;
+      height: 80px;
+      background-image: url('../../../public/Group.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      @include mobile {
+        @include visually-hidden;
+      }
+    }
+  }
+}
