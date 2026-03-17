@@ -4,7 +4,7 @@ html {
   }
 }
 
-body {
+#root {
   @include fluid-text(18, 14);
 
   display: flex;
@@ -12,6 +12,8 @@ body {
   font-family: var(--font-family-base);
   color: var(--color-gray-20);
   background-color: var(--color-bg);
+  min-height: 100vh;
+  margin: 0;
 }
 
 main {
@@ -81,8 +83,4 @@ a {
 
 :focus-visible {
   @include focus-visible;
-}
-
-.active {
-  font-weight: bold;
 }

@@ -1,0 +1,17 @@
+.button {
+  border: none;
+  border-radius: var(--border-radius-s);
+  padding-inline: fluid(22,18);
+  padding-block: fluid(6,4);
+  height: fit-content;
+
+  &__violet {
+    color: var(--color-white);
+    background-color: var(--color-violet-05);
+  }
+
+  @include tablet {
+    width: fit-content;
+    font-size: fluid(60,16);
+  }
+}
