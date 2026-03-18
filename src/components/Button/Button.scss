@@ -1,17 +1,25 @@
 .button {
   border: none;
   border-radius: var(--border-radius-s);
-  padding-inline: fluid(22,18);
-  padding-block: fluid(6,4);
+  padding-inline: fluid(22, 18);
+  padding-block: fluid(6, 4);
   height: fit-content;
+
+  @include tablet {
+    width: fit-content;
+    font-size: fluid(60, 16);
+  }
 
   &__violet {
     color: var(--color-white);
     background-color: var(--color-violet-05);
-  }
 
-  @include tablet {
-    width: fit-content;
-    font-size: fluid(60,16);
+    &:hover {
+      box-shadow: 0 0 32px 0 var(--color-violet-30);
+
+      @include tablet {
+        box-shadow: none;
+      }
+    }
   }
 }
