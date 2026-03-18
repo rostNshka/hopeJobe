@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom'
 import Button from '@/components/Button'
 import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
-import Icons from '@/components/Icons'
-import { icons } from '@/constants/icons'
+import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -30,10 +29,12 @@ const Header = () => {
             Вакансии
           </NavLink>
           <NavLink to={'/favorites'} className="header__nav-item">
-            <Icons src={icons.star}>Избранное</Icons>
+            <CiStar />
+            Избранное
           </NavLink>
           <NavLink to={'/add-vacancy'} className="header__nav-item">
-            <Icons src={icons.plus}>Новая вакансия</Icons>
+            <CiBookmarkPlus />
+            Новая вакансия
           </NavLink>
           <span></span>
         </nav>
