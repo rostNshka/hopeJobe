@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom'
 import Button from '@/components/Button'
 import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
+import Icons from '@/components/Icons'
+import { icons } from '@/constants/icons'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -28,10 +30,10 @@ const Header = () => {
             Вакансии
           </NavLink>
           <NavLink to={'/favorites'} className="header__nav-item">
-            Избранное
+            <Icons src={icons.star}>Избранное</Icons>
           </NavLink>
           <NavLink to={'/add-vacancy'} className="header__nav-item">
-            Новая вакансия
+            <Icons src={icons.plus}>Новая вакансия</Icons>
           </NavLink>
           <span></span>
         </nav>
