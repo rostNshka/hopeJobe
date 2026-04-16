@@ -22,7 +22,6 @@
   --color-red-20: #f87171;
   --color-red-30: #fca5a5;
 
-
   --color-gray-20: #ffffff7f;
   --color-gray-10: #ffffffcc;
 
@@ -42,9 +41,9 @@
   --font-family-accent: 'Space Grotesk', sans-serif;
 
   --container-width: #{fluid-to-laptop(
-    $container-desktop-width,
-    $container-laptop-width
-  )};
+      $container-desktop-width,
+      $container-laptop-width
+    )};
   --container-padding-x: 16px;
 
   --section-padding-y: #{fluid(75, 40)};

@@ -20,10 +20,12 @@
     left: 10%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle at 30% 30%,
+    background: radial-gradient(
+      circle at 30% 30%,
       rgba(0, 255, 255, 0.5) 0%,
       rgba(0, 100, 255, 0.2) 60%,
-      transparent 80%);
+      transparent 80%
+    );
 
     @include mobile {
       @include visually-hidden;
@@ -35,10 +37,12 @@
     right: 15%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle at 70% 70%,
+    background: radial-gradient(
+      circle at 70% 70%,
       rgba(255, 100, 255, 0.5) 0%,
       rgba(150, 0, 255, 0.2) 60%,
-      transparent 80%);
+      transparent 80%
+    );
   }
 
   .circle-3 {
@@ -47,10 +51,12 @@
     transform: translate(-50%, -50%);
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle at center,
+    background: radial-gradient(
+      circle at center,
       rgba(100, 200, 255, 0.4) 0%,
       rgba(50, 100, 200, 0.2) 50%,
-      transparent 70%);
+      transparent 70%
+    );
 
     @include mobile {
       @include visually-hidden;
@@ -60,7 +66,11 @@
   &__header span {
     position: relative;
     z-index: 1;
-    background: linear-gradient(90deg, var(--color-violet-40), var(--color-blue-40));
+    background: linear-gradient(
+      90deg,
+      var(--color-violet-40),
+      var(--color-blue-40)
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

@@ -25,5 +25,5 @@
 }
 
 @function fluid-to-laptop($max: 100, $min: 10) {
-  @return fluid($max, $min, true)
+  @return fluid($max, $min, true);
 }
