@@ -1,3 +1,4 @@
+// useFetch.js - временная версия для проверки
 import { useCallback, useEffect, useState } from 'react'
 
 function useFetch(url, options = {}) {
@@ -5,26 +6,26 @@ function useFetch(url, options = {}) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const fetchData = useCallback(
-    async (url) => {
-      setLoading(true)
+  const fetchData = useCallback(async () => {
+    setLoading(true)
 
-      try {
-        const response = await fetch(url, options)
-        const result = await response.json()
+    try {
+      const response = await fetch(url, options)
 
-        setData(result)
-        setError(null)
-        return result
-      } catch (error) {
-        setError(error.message)
-        setData(null)
-      } finally {
-        setLoading(false)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
       }
-    },
-    [url, options],
-  )
+
+      const result = await response.json()
+      setData(result)
+      setError(null)
+    } catch (err) {
+      setError(err.message)
+      setData(null)
+    } finally {
+      setLoading(false)
+    }
+  }, [url, JSON.stringify(options)])
 
   useEffect(() => {
     fetchData()
