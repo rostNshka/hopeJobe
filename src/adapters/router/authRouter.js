@@ -1,15 +1,27 @@
 import useFetch from '@/adapters/api/useFetch'
 
-function useRegister() {
-  return useFetch(' http://localhost:4200/api/auth/register', {
+export function useRegister() {
+  const { data, loading, error, refetch } = useFetch('/api/auth/register', {
     method: 'POST',
   })
+
+  return {
+    vacancies: data?.data || [],
+    loading,
+    error,
+    refetch,
+  }
 }
 
-function useLogin() {
-  return useFetch(' http://localhost:4200/api/auth/login', {
+export function useLogin() {
+  const { data, loading, error, refetch } = useFetch('/api/auth/login', {
     method: 'POST',
   })
-}
 
-export default { useRegister, useLogin }
+  return {
+    vacancies: data?.data || [],
+    loading,
+    error,
+    refetch,
+  }
+}
