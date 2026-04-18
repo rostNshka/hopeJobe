@@ -1,11 +1,27 @@
 import useFetch from '@/adapters/api/useFetch'
 
-function useProfile() {
-  return useFetch(' http://localhost:4200/api/users/profile', { method: 'GET' })
+export function useProfile() {
+  const { data, loading, error, refetch } = useFetch('/api/users/profile', {
+    method: 'GET',
+  })
+
+  return {
+    vacancies: data?.data || [],
+    loading,
+    error,
+    refetch,
+  }
 }
 
-function useProfileUpdate() {
-  return useFetch(' http://localhost:4200/api/users/profile', { method: 'PUT' })
-}
+export function useProfileUpdate() {
+  const { data, loading, error, refetch } = useFetch('/api/users/profile', {
+    method: 'PUT',
+  })
 
-export default { useProfile, useProfileUpdate }
+  return {
+    vacancies: data?.data || [],
+    loading,
+    error,
+    refetch,
+  }
+}
