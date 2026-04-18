@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import Vacancies from '@/pages/Vacancies'
+import Vacancies from '@/pages/Vacancies/Vacancies'
 import VacancyDetail from '@/pages/VacancyDetail'
 import Favorites from '@/pages/Favorites'
 import AddVacancy from '@/pages/AddVacancy'

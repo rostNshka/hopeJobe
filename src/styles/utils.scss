@@ -16,7 +16,7 @@
 }
 
 .hidden-tablet {
-  @include tablet{
+  @include tablet {
     display: none !important;
   }
 }
