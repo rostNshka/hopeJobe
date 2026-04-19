@@ -1,0 +1,22 @@
+.vacancies__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  column-gap: 64px;
+  row-gap: 32px;
+  padding-block: var(--section-padding-y);
+  padding-inline: var(--section-padding-x);
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  > :last-child {
+    grid-column: 2 / 3;
+  }
+}
