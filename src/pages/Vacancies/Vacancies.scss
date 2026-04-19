@@ -3,9 +3,5 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  &__loading,
-  &__error {
-    padding-block: var(--section-padding-y);
-  }
+  padding-block: var(--section-padding-y);
 }
