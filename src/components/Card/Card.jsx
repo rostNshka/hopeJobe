@@ -1,6 +1,7 @@
 import './Card.scss'
 import { CiLocationOn } from 'react-icons/ci'
 import Avatar from '@/components/Avatar'
+import WorkType from '@/components/WorkType'
 
 const Card = (props) => {
   const { vacancies } = props
@@ -21,6 +22,7 @@ const Card = (props) => {
       <div className="card-body">
         <div className="card-body__title">{vacancies.title}</div>
         <span className="card-body__salary">{vacancies.salary}</span>
+        <WorkType workType={vacancies.workType} />
       </div>
     </div>
   )

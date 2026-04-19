@@ -31,20 +31,18 @@
     }
   }
 
-  &-header{
+  &-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
     &-info {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding-block: 16px;
       &__company-name {
         color: var(--color-white);
       }
     }
   }
-
 
   &-body {
     padding-top: var(--container-padding-y);
