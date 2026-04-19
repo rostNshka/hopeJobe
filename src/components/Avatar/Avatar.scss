@@ -12,7 +12,7 @@ $colors: (#3498db, #2ecc71, #e74c3c, #f39c12, #9b59b6);
   @for $i from 1 through length($colors) {
     $color: nth($colors, $i);
 
-    &[data-color="#{$i}"] {
+    &[data-color='#{$i}'] {
       background-color: $color;
     }
   }
