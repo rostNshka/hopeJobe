@@ -75,6 +75,8 @@
     }
 
     &-item {
+      display: flex;
+      gap: 8px;
       padding-inline: fluid(20, 12);
       width: fluid-to-laptop(220, 180);
 
