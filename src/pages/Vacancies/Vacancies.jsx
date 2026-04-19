@@ -5,7 +5,6 @@ import Cards from '@/sections/Cards'
 
 const Vacancies = () => {
   const { vacancies, loading, error } = useVacancy()
-  console.log('Вакансии:', vacancies)
   return (
     <div className="vacancies">
       <VacanciesTitle />
