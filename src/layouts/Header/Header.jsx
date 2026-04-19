@@ -36,6 +36,7 @@ const Header = () => {
             <CiBookmarkPlus />
             Новая вакансия
           </NavLink>
+          <span></span>
         </nav>
         <Button color="violet">Войти</Button>
       </dialog>
