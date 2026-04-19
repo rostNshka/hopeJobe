@@ -1,0 +1,29 @@
+.work-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__REMOTE {
+    color: var(--color-green);
+    background-color: var(--color-dark-green);
+  }
+
+  &__HYBRID {
+    color: var(--color-blue-40);
+    background-color: var(--color-blue-10);
+  }
+
+  &__OFFICE {
+    color: var(--color-violet-40);
+    background-color: var(--color-violet-10);
+  }
+
+  &__REMOTE,
+  &__HYBRID,
+  &__OFFICE {
+    font-size: 12px;
+    padding-inline: 8px;
+    padding-block: 2px;
+    border-radius: var(--border-radius-s);
+  }
+}
