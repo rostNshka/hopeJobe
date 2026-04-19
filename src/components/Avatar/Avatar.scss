@@ -1,0 +1,19 @@
+$colors: (#3498db, #2ecc71, #e74c3c, #f39c12, #9b59b6);
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  width: 64px;
+  color: var(--color-white);
+  border-radius: 8px;
+
+  @for $i from 1 through length($colors) {
+    $color: nth($colors, $i);
+
+    &[data-color="#{$i}"] {
+      background-color: $color;
+    }
+  }
+}
