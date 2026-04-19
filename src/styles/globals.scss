@@ -96,3 +96,16 @@ a {
 :focus-visible {
   @include focus-visible;
 }
+
+span{
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(
+      90deg,
+      var(--color-violet-40),
+      var(--color-blue-40)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
