@@ -1,0 +1,31 @@
+.vacancies-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: calc(var(--container-width) * 0.5);
+  padding-top: var(--section-padding-y);
+  padding-inline: var(--section-padding-x);
+  color: var(--color-gray-10);
+
+  &__icon {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 1;
+    left: 6px;
+  }
+
+  input {
+    color: var(--color-white);
+    width: 100%;
+    padding-inline: fluid(36, 24);
+    padding-block: fluid(16, 8);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--border-radius-s);
+  }
+
+  @include mobile {
+    width: fluid(660, 300);
+  }
+}
