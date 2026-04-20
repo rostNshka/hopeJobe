@@ -6,7 +6,7 @@ export function useProfile() {
   })
 
   return {
-    vacancies: data?.data || [],
+    profile: data?.data || [],
     loading,
     error,
     refetch,
@@ -19,7 +19,20 @@ export function useProfileUpdate() {
   })
 
   return {
-    vacancies: data?.data || [],
+    profile: data?.data || [],
+    loading,
+    error,
+    refetch,
+  }
+}
+
+export function useStatistics() {
+  const { data, loading, error, refetch } = useFetch('/api/users/stats', {
+    method: 'GET',
+  })
+
+  return {
+    stats: data?.data || [],
     loading,
     error,
     refetch,
