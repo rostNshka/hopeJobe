@@ -4,4 +4,8 @@
   align-items: center;
   justify-content: center;
   padding-block: var(--section-padding-y);
+
+  &__empty {
+    padding-top: fluid(16, 8);
+  }
 }
