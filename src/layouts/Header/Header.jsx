@@ -1,12 +1,14 @@
 import './Header.scss'
 import { NavLink } from 'react-router-dom'
-import Button from '@/components/Button'
+import RegistrationButton from '@/components/RegistrationButton'
 import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
 import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
+import RegistrationModal from '@/sections/RegistrationModal'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
     if (isOpen) {
@@ -38,11 +40,17 @@ const Header = () => {
           </NavLink>
           <span></span>
         </nav>
-        <Button color="violet">Войти</Button>
+        <RegistrationButton color="violet" onClick={() => setIsModalOpen(true)}>
+          Войти
+        </RegistrationButton>
       </dialog>
       <BurgerButton
         className={`header__burger-button visible-tablet ${isOpen ? 'is-active' : ''}`}
         onClick={handleClick}
+      />
+      <RegistrationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </header>
   )
