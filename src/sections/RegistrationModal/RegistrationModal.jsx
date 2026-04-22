@@ -1,9 +1,15 @@
 import './RegistrationModal.scss'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import ToggleButton from '@/components/ToggleButton'
 
 const RegistrationModal = (props) => {
   const { isOpen, onClose } = props
+  const [userRole, setUserRole] = useState('candidate')
   const modalRef = useRef(null)
+
+  const getNewRole = (newRole) => {
+    setUserRole(newRole)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -46,6 +52,7 @@ const RegistrationModal = (props) => {
       <div className="modal-content" ref={modalRef}>
         <h3 className="modal-content__title">Вход в аккаунт</h3>
         <p>Выберите тип учётной записи</p>
+        <ToggleButton getNewRole={getNewRole} />
       </div>
     </div>
   )
