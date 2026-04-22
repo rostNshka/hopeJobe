@@ -17,13 +17,12 @@
     justify-content: center;
     align-items: center;
     background-color: var(--color-bg);
-    padding-inline: var(--container-padding-x);
-    border: var(--border);
+    padding: var(--container-padding-x);
     border-radius: var(--border-radius-s);
-    width: fluid(700, 350);
+    width: fluid(850, 350);
 
     &__title {
-      font-size: fluid(24,16);
+      font-size: fluid(24, 16);
     }
   }
 }
