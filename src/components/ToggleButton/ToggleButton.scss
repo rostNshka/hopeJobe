@@ -1,0 +1,29 @@
+.toggle-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: fluid(8, 4);
+  background-color: rgba(255,255,255,0.03);
+  padding: var(--container-padding-x);
+  border-radius: var(--border-radius-xs);
+
+  @include mobile {
+    flex-direction: column;
+  }
+
+  .toggle-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: fluid(8,4);
+    padding: var(--container-padding-x);
+    color: var(--color-white);
+    background-color: transparent;
+    border: none;
+  }
+
+  .active {
+    background-color: var(--color-violet-20);
+    border-radius: var(--border-radius-s);
+  }
+}
