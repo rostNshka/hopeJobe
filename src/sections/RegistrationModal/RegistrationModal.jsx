@@ -1,13 +1,14 @@
 import './RegistrationModal.scss'
 import { useEffect, useRef, useState } from 'react'
 import ToggleButton from '@/components/ToggleButton'
+import RoleDescription from '@/components/RoleDescription'
 
 const RegistrationModal = (props) => {
   const { isOpen, onClose } = props
   const [userRole, setUserRole] = useState('candidate')
   const modalRef = useRef(null)
 
-  const getNewRole = (newRole) => {
+  const handleRoleChange = (newRole) => {
     setUserRole(newRole)
   }
 
@@ -52,7 +53,8 @@ const RegistrationModal = (props) => {
       <div className="modal-content" ref={modalRef}>
         <h3 className="modal-content__title">Вход в аккаунт</h3>
         <p>Выберите тип учётной записи</p>
-        <ToggleButton getNewRole={getNewRole} />
+        <ToggleButton onRoleChange={handleRoleChange} />
+        <RoleDescription role={userRole} />
       </div>
     </div>
   )
