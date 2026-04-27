@@ -2,6 +2,7 @@ import './RegistrationModal.scss'
 import { useEffect, useRef, useState } from 'react'
 import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
+import LoginField from '@/sections/LoginField'
 
 const RegistrationModal = (props) => {
   const { isOpen, onClose } = props
@@ -55,6 +56,10 @@ const RegistrationModal = (props) => {
         <p>Выберите тип учётной записи</p>
         <ToggleButton onRoleChange={handleRoleChange} />
         <RoleDescription role={userRole} />
+        <LoginField role={userRole} />
+        <div className="modal-content__registration">
+          Нет аккаунта? <span>Зарегистрируйтесь</span>
+        </div>
       </div>
     </div>
   )
