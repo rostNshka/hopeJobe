@@ -1,13 +1,13 @@
 .role-description {
   &__candidate,
   &__employer {
-    font-size: fluid(14,10);
-    width: fluid(400,200);
+    font-size: fluid(14, 10);
+    width: fluid(400, 200);
     display: flex;
     justify-content: center;
     align-items: center;
     gap: fluid(8, 4);
-    margin-top: fluid(6,3);
+    margin-top: fluid(6, 3);
     padding: fluid(8, 6);
     border-radius: var(--border-radius-s);
 
@@ -21,7 +21,11 @@
     border: 1px solid var(--color-blue-30);
   }
   &__employer {
-    background-color: color-mix(in srgb, var(--color-violet-30), transparent 50%);
+    background-color: color-mix(
+      in srgb,
+      var(--color-violet-30),
+      transparent 50%
+    );
     border: 1px solid var(--color-violet-30);
   }
 }
