@@ -1,31 +1,56 @@
-// useFetch.js - временная версия для проверки
 import { useCallback, useEffect, useState } from 'react'
 
-function useFetch(url, options = {}) {
+function useFetch(url, defaultOptions = {}) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
+  const fetchData = useCallback(
+    async (customOptions = {}) => {
+      setLoading(true)
+      setError(null)
 
-    try {
-      const response = await fetch(url, options)
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`)
+      const options = {
+        ...defaultOptions,
+        ...customOptions,
+        headers: {
+          'Content-Type': 'application/json',
+          ...defaultOptions.headers,
+          ...customOptions.headers,
+        },
       }
 
-      const result = await response.json()
-      setData(result)
-      setError(null)
-    } catch (err) {
-      setError(err.message)
-      setData(null)
-    } finally {
-      setLoading(false)
-    }
-  }, [url, JSON.stringify(options)])
+      try {
+        const response = await fetch(url, options)
+
+        let result
+        const contentType = response.headers.get('content-type')
+        if (contentType && contentType.includes('application/json')) {
+          result = await response.json()
+        } else {
+          result = { message: await response.text() }
+        }
+
+        if (!response.ok) {
+          const errorMessage =
+            result.message ||
+            result.errors?.map((e) => e.msg).join(', ') ||
+            `HTTP ${response.status}`
+          throw new Error(errorMessage)
+        }
+
+        setData(result)
+        return result
+      } catch (err) {
+        setError(err.message)
+        setData(null)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    [url, JSON.stringify(defaultOptions)],
+  )
 
   useEffect(() => {
     fetchData()
