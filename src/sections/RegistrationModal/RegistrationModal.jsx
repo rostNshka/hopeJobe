@@ -3,14 +3,20 @@ import { useEffect, useRef, useState } from 'react'
 import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
+import RegistrationField from '@/sections/RegistrationField'
 
 const RegistrationModal = (props) => {
   const { isOpen, onClose } = props
+  const [registerModal, setRegisterModal] = useState(false)
   const [userRole, setUserRole] = useState('candidate')
   const modalRef = useRef(null)
 
   const handleRoleChange = (newRole) => {
     setUserRole(newRole)
+  }
+
+  const handleRegisterModal = () => {
+    setRegisterModal(!registerModal)
   }
 
   useEffect(() => {
@@ -56,9 +62,23 @@ const RegistrationModal = (props) => {
         <p>Выберите тип учётной записи</p>
         <ToggleButton onRoleChange={handleRoleChange} />
         <RoleDescription role={userRole} />
-        <LoginField role={userRole} />
-        <div className="modal-content__registration">
-          Нет аккаунта? <span>Зарегистрируйтесь</span>
+        {registerModal ? (
+          <RegistrationField role={userRole} />
+        ) : (
+          <LoginField role={userRole} />
+        )}
+        <div
+          className="modal-content__registration"
+          onClick={handleRegisterModal}>
+          {!registerModal ? (
+            <div>
+              Нет аккаунта? <span>Зарегистрируйтесь</span>
+            </div>
+          ) : (
+            <div>
+              Есть аккаунт? <span>Войдите</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
