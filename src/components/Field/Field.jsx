@@ -15,17 +15,26 @@ const Field = (props) => {
   }
 
   return (
-    <div className={`field__${name}`}>
+    <div className={`field field__${name}`}>
       <label htmlFor={htmlFor} className="field__label">
         {label}
       </label>
-      <input
-        type={type === 'password' ? typePassword : type}
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        className="field__input"
-      />
+      {name === 'description' ? (
+        <textarea
+          name={name}
+          id={id}
+          className="field__text"
+          rows={4}
+          placeholder={placeholder}></textarea>
+      ) : (
+        <input
+          type={type === 'password' ? typePassword : type}
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          className="field__input"
+        />
+      )}
       {id === 'password' && (
         <button
           className="field__button"
