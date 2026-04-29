@@ -31,16 +31,16 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      gap: fluid(4,2);
+      gap: fluid(4, 2);
       padding-block: fluid(16, 8);
 
       span {
         position: relative;
         z-index: 1;
         background: linear-gradient(
-            90deg,
-            var(--color-violet-40),
-            var(--color-blue-40)
+          90deg,
+          var(--color-violet-40),
+          var(--color-blue-40)
         );
         -webkit-background-clip: text;
         background-clip: text;
