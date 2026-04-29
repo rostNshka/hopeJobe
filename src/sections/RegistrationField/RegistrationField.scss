@@ -1,0 +1,10 @@
+.registration-form {
+  &__button {
+    width: 100%;
+    color: var(--color-white);
+    background-color: var(--color-violet-20);
+    border: none;
+    border-radius: var(--border-radius-s);
+    padding-block: fluid(8, 6);
+  }
+}
