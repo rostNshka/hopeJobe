@@ -1,14 +1,12 @@
-// adapters/router/authRouter.js
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
 
 export function useRegister() {
-  const { data, loading, error, refetch } = useFetch('/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  const { data, loading, error, refetch } = useFetch(
+    '/api/auth/register',
+    { method: 'POST' },
+    true,
+  )
 
   const register = useCallback(
     async (userData) => {
@@ -29,12 +27,11 @@ export function useRegister() {
 }
 
 export function useLogin() {
-  const { data, loading, error, refetch } = useFetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  const { data, loading, error, refetch } = useFetch(
+    '/api/auth/login',
+    { method: 'POST' },
+    true,
+  )
 
   const login = useCallback(
     async (credentials) => {
