@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 
-function useFetch(url, defaultOptions = {}) {
+function useFetch(url, defaultOptions = {}, skipFetch = false) {
+  const [loading, setLoading] = useState(!skipFetch)
   const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   const fetchData = useCallback(
@@ -53,8 +53,10 @@ function useFetch(url, defaultOptions = {}) {
   )
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    if (!skipFetch) {
+      fetchData()
+    }
+  }, [fetchData, skipFetch])
 
   return { data, loading, error, refetch: fetchData }
 }
