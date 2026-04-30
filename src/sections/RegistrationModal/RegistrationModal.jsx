@@ -6,7 +6,7 @@ import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
 
 const RegistrationModal = (props) => {
-  const { isOpen, onClose } = props
+  const { isOpen, onClose, onLoginSuccess, onRegistrationSuccess } = props
   const [registerModal, setRegisterModal] = useState(false)
   const [userRole, setUserRole] = useState('candidate')
   const modalRef = useRef(null)
@@ -17,6 +17,20 @@ const RegistrationModal = (props) => {
 
   const handleRegisterModal = () => {
     setRegisterModal(!registerModal)
+  }
+
+  const handleLoginSuccess = (user) => {
+    if (onLoginSuccess) {
+      onLoginSuccess(user)
+    }
+    onClose()
+  }
+
+  const handleRegistrationSuccess = (user) => {
+    if (onRegistrationSuccess) {
+      onRegistrationSuccess(user)
+    }
+    setRegisterModal(true)
   }
 
   useEffect(() => {
@@ -63,9 +77,12 @@ const RegistrationModal = (props) => {
         <ToggleButton onRoleChange={handleRoleChange} />
         <RoleDescription role={userRole} />
         {registerModal ? (
-          <RegistrationField role={userRole} />
+          <RegistrationField
+            role={userRole}
+            onSuccess={handleRegistrationSuccess}
+          />
         ) : (
-          <LoginField role={userRole} />
+          <LoginField onSuccess={handleLoginSuccess} />
         )}
         <div
           className="modal-content__registration"
