@@ -3,7 +3,7 @@ import { FaRegEye } from 'react-icons/fa6'
 import { useState } from 'react'
 
 const Field = (props) => {
-  const { htmlFor, label, type, id, name, placeholder } = props
+  const { htmlFor, label, type, id, name, placeholder, value, onChange } = props
   const [typePassword, setTypePassword] = useState('password')
 
   const showPassword = () => {
@@ -25,7 +25,8 @@ const Field = (props) => {
           id={id}
           className="field__text"
           rows={4}
-          placeholder={placeholder}></textarea>
+          placeholder={placeholder}
+          value={value}></textarea>
       ) : (
         <input
           type={type === 'password' ? typePassword : type}
@@ -33,6 +34,9 @@ const Field = (props) => {
           name={name}
           placeholder={placeholder}
           className="field__input"
+          value={value}
+          onChange={onChange}
+          autoComplete="on"
         />
       )}
       {id === 'password' && (
