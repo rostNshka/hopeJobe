@@ -9,7 +9,9 @@ import RegistrationModal from '@/sections/RegistrationModal'
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
   const ref = useRef(null)
+
   useEffect(() => {
     if (isOpen) {
       ref.current?.show()
@@ -22,8 +24,22 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
+  const handleLoginSuccess = (user) => {
+    setIsModalOpen(false)
+    setToastMessage(`Добро пожаловать, ${user?.profile?.firstName}!`)
+
+    setTimeout(() => setToastMessage(''), 3000)
+  }
+
+  const handleRegistrationSuccess = () => {
+    setToastMessage(`Регистрация успешно завершена! Теперь вы можете войти.`)
+    setTimeout(() => setToastMessage(''), 3000)
+  }
+
   return (
     <header className="header">
+      {toastMessage && <div className="toast-message">{toastMessage}</div>}
+
       <img src="/logo.svg" alt="logo" className="header__logo" />
       <dialog className="header__overlay-menu-dialog" ref={ref}>
         <nav className="header__nav">
@@ -51,6 +67,8 @@ const Header = () => {
       <RegistrationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+        onRegistrationSuccess={handleRegistrationSuccess}
       />
     </header>
   )

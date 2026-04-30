@@ -131,3 +131,28 @@ span {
 .header__nav-item:nth-child(3).active ~ span {
   translate: calc(200% + 40px) 0;
 }
+
+.toast-message {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: var(--color-dark-green);
+  color: var(--color-white);
+  padding: fluid(12,6) fluid(24,10);
+  border-radius: var(--border-radius-l);
+  z-index: 10000;
+  font-size: fluid(14,10);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
