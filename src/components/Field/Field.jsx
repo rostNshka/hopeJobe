@@ -26,7 +26,8 @@ const Field = (props) => {
           className="field__text"
           rows={4}
           placeholder={placeholder}
-          value={value}></textarea>
+          value={value}
+          onChange={onChange}></textarea>
       ) : (
         <input
           type={type === 'password' ? typePassword : type}
