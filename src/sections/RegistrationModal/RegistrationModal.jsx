@@ -80,6 +80,7 @@ const RegistrationModal = (props) => {
           <RegistrationField
             role={userRole}
             onSuccess={handleRegistrationSuccess}
+            onSwitchToLogin={() => setRegisterModal(false)}
           />
         ) : (
           <LoginField onSuccess={handleLoginSuccess} />
