@@ -4,7 +4,7 @@ import RegistrationButton from '@/components/RegistrationButton'
 import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
 import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
-import RegistrationModal from '@/sections/RegistrationModal'
+import ModalSection from '@/sections/ModalSection/ModalSection'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -64,7 +64,7 @@ const Header = () => {
         className={`header__burger-button visible-tablet ${isOpen ? 'is-active' : ''}`}
         onClick={handleClick}
       />
-      <RegistrationModal
+      <ModalSection
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}

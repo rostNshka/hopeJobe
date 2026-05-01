@@ -1,11 +1,11 @@
-import './RegistrationModal.scss'
+import './ModalSection.scss'
 import { useEffect, useRef, useState } from 'react'
 import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
 
-const RegistrationModal = (props) => {
+const ModalSection = (props) => {
   const { isOpen, onClose, onLoginSuccess, onRegistrationSuccess } = props
   const [registerModal, setRegisterModal] = useState(false)
   const [userRole, setUserRole] = useState('candidate')
@@ -103,4 +103,4 @@ const RegistrationModal = (props) => {
   )
 }
 
-export default RegistrationModal
+export default ModalSection
