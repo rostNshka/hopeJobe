@@ -7,4 +7,9 @@
     border-radius: var(--border-radius-s);
     padding-block: fluid(8, 6);
   }
+
+  &__error {
+    font-size: fluid(12, 8);
+    color: var(--color-red-10);
+  }
 }

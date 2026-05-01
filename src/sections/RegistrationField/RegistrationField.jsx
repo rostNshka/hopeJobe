@@ -23,9 +23,56 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
     setLocalError('')
   }
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password) => {
+    const hasLetters = /[a-zA-Zа-яА-Я]/.test(password)
+    const hasNumbers = /\d/.test(password)
+    return hasLetters && hasNumbers && password.length > 6
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLocalError('')
+
+    if (!formData.email.trim()) {
+      setLocalError('Введите email')
+      return
+    }
+    if (!validateEmail(formData.email)) {
+      setLocalError('Введите email в формате you@example.com')
+      return
+    }
+
+    if (!formData.password) {
+      setLocalError('Введите пароль')
+      return
+    }
+    if (!validatePassword(formData.password)) {
+      setLocalError('Пароль должен быть из букв и цифр, 6+ символов')
+      return
+    }
+
+    if (role === 'candidate') {
+      if (!formData.firstName.trim()) {
+        setLocalError('Введите имя')
+        return
+      }
+      if (!formData.lastName.trim()) {
+        setLocalError('Введите фамилию')
+        return
+      }
+    }
+
+    if (role === 'employer') {
+      if (!formData.companyName.trim()) {
+        setLocalError('Введите название компании')
+        return
+      }
+    }
 
     let dataToSend = {
       email: formData.email,
