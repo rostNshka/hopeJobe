@@ -5,12 +5,17 @@ import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
 import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 import ModalSection from '@/sections/ModalSection/ModalSection'
+import useLocalStorage from '@/hooks/useLocalStorage'
+import ProfileButton from '@/components/ProfileButton'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isProfileModal, setIsProfileModal] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
   const ref = useRef(null)
+
+  const user = useLocalStorage('user')
 
   useEffect(() => {
     if (isOpen) {
@@ -56,9 +61,18 @@ const Header = () => {
           </NavLink>
           <span></span>
         </nav>
-        <RegistrationButton color="violet" onClick={() => setIsModalOpen(true)}>
-          Войти
-        </RegistrationButton>
+        {!user ? (
+          <RegistrationButton
+            color="violet"
+            onClick={() => setIsModalOpen(true)}>
+            Войти
+          </RegistrationButton>
+        ) : (
+          <ProfileButton onClick={() => setIsProfileModal(true)}>
+            {user?.profile.lastName || user?.profile.companyName}{' '}
+            {user?.profile.firstName || null}
+          </ProfileButton>
+        )}
       </dialog>
       <BurgerButton
         className={`header__burger-button visible-tablet ${isOpen ? 'is-active' : ''}`}
