@@ -1,12 +1,16 @@
 import useFetch from '@/adapters/api/useFetch'
 
-export function useProfile() {
-  const { data, loading, error, refetch } = useFetch('/api/users/profile', {
-    method: 'GET',
-  })
+export function useProfile(skipFetch = false) {
+  const { data, loading, error, refetch } = useFetch(
+    '/api/users/profile',
+    {
+      method: 'GET',
+    },
+    skipFetch,
+  )
 
   return {
-    profile: data?.data || [],
+    profile: data?.data || null,
     loading,
     error,
     refetch,
@@ -14,15 +18,30 @@ export function useProfile() {
 }
 
 export function useProfileUpdate() {
-  const { data, loading, error, refetch } = useFetch('/api/users/profile', {
-    method: 'PUT',
-  })
+  const { data, loading, error, refetch } = useFetch(
+    '/api/users/profile',
+    {
+      method: 'PUT',
+    },
+    true,
+  )
+
+  const updateProfile = async (updateData) => {
+    try {
+      const result = await refetch({
+        body: JSON.stringify(updateData),
+      })
+      return result
+    } catch (err) {
+      return err
+    }
+  }
 
   return {
-    profile: data?.data || [],
+    updatedProfile: data?.data || null,
     loading,
     error,
-    refetch,
+    updateProfile,
   }
 }
 
@@ -32,7 +51,7 @@ export function useStatistics() {
   })
 
   return {
-    stats: data?.data || [],
+    stats: data?.data || null,
     loading,
     error,
     refetch,
