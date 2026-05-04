@@ -9,15 +9,23 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
     async (customOptions = {}) => {
       setLoading(true)
       setError(null)
+      const getToken = () => {
+        return localStorage.getItem('token')
+      }
 
       const options = {
         ...defaultOptions,
         ...customOptions,
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
           ...defaultOptions.headers,
           ...customOptions.headers,
         },
+      }
+
+      if (customOptions.body) {
+        options.body = customOptions.body
       }
 
       try {
