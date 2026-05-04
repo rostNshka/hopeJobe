@@ -57,6 +57,8 @@ const LoginField = ({ onSuccess }) => {
         localStorage.setItem('token', result.token)
         localStorage.setItem('user', JSON.stringify(result.user))
 
+        window.dispatchEvent(new Event('localStorageChange'))
+
         const savedToken = localStorage.getItem('token')
         const savedUser = localStorage.getItem('user')
 

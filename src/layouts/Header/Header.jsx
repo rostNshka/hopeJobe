@@ -7,6 +7,7 @@ import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 import ModalSection from '@/sections/ModalSection/ModalSection'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import ProfileButton from '@/components/ProfileButton'
+import ProfileModal from '@/sections/ProfileModal'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -31,7 +32,9 @@ const Header = () => {
 
   const handleLoginSuccess = (user) => {
     setIsModalOpen(false)
-    setToastMessage(`Добро пожаловать, ${user?.profile?.firstName}!`)
+    setToastMessage(
+      `Добро пожаловать, ${user?.profile?.firstName || user?.profile?.companyName}!`,
+    )
 
     setTimeout(() => setToastMessage(''), 3000)
   }
@@ -77,6 +80,11 @@ const Header = () => {
       <BurgerButton
         className={`header__burger-button visible-tablet ${isOpen ? 'is-active' : ''}`}
         onClick={handleClick}
+      />
+      <ProfileModal
+        isOpen={isProfileModal}
+        onClose={() => setIsProfileModal(false)}
+        userId={user?.profile.userId}
       />
       <ModalSection
         isOpen={isModalOpen}
