@@ -19,14 +19,14 @@ const VacanciesStatistics = () => {
       <div className="vacancies-statistics__item">
         <div className="vacancies-statistics__item-icon">
           <LiaUserTieSolid />
-          {stats.employers}
+          {stats?.employers}
         </div>
         работодателей
       </div>
       <div className="vacancies-statistics__item">
         <div className="vacancies-statistics__item-icon">
           <LiaUserFriendsSolid />
-          {stats.total}
+          {stats?.total}
         </div>
         пользователей
       </div>
