@@ -131,7 +131,9 @@ const ProfileModal = (props) => {
     }
   }, [isOpen, onClose])
 
-  if (!isOpen) return null
+  if (!isOpen) {
+    return null
+  }
 
   if (loading) {
     return (
@@ -169,18 +171,17 @@ const ProfileModal = (props) => {
   return (
     <div className="profile-modal">
       <div className="profile-modal__content" ref={modalRef}>
-        <div className="profile-modal__header">
-          <h2>Профиль пользователя</h2>
-        </div>
         <div className="profile-modal__body">
           <div className="profile-info">
-            <p>Email: {profile.user?.email || ''}</p>
             <p>
-              Роль:{' '}
+              <strong>Email:</strong> {profile.user?.email || ''}
+            </p>
+            <p>
+              <strong>Роль:</strong>{' '}
               {profile.user?.role === 'USER' ? 'Кандидат' : 'Работодатель'}
             </p>
             <p>
-              Дата регистрации:{' '}
+              <strong>Дата регистрации:</strong>{' '}
               {profile.user?.createdAt
                 ? new Date(profile.user.createdAt).toLocaleDateString()
                 : '—'}
@@ -189,7 +190,6 @@ const ProfileModal = (props) => {
           {!isEditing ? (
             <>
               <div className="profile-details">
-                <h3>Личная информация</h3>
                 {profile.companyName !== undefined ? (
                   <div className="profile-details__info">
                     <p>
@@ -211,18 +211,21 @@ const ProfileModal = (props) => {
                   </div>
                 )}
               </div>
-              <button
-                className="profile-modal__edit-btn"
-                onClick={() => setIsEditing(true)}>
-                Редактировать
-              </button>
-              <button className="profile-modal__logout" onClick={handleLogout}>
-                Выйти
-              </button>
+              <div className="profile-modal__buttons">
+                <button
+                  className="profile-modal__buttons__edit-btn"
+                  onClick={() => setIsEditing(true)}>
+                  Редактировать
+                </button>
+                <button
+                  className="profile-modal__buttons__logout"
+                  onClick={handleLogout}>
+                  Выйти
+                </button>
+              </div>
             </>
           ) : (
             <form onSubmit={handleSubmit} className="profile-form">
-              <h3>Редактирование профиля</h3>
               {profile.companyName !== undefined ? (
                 <div className="profile-form__fields">
                   <Field
@@ -282,14 +285,19 @@ const ProfileModal = (props) => {
               )}
 
               {localError && (
-                <div className="profile-form__error">{localError}</div>
+                <div className="profile-modal__error">{localError}</div>
               )}
 
-              <div className="profile-form__buttons">
-                <button type="submit" disabled={updateLoading}>
+              <div className="profile-modal__buttons">
+                <button
+                  type="submit"
+                  disabled={updateLoading}
+                  className="profile-modal__buttons__save">
                   {updateLoading ? 'Сохранение...' : 'Сохранить'}
                 </button>
-                <button type="button" onClick={() => setIsEditing(false)}>
+                <button
+                  className="profile-modal__buttons__cancel"
+                  onClick={() => setIsEditing(false)}>
                   Отмена
                 </button>
               </div>
