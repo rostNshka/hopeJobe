@@ -1,0 +1,101 @@
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-bg);
+    padding: var(--container-padding-x);
+    border-radius: var(--border-radius-s);
+    width: fluid(850, 350);
+    color: var(--color-white);
+  }
+
+  &__body {
+    width: 100%;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: fluid(6, 4);
+
+    &__edit-btn,
+    &__save {
+      background-color: var(--color-violet-05);
+      color: var(--color-white);
+      border: none;
+      border-radius: var(--border-radius-m) 0 0 var(--border-radius-m);
+      padding: fluid(12, 8);
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    &__logout,
+    &__cancel {
+      background-color: var(--color-violet-05);
+      color: var(--color-white);
+      border: none;
+      border-radius: 0 var(--border-radius-m) var(--border-radius-m) 0;
+      padding:fluid(12, 8);
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__error {
+    color: var(--color-red-10);
+    padding: 8px;
+    background-color: rgba(255, 0, 0, 0.1);
+    border-radius: var(--border-radius-s);
+  }
+}
+
+.profile-info {
+  p {
+    padding-block: fluid(4, 2);
+    margin: 0;
+  }
+}
+
+.profile-details {
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: fluid(4, 2);
+
+    p {
+      padding-block: fluid(4, 2);
+      margin: 0;
+    }
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
