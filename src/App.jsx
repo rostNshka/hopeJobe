@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Vacancies from '@/pages/Vacancies/Vacancies'
 import VacancyDetail from '@/pages/VacancyDetail'
 import Favorites from '@/pages/Favorites'
-import AddVacancy from '@/pages/AddVacancy'
+import AddVacancy from '@/pages/AddVacancy/AddVacancy'
 import NotFound from '@/pages/NotFound'
 import Content from '@/layouts/Content'
 
