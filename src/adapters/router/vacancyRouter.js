@@ -43,15 +43,28 @@ export function useMyVacancy() {
 }
 
 export function useAddVacancy() {
-  const { data, loading, error, refetch } = useFetch('/api/vacancies', {
-    method: 'POST',
-  })
+  const { loading, error, data, refetch } = useFetch(
+    '/api/vacancies',
+    { method: 'POST' },
+    true,
+  )
+
+  const addVacancy = async (formData) => {
+    try {
+      const result = await refetch({
+        body: JSON.stringify(formData),
+      })
+      return { success: true, data: result }
+    } catch (error) {
+      return { success: false, message: error.message }
+    }
+  }
 
   return {
-    vacancies: data?.data || [],
+    addVacancy,
     loading,
     error,
-    refetch,
+    data: data?.data || null,
   }
 }
 
