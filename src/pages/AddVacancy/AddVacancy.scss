@@ -52,4 +52,12 @@
     background-color: var(--color-lime);
     border-radius: var(--border-radius-m);
   }
+
+  &__error {
+    font-size: fluid(12,8);
+    color: var(--color-red-10);
+    padding: 6px;
+    background-color: rgba(255, 0, 0, 0.1);
+    border-radius: var(--border-radius-s);
+  }
 }
