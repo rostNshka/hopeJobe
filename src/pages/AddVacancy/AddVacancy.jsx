@@ -2,9 +2,83 @@ import './AddVacancy.scss'
 import { CiSquarePlus } from 'react-icons/ci'
 import Field from '@/components/Field'
 import { useState } from 'react'
+import { useAddVacancy } from '@/adapters/router/vacancyRouter'
 
 const AddVacancy = () => {
   const [selectedWorkType, setSelectedWorkType] = useState('')
+
+  const [formData, setFormData] = useState({
+    title: '',
+    location: '',
+    description: '',
+    workType: '',
+    salary: '',
+  })
+
+  const [salaryDisplay, setSalaryDisplay] = useState('')
+  const [localError, setLocalError] = useState('')
+
+  const { addVacancy, loading } = useAddVacancy()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const hasDigits = (str) => {
+    return /\d/.test(str)
+  }
+
+  const handleSalaryChange = (e) => {
+    let value = e.target.value.replace(/[^\d\s-]/g, '')
+    setSalaryDisplay(value)
+    setFormData((prev) => ({ ...prev, salary: value }))
+  }
+
+  const handleSalaryBlur = () => {
+    if (salaryDisplay && hasDigits(salaryDisplay)) {
+      if (!salaryDisplay.includes('₽') || !salaryDisplay.includes('$')) {
+        setSalaryDisplay(`${salaryDisplay} ₽`)
+      }
+    }
+  }
+
+  const handleSalaryFocus = () => {
+    if (salaryDisplay.includes('₽')) {
+      const cleanValue = salaryDisplay.replace(' ₽', '')
+      setSalaryDisplay(cleanValue)
+      setFormData((prev) => ({ ...prev, salary: cleanValue }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLocalError('')
+
+    try {
+      const result = await addVacancy({
+        title: formData.title,
+        location: formData.location,
+        description: formData.description,
+        workType: selectedWorkType,
+        salary: formData.salary || null,
+      })
+
+      if (result.success) {
+        setFormData({
+          title: '',
+          location: '',
+          description: '',
+          salary: '',
+        })
+        setSelectedWorkType('')
+      } else {
+        setLocalError(result.message || 'Ошибка добавления вакансии')
+      }
+    } catch (error) {
+      setLocalError(error.message || 'Ошибка соединения с сервером')
+    }
+  }
 
   const workTypes = [
     { value: 'REMOTE', label: 'Удаленно' },
@@ -21,7 +95,7 @@ const AddVacancy = () => {
       <div className="add-vacancy__description">
         Заполните форму, чтобы опубликовать вакансию
       </div>
-      <form className="add-vacancy__form">
+      <form className="add-vacancy__form" onSubmit={handleSubmit}>
         <Field
           htmlFor="title"
           label="Название вакансии"
@@ -29,6 +103,8 @@ const AddVacancy = () => {
           id="title"
           name="title"
           placeholder="React developer..."
+          value={formData.title}
+          onChange={handleChange}
         />
         <Field
           htmlFor="location"
@@ -37,6 +113,8 @@ const AddVacancy = () => {
           id="location"
           name="location"
           placeholder="Москва"
+          value={formData.location}
+          onChange={handleChange}
         />
         <Field
           htmlFor="description"
@@ -45,6 +123,8 @@ const AddVacancy = () => {
           id="description"
           name="description"
           placeholder="Мы любим котов..."
+          value={formData.description}
+          onChange={handleChange}
         />
         <ul className="add-vacancy__work-type">
           {workTypes.map((type) => (
@@ -64,10 +144,20 @@ const AddVacancy = () => {
           type="text"
           id="salary"
           name="salary"
-          placeholder="4000$"
+          placeholder="4000"
+          onChange={handleSalaryChange}
+          onBlur={handleSalaryBlur}
+          onFocus={handleSalaryFocus}
         />
-        <button type="submit" className="add-vacancy__button">
-          Добавить вакансию
+        {localError ? (
+          <div className="add-vacancy__error">{localError}</div>
+        ) : null}
+
+        <button
+          type="submit"
+          className="add-vacancy__button"
+          disabled={loading}>
+          {loading ? 'Загрузка...' : 'Добавить вакансию'}
         </button>
       </form>
     </div>
