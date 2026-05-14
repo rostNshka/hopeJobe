@@ -54,10 +54,17 @@ const Header = () => {
           <NavLink to={'/'} className="header__nav-item">
             Вакансии
           </NavLink>
-          <NavLink to={'/favorites'} className="header__nav-item">
-            <CiStar />
-            Избранное
-          </NavLink>
+          {user?.role === 'USER' ? (
+            <NavLink to={'/favorites'} className="header__nav-item">
+              <CiStar />
+              Избранное
+            </NavLink>
+          ) : (
+            <NavLink to={'/my-vacancy'} className="header__nav-item">
+              <CiStar />
+              Мои вакансии
+            </NavLink>
+          )}
           <NavLink to={'/add-vacancy'} className="header__nav-item">
             <CiBookmarkPlus />
             Новая вакансия
