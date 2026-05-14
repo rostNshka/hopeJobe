@@ -5,18 +5,18 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: fluid(6,2);
+    gap: fluid(6, 2);
     margin: 0;
   }
 
   &__form {
-    margin-top: fluid(12,8);
+    margin-top: fluid(12, 8);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: fluid(16,8);
-    margin-inline: fluid(400,0);
+    padding: fluid(16, 8);
+    margin-inline: fluid(400, 0);
     border: var(--border-width-m) solid var(--color-gray-20);
     border-radius: var(--border-radius-m);
     background-color: color-mix(in srgb, var(--color-gray-20), transparent 90%);
@@ -30,13 +30,13 @@
   &__work-type {
     display: flex;
     flex-direction: row;
-    gap: fluid(16,8);
+    gap: fluid(16, 8);
 
-    &-item button{
+    &-item button {
       color: var(--color-gray-20);
       border: none;
       background-color: transparent;
-      padding: fluid(12,6);
+      padding: fluid(12, 6);
     }
 
     .active {
@@ -48,13 +48,13 @@
 
   &__button {
     border: none;
-    padding: fluid(12,6);
+    padding: fluid(12, 6);
     background-color: var(--color-lime);
     border-radius: var(--border-radius-m);
   }
 
   &__error {
-    font-size: fluid(12,8);
+    font-size: fluid(12, 8);
     color: var(--color-red-10);
     padding: 6px;
     background-color: rgba(255, 0, 0, 0.1);
