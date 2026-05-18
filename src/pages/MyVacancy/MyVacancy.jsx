@@ -126,15 +126,7 @@ const MyVacancy = () => {
               </div>
             ) : (
               <div>
-                <Field
-                  htmlFor="vacancy"
-                  label="Вакансия"
-                  type="text"
-                  id="vacancy"
-                  name="vacancy"
-                  value={editFormData.title}
-                  onChange={handleEditChange}
-                />
+                <p>Вакансия: {vacancy.title}</p>
 
                 <Field
                   htmlFor="description"
@@ -143,16 +135,6 @@ const MyVacancy = () => {
                   id="description"
                   name="description"
                   value={editFormData.description}
-                  onChange={handleEditChange}
-                />
-
-                <Field
-                  htmlFor="location"
-                  label="Локация"
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={editFormData.location}
                   onChange={handleEditChange}
                 />
 
