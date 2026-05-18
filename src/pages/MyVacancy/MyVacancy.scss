@@ -15,7 +15,7 @@
     flex-direction: column;
     padding: fluid(16, 8);
     color: var(--color-white);
-    background-color: color-mix(in srgb, var(--color-white), transparent 90%);
+    background-color: color-mix(in srgb, var(--color-white), transparent 93%);
     border: var(--border);
     border-radius: var(--border-radius-s);
   }
@@ -59,12 +59,20 @@
   .delete {
     border-radius: 0 var(--border-radius-m) var(--border-radius-m) 0;
     border-color: transparent;
-    color: var(--color-red-10);
-    background-color: var(--color-red-30);
+    background-color: var(--color-red-10);
+    color: var(--color-red-30);
 
     &:hover {
-      background-color: var(--color-red-10);
-      color: var(--color-red-30);
+      color: var(--color-red-10);
+      background-color: var(--color-red-30);
     }
+  }
+
+  &__loading {
+    color: var(--color-white);
+  }
+
+  &__error {
+    color: var(--color-red-20);
   }
 }
