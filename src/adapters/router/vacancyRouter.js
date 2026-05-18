@@ -1,4 +1,5 @@
 import useFetch from '@/adapters/api/useFetch'
+import { useState } from 'react'
 
 export function useVacancy() {
   const { data, loading, error, refetch } = useFetch('/api/vacancies', {
@@ -81,15 +82,48 @@ export function useUpdateVacancy(id) {
   }
 }
 
-export function useDeleteVacancy(id) {
-  const { data, loading, error, refetch } = useFetch(`/api/vacancies/${id}`, {
-    method: 'DELETE',
-  })
+export function useDeleteVacancy() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const deleteVacancy = async (id) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/vacancies/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      let result
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        result = { message: await response.text() }
+      }
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Ошибка удаления')
+      }
+
+      return { success: true, data: result }
+    } catch (error) {
+      setError(error.message)
+      return { success: false, message: error.message }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return {
-    vacancies: data?.data || [],
+    deleteVacancy,
     loading,
     error,
-    refetch,
   }
 }
