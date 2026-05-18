@@ -75,4 +75,39 @@
   &__error {
     color: var(--color-red-20);
   }
+
+  &__edit-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-inline: fluid(8,2);
+    color: var(--color-white);
+    background-color: color-mix(in srgb, var(--color-white), transparent 93%);
+  }
+
+  &__edit-select option {
+    color: var(--color-white);
+    background-color: var(--color-menu);
+  }
+
+  &__edit-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__save-button {
+    border-radius: var(--border-radius-m) 0 0 var(--border-radius-m);
+    border-color: transparent;
+    color: var(--color-dark-green);
+    background-color: var(--color-lime);
+  }
+
+  &__cancel-button {
+    border-radius: 0 var(--border-radius-m) var(--border-radius-m) 0;
+    border-color: transparent;
+    background-color: var(--color-red-10);
+    color: var(--color-red-30);
+  }
 }
