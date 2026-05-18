@@ -3,7 +3,18 @@ import { FaRegEye } from 'react-icons/fa6'
 import { useState } from 'react'
 
 const Field = (props) => {
-  const { htmlFor, label, type, id, name, placeholder, value, onChange } = props
+  const {
+    htmlFor,
+    label,
+    type,
+    id,
+    name,
+    placeholder,
+    value,
+    onChange,
+    onFocus,
+    onBlur,
+  } = props
   const [typePassword, setTypePassword] = useState('password')
 
   const showPassword = () => {
@@ -38,6 +49,8 @@ const Field = (props) => {
           value={value}
           onChange={onChange}
           autoComplete="on"
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
       )}
       {id === 'password' && (
