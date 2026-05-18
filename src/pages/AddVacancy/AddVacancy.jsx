@@ -51,25 +51,68 @@ const AddVacancy = () => {
     }
   }
 
+  const validateForm = () => {
+    if (!formData.title.trim()) {
+      setLocalError('Введите название вакансии')
+      return false
+    }
+
+    if (!formData.location.trim()) {
+      setLocalError('Введите местоположение')
+      return false
+    }
+
+    if (!formData.description.trim()) {
+      setLocalError('Введите описание вакансии')
+      return false
+    }
+
+    if (formData.description.trim().length < 10) {
+      setLocalError('Описание должно содержать минимум 10 символов')
+      return false
+    }
+
+    if (formData.description.trim().length > 2000) {
+      setLocalError('Описание не должно превышать 2000 символов')
+      return false
+    }
+
+    if (!selectedWorkType) {
+      setLocalError('Выберите тип работы')
+      return false
+    }
+
+    if (!formData.salary) {
+      setLocalError('Укажите зарплату')
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLocalError('')
 
-    try {
-      const result = await addVacancy({
-        title: formData.title,
-        location: formData.location,
-        description: formData.description,
-        workType: selectedWorkType,
-        salary: formData.salary || null,
-      })
+    if (!validateForm()) return
 
+    const dataToSend = {
+      title: formData.title,
+      location: formData.location,
+      description: formData.description,
+      workType: selectedWorkType,
+      salary: formData.salary || null,
+    }
+
+    try {
+      const result = await addVacancy(dataToSend)
       if (result.success) {
         setFormData({
           title: '',
           location: '',
           description: '',
           salary: '',
+          workType: '',
         })
         setSelectedWorkType('')
       } else {
