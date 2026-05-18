@@ -171,7 +171,7 @@ const MyVacancy = () => {
                     name="workType"
                     value={editFormData.workType}
                     onChange={handleEditChange}
-                    className="my-vacancy__edit-input">
+                    className="my-vacancy__edit-select">
                     <option value="REMOTE">Удаленная</option>
                     <option value="OFFICE">Офис</option>
                     <option value="HYBRID">Гибридная</option>
