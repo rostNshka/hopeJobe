@@ -69,16 +69,50 @@ export function useAddVacancy() {
   }
 }
 
-export function useUpdateVacancy(id) {
-  const { data, loading, error, refetch } = useFetch(`/api/vacancies/${id}`, {
-    method: 'PUT',
-  })
+export function useUpdateVacancy() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const updateVacancy = async (id, updatedData) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/vacancies/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedData),
+      })
+
+      let result
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json()
+      } else {
+        result = { message: await response.text() }
+      }
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Ошибка обновления')
+      }
+
+      return { success: true, data: result }
+    } catch (error) {
+      setError(error.message)
+      return { success: false, message: error.message }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return {
-    vacancies: data?.data || [],
+    updateVacancy,
     loading,
     error,
-    refetch,
   }
 }
 
