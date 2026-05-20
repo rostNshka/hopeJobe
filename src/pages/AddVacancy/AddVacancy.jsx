@@ -203,6 +203,9 @@ const AddVacancy = () => {
           {loading ? 'Загрузка...' : 'Добавить вакансию'}
         </button>
       </form>
+      <div className="circle circle-1"></div>
+      <div className="circle circle-2"></div>
+      <div className="circle circle-3"></div>
     </div>
   )
 }
