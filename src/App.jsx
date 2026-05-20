@@ -5,7 +5,7 @@ import VacancyDetail from '@/pages/VacancyDetail'
 import Favorites from '@/pages/Favorites'
 import AddVacancy from '@/pages/AddVacancy'
 import MyVacancy from '@/pages/MyVacancy'
-import NotFound from '@/pages/NotFound'
+import NotFound from '@/pages/NotFound/NotFound'
 import Content from '@/layouts/Content'
 
 const router = createBrowserRouter([
