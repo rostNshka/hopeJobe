@@ -1,20 +1,49 @@
-import useFetch from '@/adapters/api/useFetch'
 import { useEffect, useState } from 'react'
 
 export function useGetResponses() {
-  const { data, loading, error, refetch } = useFetch(
-    '/api/responses',
-    {
-      method: 'GET',
-    },
-    true,
-  )
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const fetchFavorites = async () => {
+    setLoading(true)
+
+    try {
+      const token = localStorage.getItem('token')
+
+      const response = await fetch('/api/responses', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const result = await response.json()
+      setData(result)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchFavorites()
+  }, [])
+
+  const vacancies =
+    data?.data?.map((response) => ({
+      ...response.vacancy,
+      favoriteId: response.id,
+      favoritedAt: response.createdAt,
+    })) || []
 
   return {
-    favorites: data?.data || [],
+    vacancies,
     loading,
     error,
-    refetch,
+    refetch: fetchFavorites,
   }
 }
 
