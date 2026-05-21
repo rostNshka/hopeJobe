@@ -80,7 +80,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    padding-inline: fluid(8,2);
+    padding-inline: fluid(8, 2);
     color: var(--color-white);
     background-color: color-mix(in srgb, var(--color-white), transparent 93%);
   }
@@ -125,10 +125,10 @@
     width: 400px;
     height: 400px;
     background: radial-gradient(
-        circle at 30% 30%,
-        rgba(0, 255, 255, 0.5) 0%,
-        rgba(0, 100, 255, 0.2) 60%,
-        transparent 80%
+      circle at 30% 30%,
+      rgba(0, 255, 255, 0.5) 0%,
+      rgba(0, 100, 255, 0.2) 60%,
+      transparent 80%
     );
 
     @include mobile {
@@ -142,10 +142,10 @@
     width: 350px;
     height: 350px;
     background: radial-gradient(
-        circle at 70% 70%,
-        rgba(255, 100, 255, 0.5) 0%,
-        rgba(150, 0, 255, 0.2) 60%,
-        transparent 80%
+      circle at 70% 70%,
+      rgba(255, 100, 255, 0.5) 0%,
+      rgba(150, 0, 255, 0.2) 60%,
+      transparent 80%
     );
   }
 
@@ -156,10 +156,10 @@
     width: 500px;
     height: 500px;
     background: radial-gradient(
-        circle at center,
-        rgba(100, 200, 255, 0.4) 0%,
-        rgba(50, 100, 200, 0.2) 50%,
-        transparent 70%
+      circle at center,
+      rgba(100, 200, 255, 0.4) 0%,
+      rgba(50, 100, 200, 0.2) 50%,
+      transparent 70%
     );
 
     @include mobile {

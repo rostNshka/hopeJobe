@@ -3,18 +3,18 @@
   flex-direction: column;
 
   &__title {
-    padding-block: fluid(6,2);
+    padding-block: fluid(6, 2);
   }
 
   &__subtitle {
-    padding-block: fluid(8,4);
+    padding-block: fluid(8, 4);
   }
 
   &__items {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: fluid(8,4);
+    gap: fluid(8, 4);
     margin-inline: auto;
     width: 80%;
   }
