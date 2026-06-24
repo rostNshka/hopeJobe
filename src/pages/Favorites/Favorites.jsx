@@ -44,11 +44,12 @@ const Favorites = () => {
       </p>
       <div className="favorites__items">
         {vacancies.map((vacancy) => (
-          <Card
+          <Link
             key={vacancy.id}
-            vacancies={vacancy}
-            onFavoriteChange={() => refetch()}
-          />
+            to={`/vacancies/${vacancy.id}`}
+            style={{ textDecoration: 'none', display: 'block' }}>
+            <Card vacancies={vacancy} onFavoriteChange={() => refetch()} />
+          </Link>
         ))}
       </div>
       <div className="circle circle-1"></div>

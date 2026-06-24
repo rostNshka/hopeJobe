@@ -46,6 +46,7 @@ const Card = (props) => {
 
   const handleFavoriteClick = async (e) => {
     e.stopPropagation()
+    e.preventDefault()
     setIsLoading(true)
 
     const wasFavorite = isFavorite
