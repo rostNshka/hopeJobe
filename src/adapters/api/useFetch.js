@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useUser } from '@/context/UserContext'
 
 function useFetch(url, defaultOptions = {}, skipFetch = false) {
   const [loading, setLoading] = useState(!skipFetch)
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
+  const { logout } = useUser()
+
+  const handleUnauthorized = useCallback(() => {
+    logout()
+    navigate('/')
+  }, [navigate])
 
   const fetchData = useCallback(
     async (customOptions = {}) => {
@@ -50,6 +59,14 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
           result = { message: await response.text() }
         }
 
+        if (response.status === 401) {
+          handleUnauthorized()
+
+          const authError = new Error('Сессия истекла. Войдите заново')
+          authError.status = 401
+          throw authError
+        }
+
         if (!response.ok) {
           const errorMessage =
             result.message ||
@@ -61,14 +78,16 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
         setData(result)
         return result
       } catch (err) {
-        setError(err.message)
-        setData(null)
+        if (err.status !== 401) {
+          setError(err.message)
+          setData(null)
+        }
         throw err
       } finally {
         setLoading(false)
       }
     },
-    [url, JSON.stringify(defaultOptions)],
+    [url, JSON.stringify(defaultOptions), handleUnauthorized],
   )
 
   useEffect(() => {
