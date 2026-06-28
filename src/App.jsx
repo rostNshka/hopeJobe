@@ -8,6 +8,7 @@ import AddVacancy from '@/pages/AddVacancy'
 import MyVacancy from '@/pages/MyVacancy'
 import NotFound from '@/pages/NotFound/NotFound'
 import Content from '@/layouts/Content'
+import ProtectedRoutes from '@/context/ProtectedRoutes'
 
 const router = createBrowserRouter([
   {
@@ -16,9 +17,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Vacancies /> },
       { path: 'vacancies/:detailId', element: <VacancyDetail /> },
-      { path: 'favorites', element: <Favorites /> },
-      { path: 'add-vacancy', element: <AddVacancy /> },
-      { path: 'my-vacancy', element: <MyVacancy /> },
+      {
+        element: <ProtectedRoutes />,
+        children: [
+          { path: 'favorites', element: <Favorites /> },
+          { path: 'add-vacancy', element: <AddVacancy /> },
+          { path: 'my-vacancy', element: <MyVacancy /> },
+        ],
+      },
       { path: '*', element: <NotFound /> },
     ],
   },
