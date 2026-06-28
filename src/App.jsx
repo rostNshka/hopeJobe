@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { UserProvider } from '@/context/UserContext'
 
 import Vacancies from '@/pages/Vacancies/Vacancies'
 import VacancyDetail from '@/pages/VacancyDetail'
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
-  return <RouterProvider router={router} />
+  return (
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  )
 }
 
 export default App
