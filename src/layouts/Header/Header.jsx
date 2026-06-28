@@ -5,9 +5,9 @@ import BurgerButton from '@/components/BurgerButton'
 import { useEffect, useRef, useState } from 'react'
 import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 import ModalSection from '@/sections/ModalSection/ModalSection'
-import useLocalStorage from '@/hooks/useLocalStorage'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
+import { useUser } from '@/context/UserContext'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -16,7 +16,7 @@ const Header = () => {
   const [toastMessage, setToastMessage] = useState('')
   const ref = useRef(null)
 
-  const user = useLocalStorage('user')
+  const { user, logout } = useUser()
 
   useEffect(() => {
     if (isOpen) {
@@ -42,6 +42,11 @@ const Header = () => {
   const handleRegistrationSuccess = () => {
     setToastMessage(`Регистрация успешно завершена! Теперь вы можете войти.`)
     setTimeout(() => setToastMessage(''), 3000)
+  }
+
+  const handleLogout = () => {
+    logout()
+    setIsProfileModal(false)
   }
 
   return (
@@ -92,6 +97,7 @@ const Header = () => {
         isOpen={isProfileModal}
         onClose={() => setIsProfileModal(false)}
         userId={user?.profile.userId}
+        onLogout={handleLogout}
       />
       <ModalSection
         isOpen={isModalOpen}

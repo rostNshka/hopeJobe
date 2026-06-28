@@ -2,6 +2,7 @@ import './RegistrationField.scss'
 import Field from '@/components/Field'
 import { useState } from 'react'
 import { useRegister } from '@/adapters/router/authRouter'
+import { useUser } from '@/context/UserContext'
 
 const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
   const [localError, setLocalError] = useState('')
 
   const { register, loading } = useRegister()
+  const { setUser } = useUser()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -98,6 +100,12 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
     try {
       const result = await register(dataToSend)
       if (result && result.success === true) {
+        if (result.user) {
+          if (result.token) {
+            localStorage.setItem('token', result.token)
+          }
+          setUser(result.user)
+        }
         setFormData({
           email: '',
           password: '',
@@ -108,7 +116,9 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
           description: '',
         })
         if (onSuccess) {
-          onSuccess(result.user)
+          onSuccess(result.user || null)
+        }
+        if (onSwitchToLogin) {
           onSwitchToLogin()
         }
       } else {

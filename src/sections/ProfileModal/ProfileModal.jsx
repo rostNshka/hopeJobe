@@ -1,11 +1,15 @@
 import './ProfileModal.scss'
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
+import { useUser } from '@/context/UserContext'
 
 const ProfileModal = (props) => {
   const { isOpen, onClose, userId } = props
+  const navigate = useNavigate()
   const modalRef = useRef(null)
+  const { logout } = useUser()
 
   const { profile, loading, error, refetch } = useProfile(true)
   const { updateProfile, loading: updateLoading } = useProfileUpdate()
@@ -55,8 +59,9 @@ const ProfileModal = (props) => {
   }
 
   const handleLogout = () => {
-    localStorage.clear()
-    window.location.reload()
+    logout()
+    navigate('/')
+    onClose()
   }
 
   const handleSubmit = async (e) => {

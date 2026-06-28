@@ -4,12 +4,15 @@ import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
+import { useUser } from '@/context/UserContext'
 
 const ModalSection = (props) => {
   const { isOpen, onClose, onLoginSuccess, onRegistrationSuccess } = props
   const [registerModal, setRegisterModal] = useState(false)
   const [userRole, setUserRole] = useState('candidate')
   const modalRef = useRef(null)
+
+  const { setUser } = useUser()
 
   const handleRoleChange = (newRole) => {
     setUserRole(newRole)
@@ -20,6 +23,8 @@ const ModalSection = (props) => {
   }
 
   const handleLoginSuccess = (user) => {
+    setUser(user)
+
     if (onLoginSuccess) {
       onLoginSuccess(user)
     }
@@ -27,6 +32,10 @@ const ModalSection = (props) => {
   }
 
   const handleRegistrationSuccess = (user) => {
+    if (user) {
+      setUser(user)
+    }
+
     if (onRegistrationSuccess) {
       onRegistrationSuccess(user)
     }

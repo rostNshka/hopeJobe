@@ -2,6 +2,7 @@ import './LoginField.scss'
 import { useState } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
+import { useUser } from '@/context/UserContext'
 
 const LoginField = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const LoginField = ({ onSuccess }) => {
   const [localError, setLocalError] = useState('')
 
   const { login, loading } = useLogin()
+  const { setUser } = useUser()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -55,9 +57,7 @@ const LoginField = ({ onSuccess }) => {
 
       if (result && result.success === true && result.token) {
         localStorage.setItem('token', result.token)
-        localStorage.setItem('user', JSON.stringify(result.user))
-
-        window.dispatchEvent(new Event('localStorageChange'))
+        setUser(result.user)
 
         const savedToken = localStorage.getItem('token')
         const savedUser = localStorage.getItem('user')

@@ -4,11 +4,12 @@ import Avatar from '@/components/Avatar'
 import WorkType from '@/components/WorkType'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   useAddResponse,
   useDeleteResponse,
 } from '@/adapters/router/responseRouter'
+import { useUser } from '@/context/UserContext'
 
 const Card = (props) => {
   const { vacancies } = props
@@ -18,31 +19,53 @@ const Card = (props) => {
 
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
+  const { user } = useUser()
+
+  const checkStatus = useCallback(async () => {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      setIsFavorite(false)
+      setIsChecking(false)
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/responses/check/${vacancies.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const result = await response.json()
+      setIsFavorite(result.data?.isFavorite || false)
+    } catch (error) {
+      console.error('Error:', error)
+    } finally {
+      setIsChecking(false)
+    }
+  }, [vacancies.id])
 
   useEffect(() => {
-    const checkStatus = async () => {
+    checkStatus()
+  }, [checkStatus, user])
+
+  useEffect(() => {
+    const handleStorageChange = () => {
       const token = localStorage.getItem('token')
-
       if (!token) {
+        setIsFavorite(false)
         setIsChecking(false)
-        return
-      }
-
-      try {
-        const response = await fetch(`/api/responses/check/${vacancies.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        const result = await response.json()
-        setIsFavorite(result.data?.isFavorite || false)
-      } catch (error) {
-        console.error('Error:', error)
-      } finally {
-        setIsChecking(false)
+      } else {
+        checkStatus()
       }
     }
 
-    checkStatus()
-  }, [vacancies.id])
+    window.addEventListener('storage', handleStorageChange)
+    window.addEventListener('localStorageChange', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('localStorageChange', handleStorageChange)
+    }
+  }, [checkStatus])
 
   const handleFavoriteClick = async (e) => {
     e.stopPropagation()
