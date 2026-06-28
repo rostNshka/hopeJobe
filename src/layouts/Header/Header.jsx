@@ -16,7 +16,7 @@ const Header = () => {
   const [toastMessage, setToastMessage] = useState('')
   const ref = useRef(null)
 
-  const { user, logout } = useUser()
+  const { user, logout, isAuthenticated } = useUser()
 
   useEffect(() => {
     if (isOpen) {
@@ -55,27 +55,29 @@ const Header = () => {
 
       <img src="/logo.svg" alt="logo" className="header__logo" />
       <dialog className="header__overlay-menu-dialog" ref={ref}>
-        <nav className="header__nav">
-          <NavLink to={'/'} className="header__nav-item">
-            Вакансии
-          </NavLink>
-          {user?.role === 'USER' ? (
-            <NavLink to={'/favorites'} className="header__nav-item">
-              <CiStar />
-              Избранное
+        {isAuthenticated && (
+          <nav className="header__nav">
+            <NavLink to={'/'} className="header__nav-item">
+              Вакансии
             </NavLink>
-          ) : (
-            <NavLink to={'/my-vacancy'} className="header__nav-item">
-              <CiStar />
-              Мои вакансии
+            {user?.role === 'USER' ? (
+              <NavLink to={'/favorites'} className="header__nav-item">
+                <CiStar />
+                Избранное
+              </NavLink>
+            ) : (
+              <NavLink to={'/my-vacancy'} className="header__nav-item">
+                <CiStar />
+                Мои вакансии
+              </NavLink>
+            )}
+            <NavLink to={'/add-vacancy'} className="header__nav-item">
+              <CiBookmarkPlus />
+              Новая вакансия
             </NavLink>
-          )}
-          <NavLink to={'/add-vacancy'} className="header__nav-item">
-            <CiBookmarkPlus />
-            Новая вакансия
-          </NavLink>
-          <span></span>
-        </nav>
+            <span></span>
+          </nav>
+        )}
         {!user ? (
           <RegistrationButton
             color="violet"
