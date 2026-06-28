@@ -1,5 +1,4 @@
 import useFetch from '@/adapters/api/useFetch'
-import { useState } from 'react'
 
 export function useVacancy() {
   const { data, loading, error, refetch } = useFetch('/api/vacancies', {
@@ -70,43 +69,13 @@ export function useAddVacancy() {
 }
 
 export function useUpdateVacancy() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const { loading, error, refetch } = useFetch(null, { method: 'PUT' }, true)
 
-  const updateVacancy = async (id, updatedData) => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/vacancies/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedData),
-      })
-
-      let result
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json()
-      } else {
-        result = { message: await response.text() }
-      }
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Ошибка обновления')
-      }
-
-      return { success: true, data: result }
-    } catch (error) {
-      setError(error.message)
-      return { success: false, message: error.message }
-    } finally {
-      setLoading(false)
-    }
+  const updateVacancy = (id, updatedData) => {
+    return refetch({
+      url: `/api/vacancies/${id}`,
+      body: JSON.stringify(updatedData),
+    })
   }
 
   return {
@@ -117,42 +86,12 @@ export function useUpdateVacancy() {
 }
 
 export function useDeleteVacancy() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const { loading, error, refetch } = useFetch(null, { method: 'DELETE' }, true)
 
-  const deleteVacancy = async (id) => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/vacancies/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      let result
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json()
-      } else {
-        result = { message: await response.text() }
-      }
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Ошибка удаления')
-      }
-
-      return { success: true, data: result }
-    } catch (error) {
-      setError(error.message)
-      return { success: false, message: error.message }
-    } finally {
-      setLoading(false)
-    }
+  const deleteVacancy = (id) => {
+    return refetch({
+      url: `/api/vacancies/${id}`,
+    })
   }
 
   return {
