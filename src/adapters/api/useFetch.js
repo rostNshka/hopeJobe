@@ -9,8 +9,15 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
     async (customOptions = {}) => {
       setLoading(true)
       setError(null)
+
       const getToken = () => {
         return localStorage.getItem('token')
+      }
+
+      const finalUrl = customOptions.url || url
+
+      if (!finalUrl) {
+        throw new Error('URL is required')
       }
 
       const options = {
@@ -24,12 +31,16 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
         },
       }
 
-      if (customOptions.body) {
+      delete options.url
+
+      if (customOptions.body && typeof customOptions.body === 'object') {
+        options.body = JSON.stringify(customOptions.body)
+      } else if (customOptions.body) {
         options.body = customOptions.body
       }
 
       try {
-        const response = await fetch(url, options)
+        const response = await fetch(finalUrl, options)
 
         let result
         const contentType = response.headers.get('content-type')
@@ -61,10 +72,10 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
   )
 
   useEffect(() => {
-    if (!skipFetch) {
+    if (!skipFetch && url) {
       fetchData()
     }
-  }, [fetchData, skipFetch])
+  }, [fetchData, skipFetch, url])
 
   return { data, loading, error, refetch: fetchData }
 }
