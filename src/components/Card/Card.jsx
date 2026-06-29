@@ -79,13 +79,13 @@ const Card = (props) => {
 
     if (wasFavorite) {
       const result = await deleteResponse(vacancyId)
-      if (!result.success) {
+      if (!result) {
         setIsFavorite(wasFavorite)
         alert(result.message)
       }
     } else {
       const result = await addResponse(vacancyId)
-      if (!result.success) {
+      if (!result) {
         setIsFavorite(wasFavorite)
         alert(result.message)
       }

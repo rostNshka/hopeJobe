@@ -49,7 +49,7 @@ const MyVacancy = () => {
 
   const handleUpdate = async (id) => {
     const result = await updateVacancy(id, editFormData)
-    if (result.success) {
+    if (result) {
       setEditingId(null)
       refetch()
     } else {
@@ -71,7 +71,7 @@ const MyVacancy = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Вы уверены, что хотите удалить эту вакансию?')) {
       const result = await deleteVacancy(id)
-      if (result.success) {
+      if (result) {
         refetch()
       } else {
         alert(result.message)

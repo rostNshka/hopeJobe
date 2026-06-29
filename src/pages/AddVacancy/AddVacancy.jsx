@@ -106,7 +106,7 @@ const AddVacancy = () => {
 
     try {
       const result = await addVacancy(dataToSend)
-      if (result.success) {
+      if (result) {
         setFormData({
           title: '',
           location: '',

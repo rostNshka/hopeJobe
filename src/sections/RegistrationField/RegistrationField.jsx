@@ -99,7 +99,7 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
     }
     try {
       const result = await register(dataToSend)
-      if (result && result.success === true) {
+      if (result) {
         if (result.user) {
           if (result.token) {
             localStorage.setItem('token', result.token)

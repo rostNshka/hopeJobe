@@ -55,7 +55,7 @@ const LoginField = ({ onSuccess }) => {
         password: formData.password,
       })
 
-      if (result && result.success === true && result.token) {
+      if (result && result.token) {
         localStorage.setItem('token', result.token)
         setUser(result.user)
 
