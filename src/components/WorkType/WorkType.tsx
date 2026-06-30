@@ -3,23 +3,32 @@ import { IoHomeOutline } from 'react-icons/io5'
 import { MdBroadcastOnHome } from 'react-icons/md'
 import { HiOutlineBuildingOffice } from 'react-icons/hi2'
 
-const WorkType = (props) => {
-  const { workType } = props
+const enum EWorkType {
+  REMOTE = 'REMOTE',
+  HYBRID = 'HYBRID',
+  OFFICE = 'OFFICE',
+}
+
+interface IWorkType {
+  workType: EWorkType
+}
+
+const WorkType = ({ workType }: IWorkType) => {
   return (
     <div className={`work-type`}>
-      {workType === 'REMOTE' ? (
+      {workType === EWorkType.REMOTE ? (
         <div className={`work-type__${workType}`}>
           <IoHomeOutline />
           Удаленная
         </div>
       ) : null}
-      {workType === 'HYBRID' ? (
+      {workType === EWorkType.HYBRID ? (
         <div className={`work-type__${workType}`}>
           <MdBroadcastOnHome />
           Гибрид
         </div>
       ) : null}
-      {workType === 'OFFICE' ? (
+      {workType === EWorkType.OFFICE ? (
         <div className={`work-type__${workType}`}>
           <HiOutlineBuildingOffice />
           Офис
