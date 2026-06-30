@@ -1,8 +1,11 @@
 import './BurgerButton.scss'
 
-const BurgerButton = (props) => {
-  const { className, onClick } = props
+interface IBurgerButton {
+  className?: string
+  onClick?: () => void
+}
 
+const BurgerButton = ({ className, onClick }: IBurgerButton) => {
   const title = 'Open menu'
 
   return (
