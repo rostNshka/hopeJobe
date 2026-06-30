@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { UserProvider } from '@/context/UserContext'
+import React from 'react'
 
 import Vacancies from '@/pages/Vacancies/Vacancies'
 import VacancyDetail from '@/pages/VacancyDetail'
@@ -8,7 +8,9 @@ import AddVacancy from '@/pages/AddVacancy'
 import MyVacancy from '@/pages/MyVacancy'
 import NotFound from '@/pages/NotFound/NotFound'
 import Content from '@/layouts/Content'
+
 import ProtectedRoutes from '@/context/ProtectedRoutes'
+import { UserProvider } from '@/context/UserContext'
 
 const router = createBrowserRouter([
   {
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
   },
 ])
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <UserProvider>
       <RouterProvider router={router} />
