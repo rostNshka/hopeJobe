@@ -3,14 +3,23 @@ import { useState } from 'react'
 import { LuUserRound } from 'react-icons/lu'
 import { IoBriefcaseOutline } from 'react-icons/io5'
 
-const ToggleButton = (props) => {
-  const { onRoleChange } = props
-  const [role, setRole] = useState('candidate')
+type TRole = 'candidate' | 'employer'
 
-  const handleRoleChange = (newRole) => {
+interface IToggleButton {
+  onRoleChange?: (role: TRole) => void
+  defaultRole?: TRole
+}
+
+const ToggleButton = ({
+  onRoleChange,
+  defaultRole = 'candidate',
+}: IToggleButton) => {
+  const [role, setRole] = useState<TRole>(defaultRole)
+
+  const handleRoleChange = (newRole: TRole) => {
     setRole(newRole)
     if (onRoleChange) {
-      onRoleChange(newRole)
+      onRoleChange?.(newRole)
     }
   }
 
