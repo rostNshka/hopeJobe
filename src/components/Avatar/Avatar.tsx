@@ -1,10 +1,10 @@
 import './Avatar.scss'
 
-interface AvatarProps {
+interface IAvatarProps {
   name: string
 }
 
-const Avatar = ({ name }: AvatarProps) => {
+const Avatar = ({ name }: IAvatarProps) => {
   const matches = name.match(/[A-ZА-Я]/g) || []
   let initials: string
   if (matches.length > 0) {
