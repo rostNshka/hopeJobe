@@ -1,21 +1,43 @@
 import './Field.scss'
 import { FaRegEye } from 'react-icons/fa6'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
-const Field = (props) => {
-  const {
-    htmlFor,
-    label,
-    type,
-    id,
-    name,
-    placeholder,
-    value,
-    onChange,
-    onFocus,
-    onBlur,
-  } = props
-  const [typePassword, setTypePassword] = useState('password')
+interface IFieldProps {
+  htmlFor: string
+  label: string
+  type?: string
+  id: string
+  name?: string
+  placeholder?: string
+  value?: string
+}
+
+interface IFieldCallbacks {
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onFocus?: () => void
+  onBlur?: () => void
+}
+
+type TTypePassword = 'password' | 'text'
+
+interface ITypePassword {
+  defaultValue: TTypePassword
+}
+
+const Field = ({
+  htmlFor,
+  label,
+  type = 'text',
+  id,
+  name,
+  placeholder,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  defaultValue = 'password',
+}: IFieldProps & IFieldCallbacks & ITypePassword) => {
+  const [typePassword, setTypePassword] = useState<TTypePassword>(defaultValue)
 
   const showPassword = () => {
     setTypePassword('text')
@@ -24,6 +46,8 @@ const Field = (props) => {
   const hidePassword = () => {
     setTypePassword('password')
   }
+
+  const isPassword = id === 'password' || type === 'password'
 
   return (
     <div className={`field field__${name}`}>
@@ -53,7 +77,7 @@ const Field = (props) => {
           onBlur={onBlur}
         />
       )}
-      {id === 'password' && (
+      {isPassword && (
         <button
           className="field__button"
           type="button"
