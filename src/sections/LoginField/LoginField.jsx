@@ -12,7 +12,7 @@ const LoginField = ({ onSuccess }) => {
   const [localError, setLocalError] = useState('')
 
   const { login, loading } = useLogin()
-  const { setUser } = useUser()
+  const { setUser, setToken } = useUser()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -56,18 +56,11 @@ const LoginField = ({ onSuccess }) => {
       })
 
       if (result && result.token) {
-        localStorage.setItem('token', result.token)
+        setToken(result.token)
         setUser(result.user)
 
-        const savedToken = localStorage.getItem('token')
-        const savedUser = localStorage.getItem('user')
-
-        if (savedToken && savedUser) {
-          if (onSuccess) {
-            onSuccess(result.user)
-          }
-        } else {
-          setLocalError('Ошибка сохранения данных')
+        if (onSuccess) {
+          onSuccess(result.user)
         }
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')
