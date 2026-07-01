@@ -1,4 +1,5 @@
 import useFetch from '@/adapters/api/useFetch'
+import { useCallback } from 'react'
 
 export function useVacancy() {
   const { data, loading, error, refetch } = useFetch('/api/vacancies', {
@@ -98,5 +99,30 @@ export function useDeleteVacancy() {
     deleteVacancy,
     loading,
     error,
+  }
+}
+
+export function useCheckFavorite(vacancyId) {
+  const { data, loading, error, refetch } = useFetch(
+    `/api/responses/check/${vacancyId}`,
+    { method: 'GET' },
+    true,
+  )
+
+  const checkFavorite = useCallback(async () => {
+    try {
+      const result = await refetch()
+      return { isFavorite: result?.data?.isFavorite || false }
+    } catch (error) {
+      return { isFavorite: false, message: error.message }
+    }
+  }, [refetch])
+
+  return {
+    isFavorite: data?.data?.isFavorite || false,
+    loading,
+    error,
+    checkFavorite,
+    refetch,
   }
 }
