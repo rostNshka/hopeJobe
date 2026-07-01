@@ -54,9 +54,9 @@ export function useAddVacancy() {
       const result = await refetch({
         body: JSON.stringify(formData),
       })
-      return { success: true, data: result }
+      return { data: result }
     } catch (error) {
-      return { success: false, message: error.message }
+      return { message: error.message }
     }
   }
 
