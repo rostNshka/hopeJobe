@@ -86,8 +86,8 @@ const Header = () => {
           </RegistrationButton>
         ) : (
           <ProfileButton onClick={() => setIsProfileModal(true)}>
-            {user?.profile.lastName || user?.profile.companyName}{' '}
-            {user?.profile.firstName || null}
+            {user?.profile?.lastName || user?.profile?.companyName}{' '}
+            {user?.profile?.firstName || null}
           </ProfileButton>
         )}
       </dialog>
@@ -98,7 +98,7 @@ const Header = () => {
       <ProfileModal
         isOpen={isProfileModal}
         onClose={() => setIsProfileModal(false)}
-        userId={user?.profile.userId}
+        userId={user?.profile?.userId}
         onLogout={handleLogout}
       />
       <ModalSection
