@@ -7,21 +7,17 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
-  const { logout } = useUser()
+  const { logout, token } = useUser()
 
   const handleUnauthorized = useCallback(() => {
     logout()
     navigate('/')
-  }, [navigate])
+  }, [logout, navigate])
 
   const fetchData = useCallback(
     async (customOptions = {}) => {
       setLoading(true)
       setError(null)
-
-      const getToken = () => {
-        return localStorage.getItem('token')
-      }
 
       const finalUrl = customOptions.url || url
 
@@ -29,15 +25,17 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
         throw new Error('URL is required')
       }
 
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...defaultOptions.headers,
+        ...customOptions.headers,
+      }
+
       const options = {
         ...defaultOptions,
         ...customOptions,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-          ...defaultOptions.headers,
-          ...customOptions.headers,
-        },
+        headers,
       }
 
       delete options.url
@@ -87,7 +85,7 @@ function useFetch(url, defaultOptions = {}, skipFetch = false) {
         setLoading(false)
       }
     },
-    [url, JSON.stringify(defaultOptions), handleUnauthorized],
+    [url, JSON.stringify(defaultOptions), handleUnauthorized, token],
   )
 
   useEffect(() => {
