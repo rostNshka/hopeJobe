@@ -1,87 +1,53 @@
 import { useEffect, useState } from 'react'
+import useFetch from '@/adapters/api/useFetch'
 
 export function useGetResponses() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  const fetchFavorites = async () => {
-    setLoading(true)
-
-    try {
-      const token = localStorage.getItem('token')
-
-      const response = await fetch('/api/responses', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      const result = await response.json()
-      setData(result)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [vacancies, setVacancies] = useState([])
+  const { data, loading, error, refetch } = useFetch('/api/responses', {}, true)
 
   useEffect(() => {
-    fetchFavorites()
-  }, [])
+    if (data?.data) {
+      const mappedVacancies = data.data.map((response) => ({
+        ...response.vacancy,
+        favoriteId: response.id,
+        favoritedAt: response.createdAt,
+      }))
+      setVacancies(mappedVacancies)
+    }
+  }, [data])
 
-  const vacancies =
-    data?.data?.map((response) => ({
-      ...response.vacancy,
-      favoriteId: response.id,
-      favoritedAt: response.createdAt,
-    })) || []
+  useEffect(() => {
+    refetch()
+  }, [])
 
   return {
     vacancies,
     loading,
     error,
-    refetch: fetchFavorites,
+    refetch,
   }
 }
 
 export function useAddResponse() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const { refetch } = useFetch()
 
   const addResponse = async (vacancyId) => {
     setLoading(true)
     setError(null)
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/responses', {
+      const result = await refetch({
+        url: '/api/responses',
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ vacancyId }),
+        body: { vacancyId },
       })
 
-      let result
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json()
-      } else {
-        result = { message: await response.text() }
-      }
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Ошибка добавления в избранное')
-      }
-
-      return { success: true, data: result.data }
+      return { data: result.data }
     } catch (error) {
       setError(error.message)
-      return { success: false, message: error.message }
+      return { message: error.message }
     } finally {
       setLoading(false)
     }
@@ -93,37 +59,22 @@ export function useAddResponse() {
 export function useDeleteResponse() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const { refetch } = useFetch()
 
   const deleteResponse = async (vacancyId) => {
     setLoading(true)
     setError(null)
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/responses/${vacancyId}`, {
+      await refetch({
+        url: `/api/responses/${vacancyId}`,
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
       })
 
-      let result
-      const contentType = response.headers.get('content-type')
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json()
-      } else {
-        result = { message: await response.text() }
-      }
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Ошибка удаления из избранного')
-      }
-
-      return { success: true, message: result.message }
+      return { message: 'Удалено из избранного' }
     } catch (error) {
       setError(error.message)
-      return { success: false, message: error.message }
+      return { message: error.message }
     } finally {
       setLoading(false)
     }
@@ -135,9 +86,14 @@ export function useDeleteResponse() {
 export function useCheckFavorite(vacancyId) {
   const [isFavorite, setIsFavorite] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { refetch } = useFetch()
 
   const checkFavorite = async () => {
-    if (!vacancyId) return
+    if (!vacancyId) {
+      setIsFavorite(false)
+      setLoading(false)
+      return
+    }
 
     setLoading(true)
     try {
@@ -148,12 +104,11 @@ export function useCheckFavorite(vacancyId) {
         return
       }
 
-      const response = await fetch(`/api/responses/check/${vacancyId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const result = await refetch({
+        url: `/api/responses/check/${vacancyId}`,
+        method: 'GET',
       })
-      const result = await response.json()
+
       setIsFavorite(result.data?.isFavorite || false)
     } catch (error) {
       console.error('Error checking favorite:', error)
