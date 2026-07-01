@@ -23,13 +23,24 @@ const loadUserFromStorage = () => {
   }
 }
 
+const loadTokenFromStorage = () => {
+  try {
+    return localStorage.getItem('token')
+  } catch {
+    return null
+  }
+}
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const updateUserFromStorage = useCallback(() => {
     const loadedUser = loadUserFromStorage()
+    const loadedToken = loadTokenFromStorage()
     setUser(loadedUser)
+    setToken(loadedToken)
     setLoading(false)
   }, [])
 
@@ -47,6 +58,9 @@ export const UserProvider = ({ children }) => {
           setUser(e.newValue)
         }
         setLoading(false)
+      }
+      if (e.key === 'token') {
+        setToken(e.newValue)
       }
     }
 
@@ -77,18 +91,35 @@ export const UserProvider = ({ children }) => {
     }
   }, [])
 
+  const updateToken = useCallback((newToken) => {
+    try {
+      if (newToken === null) {
+        localStorage.removeItem('token')
+      } else {
+        localStorage.setItem('token', newToken)
+      }
+      setToken(newToken)
+      window.dispatchEvent(new Event('localStorageChange'))
+    } catch (error) {
+      console.error('Error updating token:', error)
+    }
+  }, [])
+
   const logout = useCallback(() => {
     localStorage.clear()
     setUser(null)
+    setToken(null)
     window.dispatchEvent(new Event('localStorageChange'))
   }, [])
 
   const value = {
     user,
+    token,
     setUser: updateUser,
+    setToken: updateToken,
     logout,
     loading,
-    isAuthenticated: !!user,
+    isAuthenticated: !!user && !!token,
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
