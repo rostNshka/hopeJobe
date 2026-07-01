@@ -32,10 +32,6 @@ const ModalSection = (props) => {
   }
 
   const handleRegistrationSuccess = (user) => {
-    if (user) {
-      setUser(user)
-    }
-
     if (onRegistrationSuccess) {
       onRegistrationSuccess(user)
     }
