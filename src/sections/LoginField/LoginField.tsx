@@ -1,29 +1,48 @@
 import './LoginField.scss'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext'
 
-const LoginField = ({ onSuccess }) => {
-  const [formData, setFormData] = useState({
+interface ILoginFieldProps {
+  onSuccess: () => void
+}
+
+interface IFormData {
+  email: string
+  password: string
+}
+
+interface ILoginResult {
+  token: string
+  user: {
+    id: number
+    email: string
+    name?: string
+  }
+  message?: string
+}
+
+const LoginField = ({ onSuccess }: ILoginFieldProps) => {
+  const [formData, setFormData] = useState<IFormData>({
     email: '',
     password: '',
   })
-  const [localError, setLocalError] = useState('')
+  const [localError, setLocalError] = useState<string>('')
 
   const { login, loading } = useLogin()
   const { setUser, setToken } = useUser()
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
-    setFormData((prev) => ({
+    setFormData((prev: IFormData) => ({
       ...prev,
       [name]: value,
     }))
     setLocalError('')
   }
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     if (!formData.email.trim()) {
       setLocalError('Введите email')
       return false
@@ -43,24 +62,26 @@ const LoginField = ({ onSuccess }) => {
     return true
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.SyntheticEvent<HTMLFormElement, Event>,
+  ): Promise<void> => {
     e.preventDefault()
     setLocalError('')
 
     if (!validateForm()) return
 
     try {
-      const result = await login({
+      const result = (await login({
         email: formData.email,
         password: formData.password,
-      })
+      })) as ILoginResult
 
       if (result && result.token) {
         setToken(result.token)
         setUser(result.user)
 
         if (onSuccess) {
-          onSuccess(result.user)
+          onSuccess()
         }
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')
