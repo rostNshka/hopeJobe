@@ -21,7 +21,7 @@ interface IFieldCallbacks {
 type TTypePassword = 'password' | 'text'
 
 interface ITypePassword {
-  defaultValue: TTypePassword
+  defaultValue?: TTypePassword
 }
 
 const Field = ({
