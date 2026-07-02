@@ -1,10 +1,43 @@
 import './RegistrationField.scss'
 import Field from '@/components/Field'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRegister } from '@/adapters/router/authRouter'
 
-const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
-  const [formData, setFormData] = useState({
+export type TTypeRole = 'candidate' | 'employer'
+
+interface IRegistrationFieldProps {
+  role: TTypeRole
+  onSuccess?: () => void
+  onSwitchToLogin?: () => void
+}
+
+interface IFormData {
+  email: string
+  password: string
+  firstName?: string
+  lastName?: string
+  patronymic?: string
+  companyName?: string
+  description?: string
+}
+
+interface IRegisterData {
+  email: string
+  password: string
+  role?: 'EMPLOYER' | 'USER'
+  companyName?: string
+  description?: string | null
+  firstName?: string
+  lastName?: string
+  patronymic?: string | null
+}
+
+const RegistrationField = ({
+  role,
+  onSuccess,
+  onSwitchToLogin,
+}: IRegistrationFieldProps) => {
+  const [formData, setFormData] = useState<IFormData>({
     email: '',
     password: '',
     firstName: '',
@@ -13,28 +46,30 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
     companyName: '',
     description: '',
   })
-  const [localError, setLocalError] = useState('')
+  const [localError, setLocalError] = useState<string>('')
 
   const { register, loading } = useRegister()
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     setLocalError('')
   }
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  const validatePassword = (password) => {
+  const validatePassword = (password: string): boolean => {
     const hasLetters = /[a-zA-Zа-яА-Я]/.test(password)
     const hasNumbers = /\d/.test(password)
     return hasLetters && hasNumbers && password.length > 6
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.SyntheticEvent<HTMLFormElement, Event>,
+  ) => {
     e.preventDefault()
     setLocalError('')
 
@@ -74,7 +109,7 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
       }
     }
 
-    let dataToSend = {
+    let dataToSend: IRegisterData = {
       email: formData.email,
       password: formData.password,
     }
@@ -110,7 +145,7 @@ const RegistrationField = ({ role, onSuccess, onSwitchToLogin }) => {
         })
 
         if (onSuccess) {
-          onSuccess(result.user || null)
+          onSuccess()
         }
 
         if (onSwitchToLogin) {
