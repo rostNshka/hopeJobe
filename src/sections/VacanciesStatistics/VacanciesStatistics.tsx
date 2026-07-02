@@ -12,7 +12,7 @@ const VacanciesStatistics = () => {
       <div className="vacancies-statistics__item">
         <div className="vacancies-statistics__item-icon">
           <FaBriefcase />
-          {vacancies.length}
+          {vacancies?.length}
         </div>
         вакансий
       </div>
