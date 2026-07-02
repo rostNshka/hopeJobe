@@ -1,7 +1,15 @@
 import './VacanciesInput.scss'
 import { IoSearchOutline } from 'react-icons/io5'
 
-const VacanciesInput = ({ searchTerm, onSearchChange }) => {
+interface IVacanciesInputProps {
+  searchTerm: string
+  onSearchChange: (searchTerm: string) => void
+}
+
+const VacanciesInput = ({
+  searchTerm,
+  onSearchChange,
+}: IVacanciesInputProps) => {
   return (
     <div className="vacancies-input">
       <IoSearchOutline className="vacancies-input__icon" />
