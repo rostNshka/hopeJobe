@@ -4,26 +4,43 @@ import Avatar from '@/components/Avatar'
 import WorkType from '@/components/WorkType'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   useAddResponse,
   useDeleteResponse,
 } from '@/adapters/router/responseRouter'
 import { useUser } from '@/context/UserContext'
+import { useCheckFavorite } from '@/adapters/router/vacancyRouter'
+import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
-const Card = (props) => {
-  const { vacancies } = props
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isChecking, setIsChecking] = useState(true)
+interface IEmployer {
+  companyName: string
+}
+
+interface IUser {
+  id: number
+  title: string
+  salary: string
+  location: string
+  workType: EWorkType
+  employer: IEmployer
+}
+
+interface ICardProps {
+  vacancies: IUser
+}
+
+const Card = ({ vacancies }: ICardProps) => {
+  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isChecking, setIsChecking] = useState<boolean>(false)
 
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
-  const { user } = useUser()
+  const { user, token } = useUser()
+  const { checkFavorite } = useCheckFavorite(vacancies.id)
 
   const checkStatus = useCallback(async () => {
-    const token = localStorage.getItem('token')
-
     if (!token) {
       setIsFavorite(false)
       setIsChecking(false)
@@ -31,17 +48,14 @@ const Card = (props) => {
     }
 
     try {
-      const response = await fetch(`/api/responses/check/${vacancies.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      const result = await response.json()
-      setIsFavorite(result.data?.isFavorite || false)
+      const result = await checkFavorite()
+      setIsFavorite(result.isFavorite)
     } catch (error) {
-      console.error('Error:', error)
+      alert(`Error: ${error}`)
     } finally {
       setIsChecking(false)
     }
-  }, [vacancies.id])
+  }, [checkFavorite, token])
 
   useEffect(() => {
     checkStatus()
@@ -49,7 +63,6 @@ const Card = (props) => {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const token = localStorage.getItem('token')
       if (!token) {
         setIsFavorite(false)
         setIsChecking(false)
@@ -65,17 +78,17 @@ const Card = (props) => {
       window.removeEventListener('storage', handleStorageChange)
       window.removeEventListener('localStorageChange', handleStorageChange)
     }
-  }, [checkStatus])
+  }, [checkStatus, token])
 
-  const handleFavoriteClick = async (e) => {
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
     setIsLoading(true)
 
-    const wasFavorite = isFavorite
+    const wasFavorite: boolean = isFavorite
     setIsFavorite(!wasFavorite)
 
-    const vacancyId = Number(vacancies.id)
+    const vacancyId: number = Number(vacancies.id)
 
     if (wasFavorite) {
       const result = await deleteResponse(vacancyId)
@@ -101,14 +114,14 @@ const Card = (props) => {
   return (
     <div className="card">
       <div className="card-header">
-        <Avatar name={vacancies.employer?.companyName} />
+        <Avatar name={vacancies?.employer?.companyName} />
         <div className="card-header-info">
           <div className="card-header-info__company-name">
-            {vacancies.employer?.companyName}
+            {vacancies?.employer?.companyName}
           </div>
           <div className="card-header-info__location">
             <CiLocationOn />
-            {vacancies.location}
+            {vacancies?.location}
           </div>
         </div>
 
