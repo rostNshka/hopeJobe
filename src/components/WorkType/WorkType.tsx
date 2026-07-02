@@ -3,37 +3,43 @@ import { IoHomeOutline } from 'react-icons/io5'
 import { MdBroadcastOnHome } from 'react-icons/md'
 import { HiOutlineBuildingOffice } from 'react-icons/hi2'
 
-const enum EWorkType {
+export const enum EWorkType {
   REMOTE = 'REMOTE',
   HYBRID = 'HYBRID',
   OFFICE = 'OFFICE',
 }
 
-interface IWorkType {
+interface IWorkTypeProps {
   workType: EWorkType
 }
 
-const WorkType = ({ workType }: IWorkType) => {
+const workTypeConfig = {
+  [EWorkType.REMOTE]: {
+    icon: IoHomeOutline,
+    label: 'Удаленная',
+  },
+  [EWorkType.HYBRID]: {
+    icon: MdBroadcastOnHome,
+    label: 'Гибрид',
+  },
+  [EWorkType.OFFICE]: {
+    icon: HiOutlineBuildingOffice,
+    label: 'Офис',
+  },
+}
+
+const WorkType = ({ workType }: IWorkTypeProps) => {
+  const config = workTypeConfig[workType]
+  if (!config) return null
+
+  const IconComponent = config.icon
+
   return (
     <div className={`work-type`}>
-      {workType === EWorkType.REMOTE ? (
-        <div className={`work-type__${workType}`}>
-          <IoHomeOutline />
-          Удаленная
-        </div>
-      ) : null}
-      {workType === EWorkType.HYBRID ? (
-        <div className={`work-type__${workType}`}>
-          <MdBroadcastOnHome />
-          Гибрид
-        </div>
-      ) : null}
-      {workType === EWorkType.OFFICE ? (
-        <div className={`work-type__${workType}`}>
-          <HiOutlineBuildingOffice />
-          Офис
-        </div>
-      ) : null}
+      <div className={`work-type__${workType}`}>
+        <IconComponent />
+        {config.label}
+      </div>
     </div>
   )
 }
