@@ -26,7 +26,7 @@ interface IUser {
   employer: IEmployer
 }
 
-interface ICardProps {
+export interface ICardProps {
   vacancies: IUser
 }
 
