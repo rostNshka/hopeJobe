@@ -8,13 +8,14 @@ import ModalSection from '@/sections/ModalSection/ModalSection'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
 import { useUser } from '@/context/UserContext'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isProfileModal, setIsProfileModal] = useState(false)
-  const [toastMessage, setToastMessage] = useState('')
-  const ref = useRef(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isProfileModal, setIsProfileModal] = useState<boolean>(false)
+  const [toastMessage, setToastMessage] = useState<string>('')
+  const ref = useRef<HTMLDialogElement>(null)
 
   const { user, logout, isAuthenticated } = useUser()
 
@@ -30,7 +31,7 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleLoginSuccess = (user) => {
+  const handleLoginSuccess = (user: IUser) => {
     setIsModalOpen(false)
     setToastMessage(
       `Добро пожаловать, ${user?.profile?.firstName || user?.profile?.companyName}!`,
