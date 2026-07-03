@@ -1,13 +1,22 @@
 import './AddVacancy.scss'
 import { CiSquarePlus } from 'react-icons/ci'
 import Field from '@/components/Field'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAddVacancy } from '@/adapters/router/vacancyRouter'
+import { EWorkType } from '@/components/WorkType/WorkType.tsx'
+
+interface IVacancyData {
+  title: string
+  location: string
+  description: string
+  workType: string
+  salary: string
+}
 
 const AddVacancy = () => {
-  const [selectedWorkType, setSelectedWorkType] = useState('')
+  const [selectedWorkType, setSelectedWorkType] = useState<string>('')
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IVacancyData>({
     title: '',
     location: '',
     description: '',
@@ -15,22 +24,22 @@ const AddVacancy = () => {
     salary: '',
   })
 
-  const [salaryDisplay, setSalaryDisplay] = useState('')
-  const [localError, setLocalError] = useState('')
+  const [salaryDisplay, setSalaryDisplay] = useState<string>('')
+  const [localError, setLocalError] = useState<string>('')
 
   const { addVacancy, loading } = useAddVacancy()
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const hasDigits = (str) => {
+  const hasDigits = (str: string) => {
     return /\d/.test(str)
   }
 
-  const handleSalaryChange = (e) => {
-    let value = e.target.value.replace(/[^\d\s-]/g, '')
+  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^\d\s-]/g, '')
     setSalaryDisplay(value)
     setFormData((prev) => ({ ...prev, salary: value }))
   }
@@ -90,13 +99,15 @@ const AddVacancy = () => {
     return true
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault()
     setLocalError('')
 
-    if (!validateForm()) return
+    if (!validateForm()) {
+      return
+    }
 
-    const dataToSend = {
+    const dataToSend: IVacancyData = {
       title: formData.title,
       location: formData.location,
       description: formData.description,
@@ -123,10 +134,10 @@ const AddVacancy = () => {
     }
   }
 
-  const workTypes = [
-    { value: 'REMOTE', label: 'Удаленно' },
-    { value: 'OFFICE', label: 'Офис' },
-    { value: 'HYBRID', label: 'Гибрид' },
+  const workTypes: Array<{ value: EWorkType; label: string }> = [
+    { value: EWorkType.REMOTE, label: 'Удаленно' },
+    { value: EWorkType.OFFICE, label: 'Офис' },
+    { value: EWorkType.HYBRID, label: 'Гибрид' },
   ]
 
   return (
