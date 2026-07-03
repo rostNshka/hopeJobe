@@ -48,7 +48,10 @@ const Favorites = () => {
             key={vacancy.id}
             to={`/vacancies/${vacancy.id}`}
             style={{ textDecoration: 'none', display: 'block' }}>
-            <Card vacancies={vacancy} onFavoriteChange={() => refetch()} />
+            <Card
+              vacancies={vacancy}
+              onFavoriteChange={(): Promise<void> => refetch()}
+            />
           </Link>
         ))}
       </div>
