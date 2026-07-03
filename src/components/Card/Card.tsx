@@ -28,6 +28,7 @@ interface IUser {
 
 export interface ICardProps {
   vacancies: IUser
+  onFavoriteChange?: () => void | Promise<void>
 }
 
 const Card = ({ vacancies }: ICardProps) => {
