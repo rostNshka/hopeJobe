@@ -4,8 +4,18 @@ import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext'
 
+export interface IUser {
+  id: number
+  email: string
+  firstName?: string
+  lastName?: string
+  companyName?: string
+  role?: string
+  name?: string
+}
+
 interface ILoginFieldProps {
-  onSuccess: () => void
+  onSuccess: (user: IUser) => void
 }
 
 interface IFormData {
@@ -68,7 +78,9 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
     e.preventDefault()
     setLocalError('')
 
-    if (!validateForm()) return
+    if (!validateForm()) {
+      return
+    }
 
     try {
       const result = (await login({
@@ -81,7 +93,7 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
         setUser(result.user)
 
         if (onSuccess) {
-          onSuccess()
+          onSuccess(result.user)
         }
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')

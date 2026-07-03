@@ -2,12 +2,13 @@ import './RegistrationField.scss'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
 import { useRegister } from '@/adapters/router/authRouter'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 export type TTypeRole = 'candidate' | 'employer'
 
 interface IRegistrationFieldProps {
   role: TTypeRole
-  onSuccess?: () => void
+  onSuccess?: (user: IUser) => void
   onSwitchToLogin?: () => void
 }
 
@@ -145,7 +146,7 @@ const RegistrationField = ({
         })
 
         if (onSuccess) {
-          onSuccess()
+          onSuccess(result.user || null)
         }
 
         if (onSwitchToLogin) {
