@@ -12,6 +12,12 @@ export interface IUser {
   companyName?: string
   role?: string
   name?: string
+  profile?: {
+    firstName?: string
+    lastName?: string
+    companyName?: string
+    description?: string
+  }
 }
 
 interface ILoginFieldProps {
