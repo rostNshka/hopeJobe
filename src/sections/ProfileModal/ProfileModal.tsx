@@ -9,6 +9,7 @@ import { IUser } from '@/sections/LoginField/LoginField.tsx'
 interface IProfileModalProps {
   isOpen: boolean
   onClose: () => void
+  onLogout: () => void
   userId: IUser
 }
 
