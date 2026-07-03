@@ -1,22 +1,44 @@
 import './ProfileModal.scss'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
-const ProfileModal = (props) => {
-  const { isOpen, onClose, userId } = props
+interface IProfileModalProps {
+  isOpen: boolean
+  onClose: () => void
+  userId: IUser
+}
+
+interface IProfileData {
+  firstName?: string
+  lastName?: string
+  patronymic?: string
+  companyName?: string
+  description?: string
+}
+
+interface IUpdateData {
+  companyName?: string
+  description?: string
+  firstName?: string
+  lastName?: string
+  patronymic?: string
+}
+
+const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
   const navigate = useNavigate()
-  const modalRef = useRef(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const { logout } = useUser()
 
   const { profile, loading, error, refetch } = useProfile(true)
   const { updateProfile, loading: updateLoading } = useProfileUpdate()
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [localError, setLocalError] = useState('')
-  const [formData, setFormData] = useState({
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [localError, setLocalError] = useState<string>('')
+  const [formData, setFormData] = useState<IProfileData>({
     firstName: '',
     lastName: '',
     patronymic: '',
@@ -52,7 +74,7 @@ const ProfileModal = (props) => {
     }
   }, [profile])
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     setLocalError('')
@@ -64,11 +86,13 @@ const ProfileModal = (props) => {
     onClose()
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.SyntheticEvent<HTMLFormElement, Event>,
+  ) => {
     e.preventDefault()
     setLocalError('')
 
-    const updateData = {}
+    const updateData: IUpdateData = {}
 
     if (profile.companyName !== undefined) {
       if (formData.companyName !== profile.companyName) {
@@ -103,8 +127,11 @@ const ProfileModal = (props) => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose()
       }
     }
@@ -121,7 +148,7 @@ const ProfileModal = (props) => {
   }, [isOpen, onClose])
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
       }
