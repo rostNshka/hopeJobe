@@ -1,20 +1,33 @@
 import './ModalSection.scss'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
 import { useUser } from '@/context/UserContext'
+import { TTypeRole } from '@/sections/RegistrationField/RegistrationField.tsx'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
-const ModalSection = (props) => {
-  const { isOpen, onClose, onLoginSuccess, onRegistrationSuccess } = props
-  const [registerModal, setRegisterModal] = useState(false)
-  const [userRole, setUserRole] = useState('candidate')
-  const modalRef = useRef(null)
+interface IModalSectionProps {
+  isOpen: boolean
+  onClose: () => void
+  onLoginSuccess: (user: IUser) => void
+  onRegistrationSuccess: (user: IUser) => void
+}
+
+const ModalSection = ({
+  isOpen,
+  onClose,
+  onLoginSuccess,
+  onRegistrationSuccess,
+}: IModalSectionProps) => {
+  const [registerModal, setRegisterModal] = useState<boolean>(false)
+  const [userRole, setUserRole] = useState<TTypeRole>('candidate')
+  const modalRef = useRef<HTMLDivElement>(null)
 
   const { setUser } = useUser()
 
-  const handleRoleChange = (newRole) => {
+  const handleRoleChange = (newRole: TTypeRole) => {
     setUserRole(newRole)
   }
 
@@ -22,7 +35,7 @@ const ModalSection = (props) => {
     setRegisterModal(!registerModal)
   }
 
-  const handleLoginSuccess = (user) => {
+  const handleLoginSuccess = (user: IUser) => {
     setUser(user)
 
     if (onLoginSuccess) {
@@ -31,7 +44,7 @@ const ModalSection = (props) => {
     onClose()
   }
 
-  const handleRegistrationSuccess = (user) => {
+  const handleRegistrationSuccess = (user: IUser) => {
     if (onRegistrationSuccess) {
       onRegistrationSuccess(user)
     }
@@ -39,8 +52,11 @@ const ModalSection = (props) => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent): void => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose()
       }
     }
@@ -57,7 +73,7 @@ const ModalSection = (props) => {
   }, [isOpen, onClose])
 
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
       }
@@ -72,7 +88,9 @@ const ModalSection = (props) => {
     }
   }, [isOpen, onClose])
 
-  if (!isOpen) return null
+  if (!isOpen) {
+    return null
+  }
 
   return (
     <div className="modal">
