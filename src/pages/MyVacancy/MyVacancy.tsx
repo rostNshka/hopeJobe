@@ -6,12 +6,21 @@ import {
 } from '@/adapters/router/vacancyRouter'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdDeleteOutline } from 'react-icons/md'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Field from '@/components/Field'
+import { EWorkType } from '@/components/WorkType/WorkType.tsx'
+
+interface IEditFormData {
+  title: string
+  description: string
+  location: string
+  workType: EWorkType | ''
+  salary: string
+}
 
 const MyVacancy = () => {
-  const [editingId, setEditingId] = useState(null)
-  const [editFormData, setEditFormData] = useState({
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editFormData, setEditFormData] = useState<IEditFormData>({
     title: '',
     description: '',
     location: '',
@@ -23,7 +32,7 @@ const MyVacancy = () => {
   const { deleteVacancy } = useDeleteVacancy()
   const { updateVacancy, loading: updateLoading } = useUpdateVacancy()
 
-  const getWorkType = (type) => {
+  const getWorkType = (type: any) => {
     return type === 'REMOTE'
       ? 'Удаленная'
       : type === 'OFFICE'
@@ -31,7 +40,7 @@ const MyVacancy = () => {
         : 'Гибридная'
   }
 
-  const handleEditClick = (vacancy) => {
+  const handleEditClick = (vacancy: any) => {
     setEditingId(vacancy.id)
     setEditFormData({
       title: vacancy.title,
@@ -42,12 +51,16 @@ const MyVacancy = () => {
     })
   }
 
-  const handleEditChange = (e) => {
+  const handleEditChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target
     setEditFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleUpdate = async (id) => {
+  const handleUpdate = async (id: number) => {
     const result = await updateVacancy(id, editFormData)
     if (result) {
       setEditingId(null)
@@ -68,7 +81,7 @@ const MyVacancy = () => {
     })
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Вы уверены, что хотите удалить эту вакансию?')) {
       const result = await deleteVacancy(id)
       if (result) {
@@ -114,7 +127,7 @@ const MyVacancy = () => {
       <h3 className="my-vacancy__title">Мои вакансии</h3>
       <p>Просматривайте и изменяйте свои вакансии.</p>
       <div className="my-vacancy__items">
-        {vacancies.map((vacancy) => (
+        {vacancies.map((vacancy: any) => (
           <div className="my-vacancy__item" key={vacancy.id}>
             {editingId !== vacancy.id ? (
               <div>
