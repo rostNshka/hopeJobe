@@ -8,9 +8,9 @@ import VacanciesStatistics from '@/sections/VacanciesStatistics'
 
 const Vacancies = () => {
   const { vacancies, loading, error } = useVacancy()
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
-  const filteredVacancies = useMemo(() => {
+  const filteredVacancies = useMemo((): any[] => {
     if (!vacancies) {
       return []
     }
@@ -20,7 +20,7 @@ const Vacancies = () => {
 
     const lowerSearchTerm = searchTerm.toLowerCase()
 
-    return vacancies.filter((vacancy) => {
+    return vacancies.filter((vacancy: any) => {
       return (
         vacancy.title?.toLowerCase().includes(lowerSearchTerm) ||
         vacancy.employer?.companyName.toLowerCase().includes(lowerSearchTerm) ||
