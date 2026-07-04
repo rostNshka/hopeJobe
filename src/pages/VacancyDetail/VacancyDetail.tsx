@@ -1,19 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useVacancyId } from '@/adapters/router/vacancyRouter'
 import './VacancyDetail.scss'
+import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
 const VacancyDetail = () => {
   const { detailId } = useParams()
   const navigate = useNavigate()
   const { vacancies, loading, error } = useVacancyId(detailId)
 
-  const workTypes = [
-    { value: 'REMOTE', label: 'Удаленно' },
-    { value: 'OFFICE', label: 'Офис' },
-    { value: 'HYBRID', label: 'Гибрид' },
+  const workTypes: Array<{ value: EWorkType; label: string }> = [
+    { value: EWorkType.REMOTE, label: 'Удаленно' },
+    { value: EWorkType.OFFICE, label: 'Офис' },
+    { value: EWorkType.HYBRID, label: 'Гибрид' },
   ]
 
-  const getWorkTypeLabel = (workType) => {
+  const getWorkTypeLabel = (workType: any) => {
     const found = workTypes.find((type) => type.value === workType)
     return found ? found.label : workType
   }
