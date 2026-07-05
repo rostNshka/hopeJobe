@@ -1,10 +1,15 @@
 import './Favorites.scss'
-import { useGetResponses } from '@/adapters/router/responseRouter'
+import { useCallback } from 'react'
+import { useGetResponses } from '@/adapters/router/responseRouter.ts'
 import Card from '@/components/Card'
 import { Link } from 'react-router-dom'
 
 const Favorites = () => {
   const { vacancies, loading, error, refetch } = useGetResponses()
+
+  const handleFavoriteChange = useCallback(async () => {
+    await refetch()
+  }, [refetch])
 
   if (loading) {
     return (
@@ -48,10 +53,7 @@ const Favorites = () => {
             key={vacancy.id}
             to={`/vacancies/${vacancy.id}`}
             style={{ textDecoration: 'none', display: 'block' }}>
-            <Card
-              vacancies={vacancy}
-              onFavoriteChange={(): Promise<void> => refetch()}
-            />
+            <Card vacancies={vacancy} onFavoriteChange={handleFavoriteChange} />
           </Link>
         ))}
       </div>
