@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext.tsx'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 interface IProfileModalProps {
   isOpen: boolean
   onClose: () => void
   onLogout: () => void
-  userId: IUser
+  userId: number
 }
 
 export interface IProfileData {
