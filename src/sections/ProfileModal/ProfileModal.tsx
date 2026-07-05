@@ -13,7 +13,7 @@ interface IProfileModalProps {
   userId: IUser
 }
 
-interface IProfileData {
+export interface IProfileData {
   firstName?: string
   lastName?: string
   patronymic?: string
@@ -21,7 +21,7 @@ interface IProfileData {
   description?: string
 }
 
-interface IUpdateData {
+export interface IUpdateData {
   companyName?: string
   description?: string
   firstName?: string
@@ -184,7 +184,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
         <div className="profile-modal__content" ref={modalRef}>
           <div className="profile-modal__error">
             <p>Ошибка: {error}</p>
-            <button onClick={refetch}>Попробовать снова</button>
+            <button onClick={void refetch()}>Попробовать снова</button>
           </div>
         </div>
       </div>
