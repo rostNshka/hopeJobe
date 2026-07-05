@@ -1,10 +1,35 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
+import { IVacancyData } from '@/pages/AddVacancy/AddVacancy.tsx'
+import { IVacancyCard } from '@/components/Card/Card.tsx'
+
+export interface IVacancy extends IVacancyCard {
+  employer: {
+    companyName: string
+    employer: string
+    email: string
+  }
+}
+
+interface IVacancyResult {
+  data: IVacancy[]
+  message?: string
+}
+
+interface ICheckResult {
+  data: {
+    isFavorite: boolean
+    message?: string
+  }
+}
 
 export function useVacancy() {
-  const { data, loading, error, refetch } = useFetch('/api/vacancies', {
-    method: 'GET',
-  })
+  const { data, loading, error, refetch } = useFetch<IVacancyResult>(
+    '/api/vacancies',
+    {
+      method: 'GET',
+    },
+  )
 
   return {
     vacancies: data?.data || [],
@@ -14,10 +39,13 @@ export function useVacancy() {
   }
 }
 
-export function useVacancyId(id) {
-  const { data, loading, error, refetch } = useFetch(`/api/vacancies/${id}`, {
-    method: 'GET',
-  })
+export function useVacancyId(id: string) {
+  const { data, loading, error, refetch } = useFetch<IVacancyResult>(
+    `/api/vacancies/${id}`,
+    {
+      method: 'GET',
+    },
+  )
 
   return {
     vacancies: data?.data || [],
@@ -28,7 +56,7 @@ export function useVacancyId(id) {
 }
 
 export function useMyVacancy() {
-  const { data, loading, error, refetch } = useFetch(
+  const { data, loading, error, refetch } = useFetch<IVacancyResult>(
     '/api/vacancies/employer/my-vacancies',
     {
       method: 'GET',
@@ -44,13 +72,13 @@ export function useMyVacancy() {
 }
 
 export function useAddVacancy() {
-  const { loading, error, data, refetch } = useFetch(
+  const { loading, error, data, refetch } = useFetch<IVacancyData>(
     '/api/vacancies',
     { method: 'POST' },
     true,
   )
 
-  const addVacancy = async (formData) => {
+  const addVacancy = async (formData: IVacancyData) => {
     try {
       const result = await refetch({
         body: JSON.stringify(formData),
@@ -65,14 +93,18 @@ export function useAddVacancy() {
     addVacancy,
     loading,
     error,
-    data: data?.data || null,
+    data: data || null,
   }
 }
 
 export function useUpdateVacancy() {
-  const { loading, error, refetch } = useFetch(null, { method: 'PUT' }, true)
+  const { loading, error, refetch } = useFetch<IVacancyData>(
+    null,
+    { method: 'PUT' },
+    true,
+  )
 
-  const updateVacancy = (id, updatedData) => {
+  const updateVacancy = (id: number, updatedData: IVacancyData) => {
     return refetch({
       url: `/api/vacancies/${id}`,
       body: JSON.stringify(updatedData),
@@ -87,9 +119,13 @@ export function useUpdateVacancy() {
 }
 
 export function useDeleteVacancy() {
-  const { loading, error, refetch } = useFetch(null, { method: 'DELETE' }, true)
+  const { loading, error, refetch } = useFetch<IVacancyResult>(
+    null,
+    { method: 'DELETE' },
+    true,
+  )
 
-  const deleteVacancy = (id) => {
+  const deleteVacancy = (id: number) => {
     return refetch({
       url: `/api/vacancies/${id}`,
     })
@@ -102,8 +138,8 @@ export function useDeleteVacancy() {
   }
 }
 
-export function useCheckFavorite(vacancyId) {
-  const { data, loading, error, refetch } = useFetch(
+export function useCheckFavorite(vacancyId: number) {
+  const { data, loading, error, refetch } = useFetch<ICheckResult>(
     `/api/responses/check/${vacancyId}`,
     { method: 'GET' },
     true,
