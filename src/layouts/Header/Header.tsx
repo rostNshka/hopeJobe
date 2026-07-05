@@ -7,7 +7,7 @@ import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 import ModalSection from '@/sections/ModalSection/ModalSection'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 const Header = () => {

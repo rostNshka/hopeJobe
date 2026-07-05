@@ -13,6 +13,7 @@ export interface IUser {
   role?: string
   name?: string
   profile?: {
+    userId?: number
     firstName?: string
     lastName?: string
     companyName?: string
