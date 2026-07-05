@@ -1,22 +1,8 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 export type TRole = 'USER' | 'EMPLOYER'
-
-export interface IUser {
-  id: number
-  email: string
-  firstName?: string
-  lastName?: string
-  companyName?: string
-  role?: TRole
-  profile?: {
-    firstName?: string
-    lastName?: string
-    companyName?: string
-    description?: string
-  }
-}
 
 export interface IRegisterData {
   email: string
