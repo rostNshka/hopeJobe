@@ -32,7 +32,7 @@ const MyVacancy = () => {
   const { deleteVacancy } = useDeleteVacancy()
   const { updateVacancy, loading: updateLoading } = useUpdateVacancy()
 
-  const getWorkType = (type: any) => {
+  const getWorkType = (type: EWorkType) => {
     return type === 'REMOTE'
       ? 'Удаленная'
       : type === 'OFFICE'
