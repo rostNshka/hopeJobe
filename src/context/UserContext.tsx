@@ -4,20 +4,30 @@ import {
   useState,
   useEffect,
   useCallback,
+  ReactNode,
 } from 'react'
+import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
-const UserContext = createContext(null)
+export interface IUserContext {
+  user: IUser | null
+  token: string | null
+  setUser: (user: IUser | null) => void
+  setToken: (token: string | null) => void
+  logout: () => void
+  loading: boolean
+  isAuthenticated: boolean
+}
 
-const loadUserFromStorage = () => {
+export interface IUserProviderProps {
+  children: ReactNode
+}
+
+const UserContext = createContext<IUserContext>(null)
+
+const loadUserFromStorage = (): IUser | null => {
   try {
     const item = localStorage.getItem('user')
-    if (!item) return null
-
-    try {
-      return JSON.parse(item)
-    } catch {
-      return item
-    }
+    return item ? JSON.parse(item) : null
   } catch {
     return null
   }
@@ -31,10 +41,10 @@ const loadTokenFromStorage = () => {
   }
 }
 
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
-  const [loading, setLoading] = useState(true)
+export const UserProvider = ({ children }: IUserProviderProps) => {
+  const [user, setUser] = useState<IUser | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const updateUserFromStorage = useCallback(() => {
     const loadedUser = loadUserFromStorage()
@@ -49,13 +59,13 @@ export const UserProvider = ({ children }) => {
   }, [updateUserFromStorage])
 
   useEffect(() => {
-    const handleStorageChange = (e) => {
+    const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'user') {
         try {
           const newValue = e.newValue ? JSON.parse(e.newValue) : null
           setUser(newValue)
         } catch {
-          setUser(e.newValue)
+          setUser(null)
         }
         setLoading(false)
       }
@@ -77,7 +87,7 @@ export const UserProvider = ({ children }) => {
     }
   }, [updateUserFromStorage])
 
-  const updateUser = useCallback((newUser) => {
+  const updateUser = useCallback((newUser: IUser | null) => {
     try {
       if (newUser === null) {
         localStorage.removeItem('user')
@@ -91,7 +101,7 @@ export const UserProvider = ({ children }) => {
     }
   }, [])
 
-  const updateToken = useCallback((newToken) => {
+  const updateToken = useCallback((newToken: string | null) => {
     try {
       if (newToken === null) {
         localStorage.removeItem('token')
