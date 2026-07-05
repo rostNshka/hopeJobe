@@ -5,12 +5,13 @@ import Cards from '@/sections/Cards'
 import VacanciesInput from '@/sections/VacanciesInput'
 import { useMemo, useState } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
+import { IVacancyCard } from '@/components/Card/Card.tsx'
 
 const Vacancies = () => {
   const { vacancies, loading, error } = useVacancy()
   const [searchTerm, setSearchTerm] = useState<string>('')
 
-  const filteredVacancies = useMemo((): any[] => {
+  const filteredVacancies = useMemo((): IVacancyCard[] => {
     if (!vacancies) {
       return []
     }
@@ -20,7 +21,7 @@ const Vacancies = () => {
 
     const lowerSearchTerm = searchTerm.toLowerCase()
 
-    return vacancies.filter((vacancy: any) => {
+    return vacancies.filter((vacancy) => {
       return (
         vacancy.title?.toLowerCase().includes(lowerSearchTerm) ||
         vacancy.employer?.companyName.toLowerCase().includes(lowerSearchTerm) ||

@@ -1,9 +1,10 @@
 import './MyVacancy.scss'
 import {
+  IVacancy,
   useDeleteVacancy,
   useMyVacancy,
   useUpdateVacancy,
-} from '@/adapters/router/vacancyRouter'
+} from '@/adapters/router/vacancyRouter.ts'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdDeleteOutline } from 'react-icons/md'
 import React, { useState } from 'react'
@@ -40,7 +41,7 @@ const MyVacancy = () => {
         : 'Гибридная'
   }
 
-  const handleEditClick = (vacancy: any) => {
+  const handleEditClick = (vacancy: IVacancy) => {
     setEditingId(vacancy.id)
     setEditFormData({
       title: vacancy.title,
@@ -127,7 +128,7 @@ const MyVacancy = () => {
       <h3 className="my-vacancy__title">Мои вакансии</h3>
       <p>Просматривайте и изменяйте свои вакансии.</p>
       <div className="my-vacancy__items">
-        {vacancies.map((vacancy: any) => (
+        {vacancies.map((vacancy) => (
           <div className="my-vacancy__item" key={vacancy.id}>
             {editingId !== vacancy.id ? (
               <div>

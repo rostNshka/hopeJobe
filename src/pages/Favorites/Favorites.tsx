@@ -53,7 +53,7 @@ const Favorites = () => {
             key={vacancy.id}
             to={`/vacancies/${vacancy.id}`}
             style={{ textDecoration: 'none', display: 'block' }}>
-            <Card vacancies={vacancy} onFavoriteChange={handleFavoriteChange} />
+            <Card vacancy={vacancy} onFavoriteChange={handleFavoriteChange} />
           </Link>
         ))}
       </div>

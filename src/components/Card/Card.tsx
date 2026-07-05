@@ -10,28 +10,34 @@ import {
   useDeleteResponse,
 } from '@/adapters/router/responseRouter'
 import { useUser } from '@/context/UserContext'
-import { useCheckFavorite } from '@/adapters/router/vacancyRouter'
+import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
 interface IEmployer {
   companyName: string
+  email?: string
 }
 
-interface IUser {
+export interface IVacancyCard {
   id: number
   title: string
   salary: string
   location: string
   workType: EWorkType
   employer: IEmployer
+  description?: string
+  createdAt?: string
+  updatedAt?: string
+  employerId?: number
+  favoriteId?: number
 }
 
 export interface ICardProps {
-  vacancies: IUser
+  vacancy: IVacancyCard
   onFavoriteChange?: () => void | Promise<void>
 }
 
-const Card = ({ vacancies }: ICardProps) => {
+const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isChecking, setIsChecking] = useState<boolean>(false)
@@ -39,7 +45,7 @@ const Card = ({ vacancies }: ICardProps) => {
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
   const { user, token } = useUser()
-  const { checkFavorite } = useCheckFavorite(vacancies.id)
+  const { checkFavorite } = useCheckFavorite(vacancy.id)
 
   const checkStatus = useCallback(async () => {
     if (!token) {
@@ -50,9 +56,9 @@ const Card = ({ vacancies }: ICardProps) => {
 
     try {
       const result = await checkFavorite()
-      setIsFavorite(result.isFavorite)
+      setIsFavorite(result?.isFavorite || false)
     } catch (error) {
-      alert(`Error: ${error}`)
+      console.error('Error checking favorite:', error)
     } finally {
       setIsChecking(false)
     }
@@ -89,19 +95,23 @@ const Card = ({ vacancies }: ICardProps) => {
     const wasFavorite: boolean = isFavorite
     setIsFavorite(!wasFavorite)
 
-    const vacancyId: number = Number(vacancies.id)
+    const vacancyId: number = Number(vacancy.id)
 
     if (wasFavorite) {
       const result = await deleteResponse(vacancyId)
-      if (!result) {
+      if (result?.message) {
         setIsFavorite(wasFavorite)
         alert(result.message)
+      } else {
+        await onFavoriteChange?.()
       }
     } else {
       const result = await addResponse(vacancyId)
-      if (!result) {
+      if (result?.message) {
         setIsFavorite(wasFavorite)
         alert(result.message)
+      } else {
+        await onFavoriteChange?.()
       }
     }
 
@@ -115,14 +125,14 @@ const Card = ({ vacancies }: ICardProps) => {
   return (
     <div className="card">
       <div className="card-header">
-        <Avatar name={vacancies?.employer?.companyName} />
+        <Avatar name={vacancy?.employer?.companyName} />
         <div className="card-header-info">
           <div className="card-header-info__company-name">
-            {vacancies?.employer?.companyName}
+            {vacancy?.employer?.companyName}
           </div>
           <div className="card-header-info__location">
             <CiLocationOn />
-            {vacancies?.location}
+            {vacancy?.location}
           </div>
         </div>
 
@@ -138,9 +148,9 @@ const Card = ({ vacancies }: ICardProps) => {
         </button>
       </div>
       <div className="card-body">
-        <div className="card-body__title">{vacancies.title}</div>
-        <span className="card-body__salary">{vacancies.salary}</span>
-        <WorkType workType={vacancies.workType} />
+        <div className="card-body__title">{vacancy.title}</div>
+        <span className="card-body__salary">{vacancy.salary}</span>
+        <WorkType workType={vacancy.workType} />
       </div>
     </div>
   )

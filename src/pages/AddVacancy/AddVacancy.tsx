@@ -2,15 +2,16 @@ import './AddVacancy.scss'
 import { CiSquarePlus } from 'react-icons/ci'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
-import { useAddVacancy } from '@/adapters/router/vacancyRouter'
+import { useAddVacancy } from '@/adapters/router/vacancyRouter.ts'
 import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
-interface IVacancyData {
+export interface IVacancyData {
   title: string
   location: string
   description: string
   workType: string
   salary: string
+  message?: string
 }
 
 const AddVacancy = () => {
@@ -112,11 +113,11 @@ const AddVacancy = () => {
       location: formData.location,
       description: formData.description,
       workType: selectedWorkType,
-      salary: formData.salary || null,
+      salary: formData.salary,
     }
 
     try {
-      const result: any = await addVacancy(dataToSend)
+      const result = await addVacancy(dataToSend)
       if (result) {
         setFormData({
           title: '',
@@ -126,6 +127,7 @@ const AddVacancy = () => {
           workType: '',
         })
         setSelectedWorkType('')
+        alert('Вакансия успешно добавлена')
       } else {
         setLocalError(result.message || 'Ошибка добавления вакансии')
       }

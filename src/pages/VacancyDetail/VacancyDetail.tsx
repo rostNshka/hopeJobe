@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useVacancyId } from '@/adapters/router/vacancyRouter'
+import { useVacancyId } from '@/adapters/router/vacancyRouter.ts'
 import './VacancyDetail.scss'
 import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
@@ -14,7 +14,7 @@ const VacancyDetail = () => {
     { value: EWorkType.HYBRID, label: 'Гибрид' },
   ]
 
-  const getWorkTypeLabel = (workType: any) => {
+  const getWorkTypeLabel = (workType: EWorkType) => {
     const found = workTypes.find((type) => type.value === workType)
     return found ? found.label : workType
   }
