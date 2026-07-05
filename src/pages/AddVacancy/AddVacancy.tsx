@@ -116,7 +116,7 @@ const AddVacancy = () => {
     }
 
     try {
-      const result = await addVacancy(dataToSend)
+      const result: any = await addVacancy(dataToSend)
       if (result) {
         setFormData({
           title: '',
