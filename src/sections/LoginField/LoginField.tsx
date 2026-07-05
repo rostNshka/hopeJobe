@@ -2,7 +2,7 @@ import './LoginField.scss'
 import React, { useState } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 
 export interface IUser {
   id: number

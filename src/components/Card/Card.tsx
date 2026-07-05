@@ -9,7 +9,7 @@ import {
   useAddResponse,
   useDeleteResponse,
 } from '@/adapters/router/responseRouter'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 

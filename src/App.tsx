@@ -9,8 +9,8 @@ import MyVacancy from '@/pages/MyVacancy'
 import NotFound from '@/pages/NotFound/NotFound'
 import Content from '@/layouts/Content'
 
-import ProtectedRoutes from '@/context/ProtectedRoutes'
-import { UserProvider } from '@/context/UserContext'
+import ProtectedRoutes from '@/context/ProtectedRoutes.tsx'
+import { UserProvider } from '@/context/UserContext.tsx'
 
 const router = createBrowserRouter([
   {

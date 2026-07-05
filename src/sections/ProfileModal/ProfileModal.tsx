@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
 interface IProfileModalProps {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 
 interface IFetchOptions extends RequestInit {
   url?: string

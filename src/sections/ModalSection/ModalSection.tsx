@@ -4,7 +4,7 @@ import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 import { TTypeRole } from '@/sections/RegistrationField/RegistrationField.tsx'
 import { IUser } from '@/sections/LoginField/LoginField.tsx'
 
