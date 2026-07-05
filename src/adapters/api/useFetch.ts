@@ -16,7 +16,7 @@ interface IUseFetchReturn<T> {
 }
 
 function useFetch<T>(
-  url: string,
+  url?: string,
   defaultOptions: IFetchOptions = {},
   skipFetch: boolean = false,
 ): IUseFetchReturn<T> {
@@ -62,7 +62,7 @@ function useFetch<T>(
 
       const { params } = customOptions
 
-      let finalUrl: string = customOptions.url || url
+      let finalUrl: string = customOptions.url || url || ''
 
       if (!finalUrl) {
         throw new Error('URL is required')
