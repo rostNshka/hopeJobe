@@ -1,7 +1,22 @@
 import useFetch from '@/adapters/api/useFetch'
 
+interface IProfile {
+  data: {
+    firstName?: string
+    lastName?: string
+    patronymic?: string
+    companyName?: string
+    description?: string
+  }
+}
+
+interface IStats {
+  employers: number
+  total: number
+}
+
 export function useProfile(skipFetch = false) {
-  const { data, loading, error, refetch } = useFetch(
+  const { data, loading, error, refetch } = useFetch<IProfile>(
     '/api/users/profile',
     {
       method: 'GET',
@@ -18,7 +33,7 @@ export function useProfile(skipFetch = false) {
 }
 
 export function useProfileUpdate() {
-  const { data, loading, error, refetch } = useFetch(
+  const { data, loading, error, refetch } = useFetch<IProfile>(
     '/api/users/profile',
     {
       method: 'PUT',
@@ -26,7 +41,7 @@ export function useProfileUpdate() {
     true,
   )
 
-  const updateProfile = async (updateData) => {
+  const updateProfile = async (updateData: IProfile) => {
     try {
       const result = await refetch({
         body: JSON.stringify(updateData),
@@ -38,7 +53,7 @@ export function useProfileUpdate() {
   }
 
   return {
-    updatedProfile: data?.data || null,
+    updatedProfile: data || null,
     loading,
     error,
     updateProfile,
@@ -46,12 +61,13 @@ export function useProfileUpdate() {
 }
 
 export function useStatistics() {
-  const { data, loading, error, refetch } = useFetch('/api/users/stats', {
-    method: 'GET',
-  })
+  const { data, loading, error, refetch } = useFetch<IStats>(
+    '/api/users/stats',
+    { method: 'GET' },
+  )
 
   return {
-    stats: data?.data || null,
+    stats: data || null,
     loading,
     error,
     refetch,
