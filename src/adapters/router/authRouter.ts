@@ -34,8 +34,8 @@ export interface ILoginData {
 }
 
 export interface IAuthResponse {
-  user?: IUser
-  token?: string
+  user: IUser
+  token: string
   message?: string
 }
 
