@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router-dom'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/context/UserContext.tsx'
 
 const ProtectedRoutes = () => {
   const { isAuthenticated } = useUser()
