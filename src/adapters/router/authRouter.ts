@@ -55,7 +55,7 @@ export function useRegister(): IUseRegisterReturn {
   const { data, loading, error, refetch } = useFetch<IAuthResponse>(
     '/api/auth/register',
     { method: 'POST' },
-    true,
+    true
   )
 
   const register = useCallback(
@@ -68,7 +68,7 @@ export function useRegister(): IUseRegisterReturn {
         token: result.token,
       }
     },
-    [refetch],
+    [refetch]
   )
 
   return {
@@ -83,7 +83,7 @@ export function useLogin(): IUseLoginReturn {
   const { data, loading, error, refetch } = useFetch<IAuthResponse>(
     '/api/auth/login',
     { method: 'POST' },
-    true,
+    true
   )
 
   const login = useCallback(
@@ -97,7 +97,7 @@ export function useLogin(): IUseLoginReturn {
         token: result.token,
       }
     },
-    [refetch],
+    [refetch]
   )
 
   return {

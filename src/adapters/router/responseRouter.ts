@@ -55,7 +55,7 @@ export function useGetResponses() {
   const { data, loading, error, refetch } = useFetch<IResponseData>(
     '/api/responses',
     {},
-    true,
+    true
   )
 
   const fetchResponses = useCallback(async () => {
@@ -65,7 +65,7 @@ export function useGetResponses() {
 
   useEffect(() => {
     if (data?.data) {
-      const mappedVacancies = data.data.map((response) => ({
+      const mappedVacancies = data.data.map(response => ({
         ...response.vacancy,
         favoriteId: response.id,
       }))
@@ -112,7 +112,7 @@ export function useAddResponse() {
         setLoading(false)
       }
     },
-    [refetch],
+    [refetch]
   )
 
   return { addResponse, loading, error }
@@ -144,7 +144,7 @@ export function useDeleteResponse() {
         setLoading(false)
       }
     },
-    [refetch],
+    [refetch]
   )
 
   return { deleteResponse, loading, error }

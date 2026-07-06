@@ -34,7 +34,7 @@ const Header = () => {
   const handleLoginSuccess = (user: IUser) => {
     setIsModalOpen(false)
     setToastMessage(
-      `Добро пожаловать, ${user?.profile?.firstName || user?.profile?.companyName}!`,
+      `Добро пожаловать, ${user?.profile?.firstName || user?.profile?.companyName}!`
     )
 
     setTimeout(() => setToastMessage(''), 3000)

@@ -18,7 +18,7 @@ interface IUseFetchReturn<T> {
 function useFetch<T>(
   url?: string,
   defaultOptions: IFetchOptions = {},
-  skipFetch: boolean = false,
+  skipFetch: boolean = false
 ): IUseFetchReturn<T> {
   const [loading, setLoading] = useState<boolean>(!skipFetch)
   const [data, setData] = useState<T | null>(null)
@@ -36,7 +36,7 @@ function useFetch<T>(
   const buildUrlWithParams = useCallback(
     (
       baseUrl: string,
-      params?: Record<string, string | number | boolean>,
+      params?: Record<string, string | number | boolean>
     ): string => {
       if (!params) {
         return baseUrl
@@ -52,7 +52,7 @@ function useFetch<T>(
       const queryString: string = searchParams.toString()
       return queryString ? `${baseUrl}?${queryString}` : baseUrl
     },
-    [],
+    []
   )
 
   const fetchData = useCallback(
@@ -109,7 +109,7 @@ function useFetch<T>(
         if (response.status === 401) {
           handleUnauthorized()
           const authError = new Error(
-            'Сессия истекла. Войдите заново',
+            'Сессия истекла. Войдите заново'
           ) as Error & { status?: number }
           setError(authError.message)
           setData(null)
@@ -141,7 +141,7 @@ function useFetch<T>(
         setLoading(false)
       }
     },
-    [url, handleUnauthorized, token, buildUrlWithParams],
+    [url, handleUnauthorized, token, buildUrlWithParams]
   )
 
   useEffect(() => {

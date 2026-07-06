@@ -33,7 +33,7 @@ export function useProfile(skipFetch = false) {
     {
       method: 'GET',
     },
-    skipFetch,
+    skipFetch
   )
 
   return {
@@ -50,7 +50,7 @@ export function useProfileUpdate() {
     {
       method: 'PUT',
     },
-    true,
+    true
   )
 
   const updateProfile = async (updateData: IUpdateData) => {
@@ -75,7 +75,7 @@ export function useProfileUpdate() {
 export function useStatistics() {
   const { data, loading, error, refetch } = useFetch<IStats>(
     '/api/users/stats',
-    { method: 'GET' },
+    { method: 'GET' }
   )
 
   return {

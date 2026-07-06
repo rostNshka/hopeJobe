@@ -55,10 +55,10 @@ const MyVacancy = () => {
   const handleEditChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     const { name, value } = e.target
-    setEditFormData((prev) => ({ ...prev, [name]: value }))
+    setEditFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleUpdate = async (id: number) => {
@@ -128,7 +128,7 @@ const MyVacancy = () => {
       <h3 className="my-vacancy__title">Мои вакансии</h3>
       <p>Просматривайте и изменяйте свои вакансии.</p>
       <div className="my-vacancy__items">
-        {vacancies.map((vacancy) => (
+        {vacancies.map(vacancy => (
           <div className="my-vacancy__item" key={vacancy.id}>
             {editingId !== vacancy.id ? (
               <div>

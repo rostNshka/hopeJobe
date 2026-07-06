@@ -28,7 +28,7 @@ export function useVacancy() {
     '/api/vacancies',
     {
       method: 'GET',
-    },
+    }
   )
 
   return {
@@ -44,7 +44,7 @@ export function useVacancyId(id: string) {
     `/api/vacancies/${id}`,
     {
       method: 'GET',
-    },
+    }
   )
 
   return {
@@ -60,7 +60,7 @@ export function useMyVacancy() {
     '/api/vacancies/employer/my-vacancies',
     {
       method: 'GET',
-    },
+    }
   )
 
   return {
@@ -75,7 +75,7 @@ export function useAddVacancy() {
   const { loading, error, data, refetch } = useFetch<IVacancyData>(
     '/api/vacancies',
     { method: 'POST' },
-    true,
+    true
   )
 
   const addVacancy = async (formData: IVacancyData) => {
@@ -101,7 +101,7 @@ export function useUpdateVacancy() {
   const { loading, error, refetch } = useFetch<IVacancyData>(
     null,
     { method: 'PUT' },
-    true,
+    true
   )
 
   const updateVacancy = (id: number, updatedData: IVacancyData) => {
@@ -122,7 +122,7 @@ export function useDeleteVacancy() {
   const { loading, error, refetch } = useFetch<IVacancyResult>(
     null,
     { method: 'DELETE' },
-    true,
+    true
   )
 
   const deleteVacancy = (id: number) => {
@@ -142,7 +142,7 @@ export function useCheckFavorite(vacancyId: number) {
   const { data, loading, error, refetch } = useFetch<ICheckResult>(
     `/api/responses/check/${vacancyId}`,
     { method: 'GET' },
-    true,
+    true
   )
 
   const checkFavorite = useCallback(async () => {

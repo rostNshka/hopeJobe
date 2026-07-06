@@ -80,7 +80,7 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
   }
 
   const handleSubmit = async (
-    e: React.SyntheticEvent<HTMLFormElement, Event>,
+    e: React.SyntheticEvent<HTMLFormElement, Event>
   ): Promise<void> => {
     e.preventDefault()
     setLocalError('')

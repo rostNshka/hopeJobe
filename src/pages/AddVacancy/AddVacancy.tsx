@@ -32,7 +32,7 @@ const AddVacancy = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const hasDigits = (str: string) => {
@@ -42,7 +42,7 @@ const AddVacancy = () => {
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^\d\s-]/g, '')
     setSalaryDisplay(value)
-    setFormData((prev) => ({ ...prev, salary: value }))
+    setFormData(prev => ({ ...prev, salary: value }))
   }
 
   const handleSalaryBlur = () => {
@@ -57,7 +57,7 @@ const AddVacancy = () => {
     if (salaryDisplay.includes('₽')) {
       const cleanValue = salaryDisplay.replace(' ₽', '')
       setSalaryDisplay(cleanValue)
-      setFormData((prev) => ({ ...prev, salary: cleanValue }))
+      setFormData(prev => ({ ...prev, salary: cleanValue }))
     }
   }
 
@@ -183,7 +183,7 @@ const AddVacancy = () => {
           onChange={handleChange}
         />
         <ul className="add-vacancy__work-type">
-          {workTypes.map((type) => (
+          {workTypes.map(type => (
             <li key={type.value} className="add-vacancy__work-type-item">
               <button
                 type="button"

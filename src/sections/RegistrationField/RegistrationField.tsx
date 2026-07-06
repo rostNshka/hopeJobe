@@ -54,7 +54,7 @@ const RegistrationField = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData(prev => ({ ...prev, [name]: value }))
     setLocalError('')
   }
 
@@ -70,7 +70,7 @@ const RegistrationField = ({
   }
 
   const handleSubmit = async (
-    e: React.SyntheticEvent<HTMLFormElement, Event>,
+    e: React.SyntheticEvent<HTMLFormElement, Event>
   ) => {
     e.preventDefault()
     setLocalError('')

@@ -21,7 +21,7 @@ const Vacancies = () => {
 
     const lowerSearchTerm = searchTerm.toLowerCase()
 
-    return vacancies.filter((vacancy) => {
+    return vacancies.filter(vacancy => {
       return (
         vacancy.title?.toLowerCase().includes(lowerSearchTerm) ||
         vacancy.employer?.companyName.toLowerCase().includes(lowerSearchTerm) ||

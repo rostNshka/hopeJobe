@@ -76,7 +76,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData(prev => ({ ...prev, [name]: value }))
     setLocalError('')
   }
 
@@ -87,7 +87,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
   }
 
   const handleSubmit = async (
-    e: React.SyntheticEvent<HTMLFormElement, Event>,
+    e: React.SyntheticEvent<HTMLFormElement, Event>
   ) => {
     e.preventDefault()
     setLocalError('')

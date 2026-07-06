@@ -17,7 +17,7 @@ const VacanciesInput = ({
         type="text"
         placeholder="Должность, компания, технология или город..."
         value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={e => onSearchChange(e.target.value)}
         autoComplete="off"
       />
     </div>

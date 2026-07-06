@@ -48,7 +48,7 @@ const Favorites = () => {
         Здесь хранятся вакансии, которые вы добавили в избранное
       </p>
       <div className="favorites__items">
-        {vacancies.map((vacancy) => (
+        {vacancies.map(vacancy => (
           <Link
             key={vacancy.id}
             to={`/vacancies/${vacancy.id}`}

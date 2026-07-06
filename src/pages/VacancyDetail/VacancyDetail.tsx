@@ -15,7 +15,7 @@ const VacancyDetail = () => {
   ]
 
   const getWorkTypeLabel = (workType: EWorkType) => {
-    const found = workTypes.find((type) => type.value === workType)
+    const found = workTypes.find(type => type.value === workType)
     return found ? found.label : workType
   }
 
