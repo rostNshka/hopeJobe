@@ -1,5 +1,6 @@
 import './ModalSection.scss'
 import React, { useEffect, useRef, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
@@ -7,6 +8,7 @@ import RegistrationField from '@/sections/RegistrationField'
 import { useUser } from '@/context/UserContext.tsx'
 import { TTypeRole } from '@/sections/RegistrationField/RegistrationField.tsx'
 import { IUser } from '@/sections/LoginField/LoginField.tsx'
+import roleStore from '@/stores/role-store.tsx'
 
 interface IModalSectionProps {
   isOpen: boolean
@@ -22,13 +24,12 @@ const ModalSection = ({
   onRegistrationSuccess,
 }: IModalSectionProps) => {
   const [registerModal, setRegisterModal] = useState<boolean>(false)
-  const [userRole, setUserRole] = useState<TTypeRole>('candidate')
   const modalRef = useRef<HTMLDivElement>(null)
 
   const { setUser } = useUser()
 
   const handleRoleChange = (newRole: TTypeRole) => {
-    setUserRole(newRole)
+    roleStore.role = newRole
   }
 
   const handleRegisterModal = () => {
@@ -98,10 +99,10 @@ const ModalSection = ({
         <h3 className="modal-content__title">Вход в аккаунт</h3>
         <p>Выберите тип учётной записи</p>
         <ToggleButton onRoleChange={handleRoleChange} />
-        <RoleDescription role={userRole} />
+        <RoleDescription role={roleStore.role as TTypeRole} />
         {registerModal ? (
           <RegistrationField
-            role={userRole}
+            role={roleStore.role as TTypeRole}
             onSuccess={handleRegistrationSuccess}
             onSwitchToLogin={() => setRegisterModal(false)}
           />
@@ -126,4 +127,4 @@ const ModalSection = ({
   )
 }
 
-export default ModalSection
+export default observer(ModalSection)
