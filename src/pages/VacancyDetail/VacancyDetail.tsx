@@ -6,7 +6,7 @@ import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 const VacancyDetail = () => {
   const { detailId } = useParams()
   const navigate = useNavigate()
-  const { vacancies, loading, error } = useVacancyId(detailId)
+  const { vacancies, loading, error } = useVacancyId(detailId ?? '')
 
   const workTypes: Array<{ value: EWorkType; label: string }> = [
     { value: EWorkType.REMOTE, label: 'Удаленно' },

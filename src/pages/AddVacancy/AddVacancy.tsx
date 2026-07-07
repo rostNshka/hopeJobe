@@ -30,7 +30,9 @@ const AddVacancy = () => {
 
   const { addVacancy, loading } = useAddVacancy()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -39,7 +41,9 @@ const AddVacancy = () => {
     return /\d/.test(str)
   }
 
-  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSalaryChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const value = e.target.value.replace(/[^\d\s-]/g, '')
     setSalaryDisplay(value)
     setFormData(prev => ({ ...prev, salary: value }))
@@ -129,10 +133,10 @@ const AddVacancy = () => {
         setSelectedWorkType('')
         alert('Вакансия успешно добавлена')
       } else {
-        setLocalError(result.message || 'Ошибка добавления вакансии')
+        setLocalError('Ошибка добавления вакансии')
       }
-    } catch (error) {
-      setLocalError(error.message || 'Ошибка соединения с сервером')
+    } catch {
+      setLocalError('Ошибка соединения с сервером')
     }
   }
 

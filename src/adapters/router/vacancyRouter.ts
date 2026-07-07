@@ -85,7 +85,7 @@ export function useAddVacancy() {
       })
       return { data: result }
     } catch (error) {
-      return { message: error.message }
+      return { message: (error as Error).message || String(error) }
     }
   }
 
@@ -99,7 +99,7 @@ export function useAddVacancy() {
 
 export function useUpdateVacancy() {
   const { loading, error, refetch } = useFetch<IVacancyData>(
-    null,
+    undefined,
     { method: 'PUT' },
     true
   )
@@ -120,7 +120,7 @@ export function useUpdateVacancy() {
 
 export function useDeleteVacancy() {
   const { loading, error, refetch } = useFetch<IVacancyResult>(
-    null,
+    undefined,
     { method: 'DELETE' },
     true
   )
@@ -150,7 +150,10 @@ export function useCheckFavorite(vacancyId: number) {
       const result = await refetch()
       return { isFavorite: result?.data?.isFavorite || false }
     } catch (error) {
-      return { isFavorite: false, message: error.message }
+      return {
+        isFavorite: false,
+        message: (error as Error).message || String(error),
+      }
     }
   }, [refetch])
 

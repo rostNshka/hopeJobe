@@ -28,7 +28,7 @@ interface IRegisterData {
   password: string
   role?: TRole
   companyName?: string
-  description?: string | null
+  description?: string
   firstName?: string
   lastName?: string
   patronymic?: string | null
@@ -52,7 +52,9 @@ const RegistrationField = ({
 
   const { register, loading } = useRegister()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     setLocalError('')
@@ -94,18 +96,18 @@ const RegistrationField = ({
     }
 
     if (role === 'candidate') {
-      if (!formData.firstName.trim()) {
+      if (!formData.firstName?.trim()) {
         setLocalError('Введите имя')
         return
       }
-      if (!formData.lastName.trim()) {
+      if (!formData.lastName?.trim()) {
         setLocalError('Введите фамилию')
         return
       }
     }
 
     if (role === 'employer') {
-      if (!formData.companyName.trim()) {
+      if (!formData.companyName?.trim()) {
         setLocalError('Введите название компании')
         return
       }
@@ -121,7 +123,7 @@ const RegistrationField = ({
         ...dataToSend,
         role: 'EMPLOYER',
         companyName: formData.companyName,
-        description: formData.description || null,
+        description: formData.description,
       }
     } else {
       dataToSend = {
@@ -129,7 +131,7 @@ const RegistrationField = ({
         role: 'USER',
         firstName: formData.firstName,
         lastName: formData.lastName,
-        patronymic: formData.patronymic || null,
+        patronymic: formData.patronymic,
       }
     }
     try {
@@ -156,8 +158,12 @@ const RegistrationField = ({
           setLocalError(result?.message || 'Ошибка регистрации')
         }
       }
-    } catch (error) {
-      setLocalError(error.message)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setLocalError(error.message)
+      } else {
+        setLocalError(String(error))
+      }
     }
   }
   return (

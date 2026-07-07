@@ -99,7 +99,7 @@ const Header = () => {
       <ProfileModal
         isOpen={isProfileModal}
         onClose={() => setIsProfileModal(false)}
-        userId={user?.profile?.userId}
+        userId={user?.profile?.userId ?? 0}
         onLogout={handleLogout}
       />
       <ModalSection

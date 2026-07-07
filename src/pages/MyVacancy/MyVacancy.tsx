@@ -13,7 +13,7 @@ import { EWorkType } from '@/components/WorkType/WorkType.tsx'
 
 interface IEditFormData {
   title: string
-  description: string
+  description?: string
   location: string
   workType: EWorkType | ''
   salary: string
@@ -62,12 +62,15 @@ const MyVacancy = () => {
   }
 
   const handleUpdate = async (id: number) => {
-    const result = await updateVacancy(id, editFormData)
+    const result = await updateVacancy(id, {
+      ...editFormData,
+      description: editFormData.description || '',
+    })
     if (result) {
       setEditingId(null)
       refetch()
     } else {
-      alert(result.message || 'Ошибка обновления')
+      alert('Ошибка обновления')
     }
   }
 
@@ -88,7 +91,7 @@ const MyVacancy = () => {
       if (result) {
         refetch()
       } else {
-        alert(result.message)
+        alert('Ошибка удаления')
       }
     }
   }
@@ -164,6 +167,7 @@ const MyVacancy = () => {
                 <p>
                   Тип занятости:
                   <select
+                    aria-label="Тип занятости"
                     name="workType"
                     value={editFormData.workType}
                     onChange={handleEditChange}
@@ -204,6 +208,7 @@ const MyVacancy = () => {
             <div className="my-vacancy__buttons">
               {editingId !== vacancy.id && (
                 <button
+                  aria-label="Редактировать"
                   type="button"
                   className="my-vacancy__button edit"
                   onClick={() => handleEditClick(vacancy)}>
@@ -212,6 +217,7 @@ const MyVacancy = () => {
               )}
               {editingId !== vacancy.id && (
                 <button
+                  aria-label="Удалить"
                   type="button"
                   className="my-vacancy__button delete"
                   onClick={() => handleDelete(vacancy.id)}>

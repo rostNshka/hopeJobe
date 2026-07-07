@@ -74,7 +74,9 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
     }
   }, [profile])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     setLocalError('')
@@ -94,21 +96,21 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
 
     const updateData: IUpdateData = {}
 
-    if (profile.companyName !== undefined) {
-      if (formData.companyName !== profile.companyName) {
+    if (profile?.companyName !== undefined) {
+      if (formData.companyName !== profile?.companyName) {
         updateData.companyName = formData.companyName
       }
-      if (formData.description !== profile.description) {
+      if (formData.description !== profile?.description) {
         updateData.description = formData.description
       }
     } else {
-      if (formData.firstName !== profile.firstName) {
+      if (formData.firstName !== profile?.firstName) {
         updateData.firstName = formData.firstName
       }
-      if (formData.lastName !== profile.lastName) {
+      if (formData.lastName !== profile?.lastName) {
         updateData.lastName = formData.lastName
       }
-      if (formData.patronymic !== profile.patronymic) {
+      if (formData.patronymic !== profile?.patronymic) {
         updateData.patronymic = formData.patronymic
       }
     }
@@ -119,7 +121,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
         await refetch()
         setIsEditing(false)
       } catch (error) {
-        setLocalError(`Ошибка обновления: ${error.message || error}`)
+        setLocalError(`Ошибка обновления: ${error}`)
       }
     } else {
       setIsEditing(false)

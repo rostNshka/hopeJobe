@@ -1,5 +1,5 @@
 import './LoginField.scss'
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext.tsx'
@@ -50,8 +50,11 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
   const { login, loading } = useLogin()
   const { setUser, setToken } = useUser()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement
+    const { name, value } = target
     setFormData((prev: IFormData) => ({
       ...prev,
       [name]: value,
@@ -105,8 +108,8 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')
       }
-    } catch (err) {
-      setLocalError(err.message || 'Ошибка соединения с сервером')
+    } catch {
+      setLocalError('Ошибка соединения с сервером')
     }
   }
 

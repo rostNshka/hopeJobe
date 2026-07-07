@@ -79,6 +79,7 @@ const Field = ({
       )}
       {isPassword && (
         <button
+          aria-label="Показать пароль"
           className="field__button"
           type="button"
           onMouseDown={showPassword}
