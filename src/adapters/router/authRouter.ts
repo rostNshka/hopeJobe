@@ -9,6 +9,7 @@ export interface IRegisterData {
   password: string
   firstName?: string
   lastName?: string
+  patronymic?: string
   companyName?: string
   role?: TRole
   description?: string

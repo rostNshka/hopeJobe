@@ -1,9 +1,8 @@
 import './RegistrationField.scss'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
-import { useRegister } from '@/adapters/router/authRouter.ts'
+import { IRegisterData, useRegister } from '@/adapters/router/authRouter.ts'
 import { IUser } from '@/sections/LoginField/LoginField.tsx'
-import { TRole } from '@/adapters/router/authRouter.ts'
 
 export type TTypeRole = 'candidate' | 'employer'
 
@@ -21,17 +20,6 @@ interface IFormData {
   patronymic?: string
   companyName?: string
   description?: string
-}
-
-interface IRegisterData {
-  email: string
-  password: string
-  role?: TRole
-  companyName?: string
-  description?: string
-  firstName?: string
-  lastName?: string
-  patronymic?: string | null
 }
 
 const RegistrationField = ({
