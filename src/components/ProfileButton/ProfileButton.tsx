@@ -1,12 +1,7 @@
 import './ProfileButton.scss'
-import React from 'react'
+import { ProfileButtonProps } from './ProfileButtonProps'
 
-interface IBurgerButton {
-  children?: React.ReactNode
-  onClick?: () => void
-}
-
-const ProfileButton = ({ children, onClick }: IBurgerButton) => {
+const ProfileButton = ({ children, onClick }: ProfileButtonProps) => {
   return (
     <button className="profile-button" onClick={onClick}>
       {children}
