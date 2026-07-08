@@ -1,4 +1,3 @@
-import { TRole } from '@/types/entities/global'
 import './RoleDescription.scss'
 import { PiMagicWandThin } from 'react-icons/pi'
 import { RoleDescriptionProps } from './RoleDescriptionProps'
