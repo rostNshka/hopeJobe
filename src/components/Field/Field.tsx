@@ -1,28 +1,7 @@
 import './Field.scss'
 import { FaRegEye } from 'react-icons/fa6'
-import { ChangeEvent, useState } from 'react'
-
-interface IFieldProps {
-  htmlFor: string
-  label: string
-  type?: string
-  id: string
-  name?: string
-  placeholder?: string
-  value?: string
-}
-
-interface IFieldCallbacks {
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  onFocus?: () => void
-  onBlur?: () => void
-}
-
-type TTypePassword = 'password' | 'text'
-
-interface ITypePassword {
-  defaultValue?: TTypePassword
-}
+import { useState } from 'react'
+import { FieldProps, TypePassword } from './FieldProps'
 
 const Field = ({
   htmlFor,
@@ -35,9 +14,8 @@ const Field = ({
   onChange,
   onFocus,
   onBlur,
-  defaultValue = 'password',
-}: IFieldProps & IFieldCallbacks & ITypePassword) => {
-  const [typePassword, setTypePassword] = useState<TTypePassword>(defaultValue)
+}: FieldProps) => {
+  const [typePassword, setTypePassword] = useState<TypePassword>('password')
 
   const showPassword = () => {
     setTypePassword('text')
