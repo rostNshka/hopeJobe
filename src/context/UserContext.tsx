@@ -22,7 +22,7 @@ export interface IUserProviderProps {
   children: ReactNode
 }
 
-const UserContext = createContext<IUserContext>(null)
+const UserContext = createContext<IUserContext | null>(null)
 
 const loadUserFromStorage = (): IUser | null => {
   try {
