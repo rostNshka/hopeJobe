@@ -2,16 +2,8 @@ import './WorkType.scss'
 import { IoHomeOutline } from 'react-icons/io5'
 import { MdBroadcastOnHome } from 'react-icons/md'
 import { HiOutlineBuildingOffice } from 'react-icons/hi2'
-
-export const enum EWorkType {
-  REMOTE = 'REMOTE',
-  HYBRID = 'HYBRID',
-  OFFICE = 'OFFICE',
-}
-
-interface IWorkTypeProps {
-  workType: EWorkType
-}
+import { EWorkType } from '@/types/entities/global'
+import { WorkTypeProps } from './WorkTypeProps'
 
 const workTypeConfig = {
   [EWorkType.REMOTE]: {
@@ -28,9 +20,11 @@ const workTypeConfig = {
   },
 }
 
-const WorkType = ({ workType }: IWorkTypeProps) => {
+const WorkType = ({ workType }: WorkTypeProps) => {
   const config = workTypeConfig[workType]
-  if (!config) return null
+  if (!config) {
+    return null
+  }
 
   const IconComponent = config.icon
 
