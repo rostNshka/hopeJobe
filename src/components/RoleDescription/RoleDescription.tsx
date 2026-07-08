@@ -1,11 +1,9 @@
+import { TRole } from '@/types/entities/global'
 import './RoleDescription.scss'
 import { PiMagicWandThin } from 'react-icons/pi'
+import { RoleDescriptionProps } from './RoleDescriptionProps'
 
-interface IRoleDescription {
-  role?: string
-}
-
-const RoleDescription = ({ role }: IRoleDescription) => {
+const RoleDescription = ({ role }: RoleDescriptionProps) => {
   return (
     <div className={`role-description__${role}`}>
       <PiMagicWandThin className="icon" />
