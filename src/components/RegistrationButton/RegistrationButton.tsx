@@ -1,17 +1,11 @@
 import './RegistrationButton.scss'
-import React from 'react'
-
-interface IRegistrationButton {
-  children?: React.ReactNode
-  color?: string
-  onClick?: () => void
-}
+import { RegistrationButtonProps } from './RegistrationButtonProps'
 
 const RegistrationButton = ({
   children,
   color,
   onClick,
-}: IRegistrationButton) => {
+}: RegistrationButtonProps) => {
   return (
     <button className={`button button__${color}`} onClick={onClick}>
       {children}
