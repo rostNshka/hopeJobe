@@ -14,7 +14,8 @@
     "format": "prettier \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --check",
     "format:fix": "prettier \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --write",
     "lint": "run-s lint:js lint:css format",
-    "lint:fix": "run-s lint:js:fix lint:scss:fix format:fix"
+    "lint:fix": "run-s lint:js:fix lint:scss:fix format:fix",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@a1rth/css-normalize": "^1.2.4",
