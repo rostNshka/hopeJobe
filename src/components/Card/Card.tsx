@@ -11,31 +11,7 @@ import {
 } from '@/adapters/router/responseRouter'
 import { useUser } from '@/context/UserContext.tsx'
 import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
-import { EWorkType } from '@/components/WorkType/WorkType.tsx'
-
-interface IEmployer {
-  companyName: string
-  email?: string
-}
-
-export interface IVacancyCard {
-  id: number
-  title: string
-  salary: string
-  location: string
-  workType: EWorkType
-  employer: IEmployer
-  description?: string
-  createdAt?: string
-  updatedAt?: string
-  employerId?: number
-  favoriteId?: number
-}
-
-export interface ICardProps {
-  vacancy: IVacancyCard
-  onFavoriteChange?: () => void | Promise<void>
-}
+import { ICardProps } from './CardProps'
 
 const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
