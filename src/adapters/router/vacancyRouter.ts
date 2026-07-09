@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { IVacancyData } from '@/pages/AddVacancy/AddVacancy.tsx'
 import { IVacancyCard } from '@/components/Card/Card.tsx'
 
-export interface IVacancy extends IVacancyCard {
+export interface IVacancyData extends IVacancyCard {
   employer: {
     companyName: string
     employer: string
@@ -12,7 +12,7 @@ export interface IVacancy extends IVacancyCard {
 }
 
 interface IVacancyResult {
-  data: IVacancy[]
+  data: IVacancyData[]
   message?: string
 }
 

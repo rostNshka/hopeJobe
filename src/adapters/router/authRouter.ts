@@ -1,110 +1,55 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
+import { IUserAssets, IUserFormData } from '@/types/entities/user.types'
+import { ILoginResponse, IRegisterResponse } from '@/types/entities/api.types'
 
-export type TRole = 'USER' | 'EMPLOYER'
-
-export interface IRegisterData {
-  email: string
-  password: string
-  firstName?: string
-  lastName?: string
-  patronymic?: string
-  companyName?: string
-  role?: TRole
-  description?: string
-}
-
-export interface ILoginData {
-  email: string
-  password: string
-}
-
-export interface IAuthResponse {
-  user: IUser
-  token: string
-  message?: string
-}
-
-export interface IRegisterResult {
-  user: IUser
-  token: string
-  message?: string
-}
-
-export interface ILoginResult {
-  user: IUser
-  token: string
-  message?: string
-}
-
-export interface IUseRegisterReturn {
-  data: IUser | null
-  loading: boolean
-  error: string | null
-  register: (userData: IRegisterData) => Promise<IRegisterResult>
-}
-
-export interface IUseLoginReturn {
-  data: IUser | null
-  loading: boolean
-  error: string | null
-  login: (credentials: ILoginData) => Promise<ILoginResult>
-}
-
-export function useRegister(): IUseRegisterReturn {
-  const { data, loading, error, refetch } = useFetch<IAuthResponse>(
+export function useRegister() {
+  const { data, loading, error, refetch } = useFetch<IRegisterResponse>(
     '/api/auth/register',
     { method: 'POST' },
     true
   )
 
   const register = useCallback(
-    async (userData: IRegisterData): Promise<IRegisterResult> => {
-      const result: IAuthResponse = await refetch({
+    async (userData: IUserFormData): Promise<IRegisterResponse> => {
+      const result: IRegisterResponse = await refetch({
         body: JSON.stringify(userData),
       })
-      return {
-        user: result.user,
-        token: result.token,
-      }
+      return result
     },
     [refetch]
   )
 
   return {
-    data: data?.user || null,
+    user: data,
     loading,
     error,
-    register,
+    execute: register,
   }
 }
 
-export function useLogin(): IUseLoginReturn {
-  const { data, loading, error, refetch } = useFetch<IAuthResponse>(
+export function useLogin() {
+  const { data, loading, error, refetch } = useFetch<ILoginResponse>(
     '/api/auth/login',
     { method: 'POST' },
     true
   )
 
   const login = useCallback(
-    async (credentials: ILoginData): Promise<ILoginResult> => {
-      const result: IAuthResponse = await refetch({
+    async (credentials: IUserAssets): Promise<ILoginResponse> => {
+      const result: ILoginResponse = await refetch({
         body: JSON.stringify(credentials),
       })
-
-      return {
-        user: result.user,
-        token: result.token,
-      }
+      return result
     },
     [refetch]
   )
 
   return {
-    data: data?.user || null,
+    user: data?.user,
+    token: data?.token,
     loading,
     error,
-    login,
+    execute: login,
   }
 }

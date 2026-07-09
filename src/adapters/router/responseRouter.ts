@@ -1,58 +1,14 @@
 import { useEffect, useState, useCallback } from 'react'
 import useFetch from '@/adapters/api/useFetch'
-import { EWorkType } from '@/components/WorkType/WorkType.tsx'
-
-export interface IBaseVacancy {
-  createdAt: string
-  description?: string
-  employer: {
-    companyName: string
-    email: string
-  }
-  employerId: number
-  favoriteId: number
-  id: number
-  location: string
-  salary: string
-  title: string
-  updatedAt?: string
-  workType: EWorkType
-}
-
-export interface IVacancy extends IBaseVacancy {
-  favoriteId: number
-}
-
-export interface IAddResponseData {
-  id: number
-  vacancyId: number
-  userId: number
-  createdAt: string
-}
-
-export interface IAddResponseResult {
-  data?: IAddResponseData
-  message?: string
-}
-
-interface IResponseItem {
-  id: number
-  vacancy: IVacancy
-}
-
-interface IResponseData {
-  data: IResponseItem[]
-  total?: number
-  message?: string
-}
-
-interface IAddResponseBody {
-  vacancyId: number
-}
+import { IVacancyInfo } from '@/types/entities/vacancy.types'
+import {
+  IResponseListResult,
+  IResponseResult,
+} from '@/types/entities/api.types'
 
 export function useGetResponses() {
-  const [vacancies, setVacancies] = useState<IVacancy[]>([])
-  const { data, loading, error, refetch } = useFetch<IResponseData>(
+  const [vacancies, setVacancies] = useState<IVacancyInfo[]>([])
+  const { data, loading, error, refetch } = useFetch<IResponseListResult>(
     '/api/responses',
     {},
     true
@@ -88,10 +44,12 @@ export function useGetResponses() {
 export function useAddResponse() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { refetch } = useFetch<IAddResponseData>()
+  const { refetch } = useFetch<IResponseResult>()
 
   const addResponse = useCallback(
-    async (vacancyId: number): Promise<IAddResponseResult> => {
+    async (
+      vacancyId: number
+    ): Promise<IResponseResult | { message: string }> => {
       setLoading(true)
       setError(null)
 
@@ -99,10 +57,10 @@ export function useAddResponse() {
         const result = await refetch({
           url: '/api/responses',
           method: 'POST',
-          body: JSON.stringify({ vacancyId } as IAddResponseBody),
+          body: JSON.stringify({ vacancyId }),
         })
 
-        return { data: result }
+        return result
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : 'Неизвестная ошибка'
@@ -150,16 +108,18 @@ export function useDeleteResponse() {
   return { deleteResponse, loading, error }
 }
 
-export function useCheckFavorite(vacancyId: number) {
+export function useCheckFavorite(vacancyId: number | undefined) {
   const [isFavorite, setIsFavorite] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const { refetch } = useFetch<{ isFavorite: boolean }>()
 
-  const checkFavorite = useCallback(async () => {
+  const checkFavorite = useCallback(async (): Promise<{
+    isFavorite: boolean
+  }> => {
     if (!vacancyId) {
       setIsFavorite(false)
       setLoading(false)
-      return
+      return { isFavorite: false }
     }
 
     setLoading(true)
@@ -168,7 +128,7 @@ export function useCheckFavorite(vacancyId: number) {
       if (!token) {
         setIsFavorite(false)
         setLoading(false)
-        return
+        return { isFavorite: false }
       }
 
       const result = await refetch({
@@ -176,10 +136,13 @@ export function useCheckFavorite(vacancyId: number) {
         method: 'GET',
       })
 
-      setIsFavorite(result?.isFavorite || false)
+      const isFav = result?.isFavorite || false
+      setIsFavorite(isFav)
+      return { isFavorite: isFav }
     } catch (error) {
       console.error('Error checking favorite:', error)
       setIsFavorite(false)
+      return { isFavorite: false }
     } finally {
       setLoading(false)
     }
