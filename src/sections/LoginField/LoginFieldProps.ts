@@ -1,5 +1,5 @@
-import { IUserFormData } from '@/types/entities/user.types'
+import { IUserUpdateData } from '@/types/entities/user.types'
 
 export interface ILoginFieldProps {
-  onSuccess: (user: IUserFormData) => void
+  onSuccess: (user: IUserUpdateData) => void
 }

@@ -1,6 +1,6 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
-import { IUserAssets, IUserFormData } from '@/types/entities/user.types'
+import { IUserAssets, IUserUpdateData } from '@/types/entities/user.types'
 import { ILoginResponse, IRegisterResponse } from '@/types/entities/api.types'
 
 export function useRegister() {
@@ -11,7 +11,7 @@ export function useRegister() {
   )
 
   const register = useCallback(
-    async (userData: IUserFormData): Promise<IRegisterResponse> => {
+    async (userData: IUserUpdateData): Promise<IRegisterResponse> => {
       const result: IRegisterResponse = await refetch({
         body: JSON.stringify(userData),
       })

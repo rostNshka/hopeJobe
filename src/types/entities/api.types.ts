@@ -1,4 +1,4 @@
-import { IUserFormData, TRole } from './user.types'
+import { IUserUpdateData, TRole } from './user.types'
 import { IVacancyInfo } from './vacancy.types'
 
 export interface ApiResponse<T> {
@@ -7,10 +7,10 @@ export interface ApiResponse<T> {
   message?: string
 }
 
-export type IAuthResponse = ApiResponse<IUserFormData>
+export type IAuthResponse = ApiResponse<IUserUpdateData>
 
 export interface IAuthReturn<T> {
-  user?: IUserFormData | null
+  user?: IUserUpdateData | null
   token?: string
   loading: boolean
   error: string | null

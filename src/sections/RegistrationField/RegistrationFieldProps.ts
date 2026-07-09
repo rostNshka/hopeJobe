@@ -1,7 +1,7 @@
-import { TRole, IUserFormData } from '@/types/entities/user.types'
+import { TRole, IUserUpdateData } from '@/types/entities/user.types'
 
 export interface RegistrationFieldProps {
   role: TRole
-  onSuccess: (user: IUserFormData) => void
+  onSuccess: (user: IUserUpdateData) => void
   onSwitchToLogin: () => void
 }

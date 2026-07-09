@@ -16,17 +16,6 @@ export interface IEmployerName extends IUserAssets {
   description: string
 }
 
-export interface IUserFormData {
-  email?: string
-  password?: string
-  firstName?: string
-  lastName?: string
-  patronymic?: string
-  companyName?: string
-  description?: string
-  role?: TRole
-}
-
 export interface IUserUpdateData {
   id?: number
   email?: string

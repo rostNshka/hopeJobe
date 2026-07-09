@@ -6,7 +6,7 @@ import { RegistrationFieldProps } from './RegistrationFieldProps.ts'
 import {
   IEmployerName,
   IUserName,
-  IUserFormData,
+  IUserUpdateData,
   IUserAssets,
 } from '@/types/entities/user.types.ts'
 
@@ -89,7 +89,7 @@ const RegistrationField = ({
       }
     }
 
-    let dataToSend: IUserFormData & IUserAssets = {
+    let dataToSend: IUserUpdateData & IUserAssets = {
       email: formData.email,
       password: formData.password,
     }

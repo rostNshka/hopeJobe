@@ -8,7 +8,7 @@ import RegistrationField from '@/sections/RegistrationField'
 import { useUser } from '@/context/UserContext.tsx'
 import roleStore from '@/stores/role-store.tsx'
 import { ModalSectionProps } from './ModalSectionProps'
-import { IUserFormData, TRole } from '@/types/entities/user.types'
+import { IUserUpdateData, TRole } from '@/types/entities/user.types'
 
 const ModalSection = ({
   isOpen,
@@ -29,7 +29,7 @@ const ModalSection = ({
     setRegisterModal(!registerModal)
   }
 
-  const handleLoginSuccess = (user: IUserFormData) => {
+  const handleLoginSuccess = (user: IUserUpdateData) => {
     setUser(user)
 
     if (onLoginSuccess) {
@@ -38,7 +38,7 @@ const ModalSection = ({
     onClose()
   }
 
-  const handleRegistrationSuccess = (user: IUserFormData) => {
+  const handleRegistrationSuccess = (user: IUserUpdateData) => {
     if (onRegistrationSuccess) {
       onRegistrationSuccess(user)
     }
