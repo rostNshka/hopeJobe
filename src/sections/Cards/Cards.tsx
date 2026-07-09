@@ -1,16 +1,13 @@
 import './Cards.scss'
 import Card from '@/components/Card'
 import { Link } from 'react-router-dom'
-import { IVacancyCard } from '@/components/Card/Card.tsx'
+import { CardsProps } from './CardsProps'
+import { IVacancyInfo } from '@/types/entities/vacancy.types'
 
-interface ICardsProps {
-  vacancies: IVacancyCard[]
-}
-
-const Cards = ({ vacancies }: ICardsProps) => {
+const Cards = ({ vacancies }: CardsProps) => {
   return (
     <div className="vacancies__cards">
-      {vacancies.map((vacancy: IVacancyCard) => (
+      {vacancies.map((vacancy: IVacancyInfo) => (
         <Link
           key={vacancy.id}
           to={`/vacancies/${vacancy.id}`}

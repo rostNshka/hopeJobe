@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useVacancyId } from '@/adapters/router/vacancyRouter.ts'
 import './VacancyDetail.scss'
-import { EWorkType } from '@/components/WorkType/WorkType.tsx'
+import { EWorkType } from '@/types/entities/vacancy.types'
 
 const VacancyDetail = () => {
   const { detailId } = useParams()

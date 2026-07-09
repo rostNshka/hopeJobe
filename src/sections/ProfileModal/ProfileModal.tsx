@@ -4,31 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext.tsx'
+import { ProfileModalProps } from './ProfileModalProps.ts'
+import { IUserUpdateData } from '@/types/entities/user.types.ts'
 
-interface IProfileModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onLogout: () => void
-  userId: number
-}
-
-export interface IProfileData {
-  firstName?: string
-  lastName?: string
-  patronymic?: string
-  companyName?: string
-  description?: string
-}
-
-export interface IUpdateData {
-  companyName?: string
-  description?: string
-  firstName?: string
-  lastName?: string
-  patronymic?: string
-}
-
-const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
+const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
   const navigate = useNavigate()
   const modalRef = useRef<HTMLDivElement>(null)
   const { logout } = useUser()
@@ -38,7 +17,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [localError, setLocalError] = useState<string>('')
-  const [formData, setFormData] = useState<IProfileData>({
+  const [formData, setFormData] = useState<IUserUpdateData>({
     firstName: '',
     lastName: '',
     patronymic: '',
@@ -94,7 +73,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: IProfileModalProps) => {
     e.preventDefault()
     setLocalError('')
 
-    const updateData: IUpdateData = {}
+    const updateData: IUserUpdateData = {}
 
     if (profile?.companyName !== undefined) {
       if (formData.companyName !== profile?.companyName) {

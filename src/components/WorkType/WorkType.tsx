@@ -2,7 +2,7 @@ import './WorkType.scss'
 import { IoHomeOutline } from 'react-icons/io5'
 import { MdBroadcastOnHome } from 'react-icons/md'
 import { HiOutlineBuildingOffice } from 'react-icons/hi2'
-import { EWorkType } from '@/types/entities/global'
+import { EWorkType } from '@/types/entities/vacancy.types'
 import { WorkTypeProps } from './WorkTypeProps'
 
 const workTypeConfig = {

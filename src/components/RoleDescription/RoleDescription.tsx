@@ -6,7 +6,7 @@ const RoleDescription = ({ role }: RoleDescriptionProps) => {
   return (
     <div className={`role-description__${role}`}>
       <PiMagicWandThin className="icon" />
-      {role === 'employer' ? (
+      {role === 'USER' ? (
         <p className={`role-description__${role}-info`}>
           Размещайте вакансии и управляйте откликами в личном кабинете.
         </p>

@@ -1,6 +1,6 @@
-import { IVacancyCard } from '@/types/entities/global'
+import { IVacancyInfo } from '@/types/entities/vacancy.types'
 
 export interface ICardProps {
-  vacancy: IVacancyCard
+  vacancy: IVacancyInfo
   onFavoriteChange?: () => void | Promise<void>
 }

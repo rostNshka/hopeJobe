@@ -8,7 +8,7 @@ import ModalSection from '@/sections/ModalSection/ModalSection'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
 import { useUser } from '@/context/UserContext.tsx'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
+import { IUserFormData } from '@/types/entities/user.types'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -31,17 +31,17 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleLoginSuccess = (user: IUser) => {
+  const handleLoginSuccess = (user: IUserFormData) => {
     setIsModalOpen(false)
     setToastMessage(
-      `Добро пожаловать, ${user?.profile?.firstName || user?.profile?.companyName}!`
+      `Добро пожаловать, ${user?.firstName || user?.companyName}!`
     )
 
     setTimeout(() => setToastMessage(''), 3000)
   }
 
   const handleRegistrationSuccess = () => {
-    setToastMessage(`Регистрация успешно завершена! Теперь вы можете войти.`)
+    setToastMessage(`Регистрация успешно завершена! Теперь вы можете войти`)
     setTimeout(() => setToastMessage(''), 3000)
   }
 
@@ -87,8 +87,7 @@ const Header = () => {
           </RegistrationButton>
         ) : (
           <ProfileButton onClick={() => setIsProfileModal(true)}>
-            {user?.profile?.lastName || user?.profile?.companyName}{' '}
-            {user?.profile?.firstName || null}
+            {user?.lastName || user?.companyName} {user?.firstName || null}
           </ProfileButton>
         )}
       </dialog>
@@ -99,7 +98,7 @@ const Header = () => {
       <ProfileModal
         isOpen={isProfileModal}
         onClose={() => setIsProfileModal(false)}
-        userId={user?.profile?.userId ?? 0}
+        userId={user?.id ?? 0}
         onLogout={handleLogout}
       />
       <ModalSection

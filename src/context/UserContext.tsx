@@ -6,12 +6,12 @@ import {
   useCallback,
   ReactNode,
 } from 'react'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
+import { IUserUpdateData } from '@/types/entities/user.types'
 
 export interface IUserContext {
-  user: IUser | null
+  user: IUserUpdateData | null
   token: string | null
-  setUser: (user: IUser | null) => void
+  setUser: (user: IUserUpdateData | null) => void
   setToken: (token: string | null) => void
   logout: () => void
   loading: boolean
@@ -24,7 +24,7 @@ export interface IUserProviderProps {
 
 const UserContext = createContext<IUserContext | null>(null)
 
-const loadUserFromStorage = (): IUser | null => {
+const loadUserFromStorage = (): IUserUpdateData | null => {
   try {
     const item = localStorage.getItem('user')
     return item ? JSON.parse(item) : null
@@ -42,7 +42,7 @@ const loadTokenFromStorage = () => {
 }
 
 export const UserProvider = ({ children }: IUserProviderProps) => {
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useState<IUserUpdateData | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -87,7 +87,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     }
   }, [updateUserFromStorage])
 
-  const updateUser = useCallback((newUser: IUser | null) => {
+  const updateUser = useCallback((newUser: IUserUpdateData | null) => {
     try {
       if (newUser === null) {
         localStorage.removeItem('user')
@@ -122,7 +122,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     window.dispatchEvent(new Event('localStorageChange'))
   }, [])
 
-  const value = {
+  const value: IUserContext = {
     user,
     token,
     setUser: updateUser,

@@ -3,51 +3,17 @@ import React, { useState, ChangeEvent } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext.tsx'
-
-export interface IUser {
-  id: number
-  email: string
-  firstName?: string
-  lastName?: string
-  companyName?: string
-  role?: string
-  name?: string
-  profile?: {
-    userId?: number
-    firstName?: string
-    lastName?: string
-    companyName?: string
-    description?: string
-  }
-}
-
-interface ILoginFieldProps {
-  onSuccess: (user: IUser) => void
-}
-
-interface IFormData {
-  email: string
-  password: string
-}
-
-interface ILoginResult {
-  token: string
-  user: {
-    id: number
-    email: string
-    name?: string
-  }
-  message?: string
-}
+import { ILoginFieldProps } from './LoginFieldProps'
+import { IUserAssets, TRole } from '@/types/entities/user.types'
 
 const LoginField = ({ onSuccess }: ILoginFieldProps) => {
-  const [formData, setFormData] = useState<IFormData>({
+  const [formData, setFormData] = useState<IUserAssets>({
     email: '',
     password: '',
   })
   const [localError, setLocalError] = useState<string>('')
 
-  const { login, loading } = useLogin()
+  const { execute: login, loading } = useLogin()
   const { setUser, setToken } = useUser()
 
   const handleChange = (
@@ -55,7 +21,7 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
   ): void => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement
     const { name, value } = target
-    setFormData((prev: IFormData) => ({
+    setFormData((prev: IUserAssets) => ({
       ...prev,
       [name]: value,
     }))
@@ -63,12 +29,12 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
   }
 
   const validateForm = (): boolean => {
-    if (!formData.email.trim()) {
+    if (!formData?.email?.trim()) {
       setLocalError('Введите email')
       return false
     }
 
-    if (!formData.password.trim()) {
+    if (!formData?.password?.trim()) {
       setLocalError('Введите пароль')
       return false
     }
@@ -93,22 +59,33 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
     }
 
     try {
-      const result = (await login({
-        email: formData.email,
-        password: formData.password,
-      })) as ILoginResult
+      const result = await login(formData)
 
-      if (result && result.token) {
+      if (result?.token && result?.user) {
         setToken(result.token)
-        setUser(result.user)
+
+        const { id, email, role, profile = {} } = result.user
+
+        setUser({
+          id,
+          email,
+          role: role as TRole,
+          ...profile,
+        })
 
         if (onSuccess) {
-          onSuccess(result.user)
+          onSuccess({
+            email,
+            password: formData.password,
+            role: role as TRole,
+            ...profile,
+          })
         }
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')
       }
-    } catch {
+    } catch (error) {
+      console.error('Login error:', error)
       setLocalError('Ошибка соединения с сервером')
     }
   }

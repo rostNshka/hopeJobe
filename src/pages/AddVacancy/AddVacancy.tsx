@@ -3,19 +3,11 @@ import { CiSquarePlus } from 'react-icons/ci'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
 import { useAddVacancy } from '@/adapters/router/vacancyRouter.ts'
-import { EWorkType } from '@/components/WorkType/WorkType.tsx'
-
-export interface IVacancyData {
-  title: string
-  location: string
-  description: string
-  workType: string
-  salary: string
-  message?: string
-}
+import { EWorkType } from '@/types/entities/vacancy.types'
+import { IVacancyData } from '@/types/entities/vacancy.types'
 
 const AddVacancy = () => {
-  const [selectedWorkType, setSelectedWorkType] = useState<string>('')
+  const [selectedWorkType, setSelectedWorkType] = useState<EWorkType | ''>('')
 
   const [formData, setFormData] = useState<IVacancyData>({
     title: '',
@@ -76,7 +68,7 @@ const AddVacancy = () => {
       return false
     }
 
-    if (!formData.description.trim()) {
+    if (!formData?.description?.trim()) {
       setLocalError('Введите описание вакансии')
       return false
     }

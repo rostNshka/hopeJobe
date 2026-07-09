@@ -2,12 +2,12 @@ import './ToggleButton.scss'
 import { useState } from 'react'
 import { LuUserRound } from 'react-icons/lu'
 import { IoBriefcaseOutline } from 'react-icons/io5'
-import { TRole } from '@/types/entities/global'
+import { TRole } from '@/types/entities/user.types'
 import { ToggleButtonProps } from './ToggleButtonProps'
 
 const ToggleButton = ({
   onRoleChange,
-  defaultRole = 'candidate',
+  defaultRole = 'USER',
 }: ToggleButtonProps) => {
   const [role, setRole] = useState<TRole>(defaultRole)
 
@@ -21,13 +21,13 @@ const ToggleButton = ({
   return (
     <div className="toggle-buttons">
       <button
-        className={`toggle-button ${role === 'candidate' ? 'active' : ''}`}
-        onClick={() => handleRoleChange('candidate')}>
+        className={`toggle-button ${role === 'USER' ? 'active' : ''}`}
+        onClick={() => handleRoleChange('USER')}>
         <LuUserRound /> Я соискатель
       </button>
       <button
-        className={`toggle-button ${role === 'employer' ? 'active' : ''}`}
-        onClick={() => handleRoleChange('employer')}>
+        className={`toggle-button ${role === 'EMPLOYER' ? 'active' : ''}`}
+        onClick={() => handleRoleChange('EMPLOYER')}>
         Я работодатель <IoBriefcaseOutline />
       </button>
     </div>

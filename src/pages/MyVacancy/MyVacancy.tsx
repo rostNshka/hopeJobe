@@ -1,6 +1,5 @@
 import './MyVacancy.scss'
 import {
-  IVacancy,
   useDeleteVacancy,
   useMyVacancy,
   useUpdateVacancy,
@@ -9,19 +8,11 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDeleteOutline } from 'react-icons/md'
 import React, { useState } from 'react'
 import Field from '@/components/Field'
-import { EWorkType } from '@/components/WorkType/WorkType.tsx'
-
-interface IEditFormData {
-  title: string
-  description?: string
-  location: string
-  workType: EWorkType | ''
-  salary: string
-}
+import { EWorkType, IVacancyData } from '@/types/entities/vacancy.types'
 
 const MyVacancy = () => {
-  const [editingId, setEditingId] = useState<number | null>(null)
-  const [editFormData, setEditFormData] = useState<IEditFormData>({
+  const [editingId, setEditingId] = useState<number | undefined>(undefined)
+  const [editFormData, setEditFormData] = useState<IVacancyData>({
     title: '',
     description: '',
     location: '',
@@ -41,7 +32,7 @@ const MyVacancy = () => {
         : 'Гибридная'
   }
 
-  const handleEditClick = (vacancy: IVacancy) => {
+  const handleEditClick = (vacancy: IVacancyData) => {
     setEditingId(vacancy.id)
     setEditFormData({
       title: vacancy.title,
@@ -67,7 +58,7 @@ const MyVacancy = () => {
       description: editFormData.description || '',
     })
     if (result) {
-      setEditingId(null)
+      setEditingId(undefined)
       refetch()
     } else {
       alert('Ошибка обновления')
@@ -75,7 +66,7 @@ const MyVacancy = () => {
   }
 
   const handleCancelEdit = () => {
-    setEditingId(null)
+    setEditingId(undefined)
     setEditFormData({
       title: '',
       description: '',

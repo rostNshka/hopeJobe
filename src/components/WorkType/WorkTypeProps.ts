@@ -1,4 +1,4 @@
-import { EWorkType } from '@/types/entities/global'
+import { EWorkType } from '@/types/entities/vacancy.types'
 
 export interface WorkTypeProps {
   workType: EWorkType

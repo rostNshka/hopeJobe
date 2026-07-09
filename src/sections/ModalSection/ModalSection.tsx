@@ -6,29 +6,22 @@ import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
 import { useUser } from '@/context/UserContext.tsx'
-import { TTypeRole } from '@/sections/RegistrationField/RegistrationField.tsx'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
 import roleStore from '@/stores/role-store.tsx'
-
-interface IModalSectionProps {
-  isOpen: boolean
-  onClose: () => void
-  onLoginSuccess: (user: IUser) => void
-  onRegistrationSuccess: (user: IUser) => void
-}
+import { ModalSectionProps } from './ModalSectionProps'
+import { IUserFormData, TRole } from '@/types/entities/user.types'
 
 const ModalSection = ({
   isOpen,
   onClose,
   onLoginSuccess,
   onRegistrationSuccess,
-}: IModalSectionProps) => {
+}: ModalSectionProps) => {
   const [registerModal, setRegisterModal] = useState<boolean>(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
   const { setUser } = useUser()
 
-  const handleRoleChange = (newRole: TTypeRole) => {
+  const handleRoleChange = (newRole: TRole) => {
     roleStore.role = newRole
   }
 
@@ -36,7 +29,7 @@ const ModalSection = ({
     setRegisterModal(!registerModal)
   }
 
-  const handleLoginSuccess = (user: IUser) => {
+  const handleLoginSuccess = (user: IUserFormData) => {
     setUser(user)
 
     if (onLoginSuccess) {
@@ -45,7 +38,7 @@ const ModalSection = ({
     onClose()
   }
 
-  const handleRegistrationSuccess = (user: IUser) => {
+  const handleRegistrationSuccess = (user: IUserFormData) => {
     if (onRegistrationSuccess) {
       onRegistrationSuccess(user)
     }
@@ -99,10 +92,10 @@ const ModalSection = ({
         <h3 className="modal-content__title">Вход в аккаунт</h3>
         <p>Выберите тип учётной записи</p>
         <ToggleButton onRoleChange={handleRoleChange} />
-        <RoleDescription role={roleStore.role as TTypeRole} />
+        <RoleDescription role={roleStore.role} />
         {registerModal ? (
           <RegistrationField
-            role={roleStore.role as TTypeRole}
+            role={roleStore.role as TRole}
             onSuccess={handleRegistrationSuccess}
             onSwitchToLogin={() => setRegisterModal(false)}
           />

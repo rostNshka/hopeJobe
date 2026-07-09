@@ -1,33 +1,21 @@
 import './RegistrationField.scss'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
-import { IRegisterData, useRegister } from '@/adapters/router/authRouter.ts'
-import { IUser } from '@/sections/LoginField/LoginField.tsx'
-
-export type TTypeRole = 'candidate' | 'employer'
-
-interface IRegistrationFieldProps {
-  role: TTypeRole
-  onSuccess?: (user: IUser) => void
-  onSwitchToLogin?: () => void
-}
-
-interface IFormData {
-  email: string
-  password: string
-  firstName?: string
-  lastName?: string
-  patronymic?: string
-  companyName?: string
-  description?: string
-}
+import { useRegister } from '@/adapters/router/authRouter.ts'
+import { RegistrationFieldProps } from './RegistrationFieldProps.ts'
+import {
+  IEmployerName,
+  IUserName,
+  IUserFormData,
+  IUserAssets,
+} from '@/types/entities/user.types.ts'
 
 const RegistrationField = ({
   role,
   onSuccess,
   onSwitchToLogin,
-}: IRegistrationFieldProps) => {
-  const [formData, setFormData] = useState<IFormData>({
+}: RegistrationFieldProps) => {
+  const [formData, setFormData] = useState<IUserName & IEmployerName>({
     email: '',
     password: '',
     firstName: '',
@@ -38,7 +26,7 @@ const RegistrationField = ({
   })
   const [localError, setLocalError] = useState<string>('')
 
-  const { register, loading } = useRegister()
+  const { execute: register, loading } = useRegister()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -65,7 +53,7 @@ const RegistrationField = ({
     e.preventDefault()
     setLocalError('')
 
-    if (!formData.email.trim()) {
+    if (!formData?.email?.trim()) {
       setLocalError('Введите email')
       return
     }
@@ -74,7 +62,7 @@ const RegistrationField = ({
       return
     }
 
-    if (!formData.password) {
+    if (!formData?.password?.trim()) {
       setLocalError('Введите пароль')
       return
     }
@@ -83,7 +71,7 @@ const RegistrationField = ({
       return
     }
 
-    if (role === 'candidate') {
+    if (role === 'USER') {
       if (!formData.firstName?.trim()) {
         setLocalError('Введите имя')
         return
@@ -94,19 +82,19 @@ const RegistrationField = ({
       }
     }
 
-    if (role === 'employer') {
+    if (role === 'EMPLOYER') {
       if (!formData.companyName?.trim()) {
         setLocalError('Введите название компании')
         return
       }
     }
 
-    let dataToSend: IRegisterData = {
+    let dataToSend: IUserFormData & IUserAssets = {
       email: formData.email,
       password: formData.password,
     }
 
-    if (role === 'employer') {
+    if (role === 'EMPLOYER') {
       dataToSend = {
         ...dataToSend,
         role: 'EMPLOYER',
@@ -137,7 +125,7 @@ const RegistrationField = ({
         })
 
         if (onSuccess) {
-          onSuccess(result.user || null)
+          onSuccess(result?.data)
         }
 
         if (onSwitchToLogin) {
@@ -176,7 +164,7 @@ const RegistrationField = ({
         value={formData.password}
         onChange={handleChange}
       />
-      {role === 'candidate' ? (
+      {role === 'USER' ? (
         <Field
           htmlFor="firstName"
           label="Имя"
@@ -200,7 +188,7 @@ const RegistrationField = ({
         />
       )}
 
-      {role === 'candidate' ? (
+      {role === 'USER' ? (
         <Field
           htmlFor="lastName"
           label="Фамилия"
@@ -213,7 +201,7 @@ const RegistrationField = ({
         />
       ) : null}
 
-      {role === 'candidate' ? (
+      {role === 'USER' ? (
         <Field
           htmlFor="patronymic"
           label="Отчество"

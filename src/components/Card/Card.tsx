@@ -12,6 +12,7 @@ import {
 import { useUser } from '@/context/UserContext.tsx'
 import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { ICardProps } from './CardProps'
+import { EWorkType } from '@/types/entities/vacancy.types'
 
 const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -21,7 +22,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
   const { user, token } = useUser()
-  const { checkFavorite } = useCheckFavorite(vacancy.id)
+  const { checkFavorite } = useCheckFavorite(vacancy?.id ?? 0)
 
   const checkStatus = useCallback(async () => {
     if (!token) {
@@ -126,7 +127,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
       <div className="card-body">
         <div className="card-body__title">{vacancy.title}</div>
         <span className="card-body__salary">{vacancy.salary}</span>
-        <WorkType workType={vacancy.workType} />
+        <WorkType workType={vacancy?.workType || EWorkType.REMOTE} />
       </div>
     </div>
   )
