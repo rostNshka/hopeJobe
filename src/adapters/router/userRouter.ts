@@ -1,34 +1,8 @@
 import useFetch from '@/adapters/api/useFetch'
-import { TRole } from '@/adapters/router/authRouter.ts'
-import {
-  IProfileData,
-  IUpdateData,
-} from '@/sections/ProfileModal/ProfileModal.tsx'
-
-export interface IProfile extends IProfileData {
-  data: {
-    firstName?: string
-    lastName?: string
-    patronymic?: string
-    companyName?: string
-    description?: string
-    user?: {
-      createdAt?: string
-      role?: TRole
-      email?: string
-    }
-  }
-}
-
-interface IStats {
-  data: {
-    employers: number
-    total: number
-  }
-}
+import { IProfileResponse, IStats } from '@/types/entities/api.types'
 
 export function useProfile(skipFetch = false) {
-  const { data, loading, error, refetch } = useFetch<IProfile>(
+  const { data, loading, error, refetch } = useFetch<IProfileResponse>(
     '/api/users/profile',
     {
       method: 'GET',
@@ -45,7 +19,7 @@ export function useProfile(skipFetch = false) {
 }
 
 export function useProfileUpdate() {
-  const { data, loading, error, refetch } = useFetch<IProfile>(
+  const { data, loading, error, refetch } = useFetch<IProfileResponse>(
     '/api/users/profile',
     {
       method: 'PUT',
@@ -53,7 +27,7 @@ export function useProfileUpdate() {
     true
   )
 
-  const updateProfile = async (updateData: IUpdateData) => {
+  const updateProfile = async (updateData: IProfileResponse) => {
     try {
       const result = await refetch({
         body: JSON.stringify(updateData),

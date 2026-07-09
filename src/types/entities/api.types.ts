@@ -58,3 +58,25 @@ export interface IResponseItem {
 export interface IAddResponseBody {
   vacancyId: number
 }
+
+export interface IStats {
+  data: {
+    employers: number
+    total: number
+  }
+}
+
+export interface IProfileResponse {
+  data: {
+    firstName?: string
+    lastName?: string
+    patronymic?: string
+    companyName?: string
+    description?: string
+    user?: {
+      createdAt?: string
+      role?: TRole
+      email?: string
+    }
+  }
+}
