@@ -1,6 +1,6 @@
 .role-description {
-  &__candidate,
-  &__employer {
+  &__USER,
+  &__EMPLOYER {
     font-size: fluid(14, 10);
     width: fluid(400, 200);
     display: flex;
@@ -16,11 +16,11 @@
     }
   }
 
-  &__candidate {
+  &__USER {
     background-color: rgba(52, 152, 219, 0.5);
     border: 1px solid var(--color-blue-30);
   }
-  &__employer {
+  &__EMPLOYER {
     background-color: rgba(155, 89, 182, 0.5);
     border: 1px solid var(--color-violet-30);
   }
