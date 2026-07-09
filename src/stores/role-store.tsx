@@ -1,7 +1,8 @@
+import { TRole } from '@/types/entities/user.types'
 import { makeAutoObservable } from 'mobx'
 
 class RoleStore {
-  role: 'candidate' | 'employer' = 'candidate'
+  role: TRole = 'USER'
 
   constructor() {
     makeAutoObservable(this)
