@@ -6,6 +6,7 @@ interface IFetchOptions extends RequestInit {
   url?: string
   headers?: Record<string, string>
   params?: Record<string, string | number | boolean>
+  skipAuth?: boolean
 }
 
 interface IUseFetchReturn<T> {
@@ -60,7 +61,7 @@ function useFetch<T>(
       setLoading(true)
       setError(null)
 
-      const { params } = customOptions
+      const { params, skipAuth = false } = customOptions
 
       let finalUrl: string = customOptions.url || url || ''
 
@@ -74,7 +75,7 @@ function useFetch<T>(
 
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token && !skipAuth ? { Authorization: `Bearer ${token}` } : {}),
         ...defaultOptions.headers,
         ...customOptions.headers,
       }
@@ -86,6 +87,7 @@ function useFetch<T>(
       }
 
       delete options.url
+      delete options.skipAuth
 
       if (customOptions.body && typeof customOptions.body === 'object') {
         options.body = JSON.stringify(customOptions.body)
@@ -107,13 +109,25 @@ function useFetch<T>(
         }
 
         if (response.status === 401) {
-          handleUnauthorized()
-          const authError = new Error(
-            'Сессия истекла. Войдите заново'
-          ) as Error & { status?: number }
-          setError(authError.message)
-          setData(null)
-          return Promise.reject(authError)
+          if (skipAuth) {
+            const error = new Error('Неверные данные') as Error & {
+              status: number
+            }
+            error.status = 401
+            setError(error.message)
+            setData(null)
+            setLoading(false)
+            throw error
+          } else {
+            handleUnauthorized()
+            const authError = new Error(
+              'Сессия истекла. Войдите заново'
+            ) as Error & { status?: number }
+            setError(authError.message)
+            setData(null)
+            setLoading(false)
+            throw authError
+          }
         }
 
         if (!response.ok) {

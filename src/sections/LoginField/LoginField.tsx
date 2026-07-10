@@ -59,6 +59,10 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
 
     try {
       const result = await login(formData)
+      if (!result) {
+        setLocalError('Неверный email или пароль')
+        return
+      }
 
       if (result?.token && result?.user) {
         userStore.setToken(result.token)
@@ -82,12 +86,26 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
         if (onSuccess) {
           onSuccess(userData)
         }
+      } else if (result?.message) {
+        setLocalError(result.message)
       } else {
-        setLocalError(result?.message || 'Неверный email или пароль')
+        setLocalError('Неверный email или пароль')
       }
     } catch (error) {
-      console.error('Login error:', error)
-      setLocalError('Ошибка соединения с сервером')
+      if (error instanceof Error) {
+        if (
+          error.message.includes('Сессия истекла') ||
+          error.message.includes('401') ||
+          error.message.includes('Неверные данные') ||
+          error.message.includes('Неверный email')
+        ) {
+          setLocalError('Неверный email или пароль')
+        } else {
+          setLocalError(error.message || 'Ошибка соединения с сервером')
+        }
+      } else {
+        setLocalError('Ошибка соединения с сервером')
+      }
     }
   }
 

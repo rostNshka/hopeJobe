@@ -75,7 +75,8 @@ class UserStore {
 
   logout() {
     runInAction(() => {
-      localStorage.clear()
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
       this.user = null
       this.token = null
     })

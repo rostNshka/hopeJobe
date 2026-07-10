@@ -35,7 +35,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
       const result = await checkFavorite()
       setIsFavorite(result?.isFavorite || false)
     } catch (error) {
-      console.error('Error checking favorite:', error)
+      throw new Error(`Error checking favorite:, ${error}`)
     } finally {
       setIsChecking(false)
     }

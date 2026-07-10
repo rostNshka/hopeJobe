@@ -39,6 +39,7 @@ export function useLogin() {
     async (credentials: IUserAssets): Promise<ILoginResponse> => {
       const result: ILoginResponse = await refetch({
         body: JSON.stringify(credentials),
+        skipAuth: true,
       })
       return result
     },
