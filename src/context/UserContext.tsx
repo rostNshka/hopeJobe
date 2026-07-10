@@ -6,12 +6,12 @@ import {
   useCallback,
   ReactNode,
 } from 'react'
-import { IUserUpdateData } from '@/types/entities/user.types'
+import { IUserContextData } from '@/types/entities/user.types'
 
 export interface IUserContext {
-  user: IUserUpdateData | null
+  user: IUserContextData | null
   token: string | null
-  setUser: (user: IUserUpdateData | null) => void
+  setUser: (user: IUserContextData | null) => void
   setToken: (token: string | null) => void
   logout: () => void
   loading: boolean
@@ -24,7 +24,7 @@ export interface IUserProviderProps {
 
 const UserContext = createContext<IUserContext | null>(null)
 
-const loadUserFromStorage = (): IUserUpdateData | null => {
+const loadUserFromStorage = (): IUserContextData | null => {
   try {
     const item = localStorage.getItem('user')
     return item ? JSON.parse(item) : null
@@ -42,7 +42,7 @@ const loadTokenFromStorage = () => {
 }
 
 export const UserProvider = ({ children }: IUserProviderProps) => {
-  const [user, setUser] = useState<IUserUpdateData | null>(null)
+  const [user, setUser] = useState<IUserContextData | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -87,7 +87,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     }
   }, [updateUserFromStorage])
 
-  const updateUser = useCallback((newUser: IUserUpdateData | null) => {
+  const updateUser = useCallback((newUser: IUserContextData | null) => {
     try {
       if (newUser === null) {
         localStorage.removeItem('user')

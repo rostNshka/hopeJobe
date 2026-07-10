@@ -66,20 +66,22 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
 
         const { id, email, role, profile = {} } = result.user
 
-        setUser({
+        const userData = {
           id,
           email,
+          password: formData.password,
           role: role as TRole,
-          ...profile,
-        })
+          firstName: profile?.firstName || '',
+          lastName: profile?.lastName || '',
+          patronymic: profile?.patronymic || '',
+          companyName: profile?.companyName || '',
+          description: profile?.description || '',
+        }
+
+        setUser(userData)
 
         if (onSuccess) {
-          onSuccess({
-            email,
-            password: formData.password,
-            role: role as TRole,
-            ...profile,
-          })
+          onSuccess(userData)
         }
       } else {
         setLocalError(result?.message || 'Неверный email или пароль')

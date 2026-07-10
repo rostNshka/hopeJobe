@@ -8,7 +8,6 @@ import ModalSection from '@/sections/ModalSection/ModalSection'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
 import { useUser } from '@/context/UserContext.tsx'
-import { IUserUpdateData } from '@/types/entities/user.types'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -31,11 +30,9 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleLoginSuccess = (user: IUserUpdateData) => {
+  const handleLoginSuccess = () => {
     setIsModalOpen(false)
-    setToastMessage(
-      `Добро пожаловать, ${user?.firstName || user?.companyName}!`
-    )
+    setToastMessage(`Добро пожаловать!`)
 
     setTimeout(() => setToastMessage(''), 3000)
   }
@@ -98,7 +95,7 @@ const Header = () => {
       <ProfileModal
         isOpen={isProfileModal}
         onClose={() => setIsProfileModal(false)}
-        userId={user?.id ?? 0}
+        userId={user?.id}
         onLogout={handleLogout}
       />
       <ModalSection

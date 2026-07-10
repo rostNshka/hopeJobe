@@ -4,10 +4,10 @@ import React, { useState } from 'react'
 import { useRegister } from '@/adapters/router/authRouter.ts'
 import { RegistrationFieldProps } from './RegistrationFieldProps.ts'
 import {
-  IEmployerName,
-  IUserName,
-  IUserUpdateData,
+  IUser,
   IUserAssets,
+  IRegisterData,
+  IRegisterFormData,
 } from '@/types/entities/user.types.ts'
 
 const RegistrationField = ({
@@ -15,7 +15,7 @@ const RegistrationField = ({
   onSuccess,
   onSwitchToLogin,
 }: RegistrationFieldProps) => {
-  const [formData, setFormData] = useState<IUserName & IEmployerName>({
+  const [formData, setFormData] = useState<IRegisterFormData>({
     email: '',
     password: '',
     firstName: '',
@@ -89,27 +89,29 @@ const RegistrationField = ({
       }
     }
 
-    let dataToSend: IUserUpdateData & IUserAssets = {
+    const baseData: IUserAssets = {
       email: formData.email,
       password: formData.password,
     }
+    const additionalData: Partial<Omit<IUser, 'id' | 'email' | 'password'>> =
+      role === 'EMPLOYER'
+        ? {
+            role: 'EMPLOYER',
+            companyName: formData.companyName || '',
+            description: formData.description || '',
+          }
+        : {
+            role: 'USER',
+            firstName: formData.firstName || '',
+            lastName: formData.lastName || '',
+            patronymic: formData.patronymic || '',
+          }
 
-    if (role === 'EMPLOYER') {
-      dataToSend = {
-        ...dataToSend,
-        role: 'EMPLOYER',
-        companyName: formData.companyName,
-        description: formData.description,
-      }
-    } else {
-      dataToSend = {
-        ...dataToSend,
-        role: 'USER',
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        patronymic: formData.patronymic,
-      }
-    }
+    const dataToSend: IRegisterData = {
+      ...baseData,
+      ...additionalData,
+    } as IRegisterData
+
     try {
       const result = await register(dataToSend)
 

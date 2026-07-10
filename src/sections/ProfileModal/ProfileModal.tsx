@@ -5,7 +5,7 @@ import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
 import { useUser } from '@/context/UserContext.tsx'
 import { ProfileModalProps } from './ProfileModalProps.ts'
-import { IUserUpdateData } from '@/types/entities/user.types.ts'
+import { IUserData } from '@/types/entities/user.types.ts'
 
 const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [localError, setLocalError] = useState<string>('')
-  const [formData, setFormData] = useState<IUserUpdateData>({
+  const [formData, setFormData] = useState<IUserData>({
     firstName: '',
     lastName: '',
     patronymic: '',
@@ -73,7 +73,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
     e.preventDefault()
     setLocalError('')
 
-    const updateData: IUserUpdateData = {}
+    const updateData: IUserData = {}
 
     if (profile?.companyName !== undefined) {
       if (formData.companyName !== profile?.companyName) {

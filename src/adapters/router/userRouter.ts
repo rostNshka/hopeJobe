@@ -1,5 +1,6 @@
 import useFetch from '@/adapters/api/useFetch'
 import { IProfileResponse, IStats } from '@/types/entities/api.types'
+import { IUserData } from '@/types/entities/user.types'
 
 export function useProfile(skipFetch = false) {
   const { data, loading, error, refetch } = useFetch<IProfileResponse>(
@@ -27,7 +28,7 @@ export function useProfileUpdate() {
     true
   )
 
-  const updateProfile = async (updateData: IProfileResponse) => {
+  const updateProfile = async (updateData: IUserData) => {
     try {
       const result = await refetch({
         body: JSON.stringify(updateData),

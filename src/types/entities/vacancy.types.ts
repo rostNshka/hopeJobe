@@ -31,3 +31,5 @@ export type IVacancyCreateData = Omit<
   IVacancy,
   'id' | 'createdAt' | 'updatedAt' | 'favoriteId' | 'employer' | 'message'
 >
+
+export type IVacancyUpdateData = Partial<IVacancyCreateData> & { id: number }
