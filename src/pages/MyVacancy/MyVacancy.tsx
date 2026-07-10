@@ -8,15 +8,19 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDeleteOutline } from 'react-icons/md'
 import React, { useState } from 'react'
 import Field from '@/components/Field'
-import { EWorkType, IVacancyData } from '@/types/entities/vacancy.types'
+import {
+  EWorkType,
+  IVacancyCreateData,
+  IVacancy,
+} from '@/types/entities/vacancy.types'
 
 const MyVacancy = () => {
   const [editingId, setEditingId] = useState<number | undefined>(undefined)
-  const [editFormData, setEditFormData] = useState<IVacancyData>({
+  const [editFormData, setEditFormData] = useState<IVacancyCreateData>({
     title: '',
     description: '',
     location: '',
-    workType: '',
+    workType: EWorkType.REMOTE,
     salary: '',
   })
 
@@ -32,7 +36,7 @@ const MyVacancy = () => {
         : 'Гибридная'
   }
 
-  const handleEditClick = (vacancy: IVacancyData) => {
+  const handleEditClick = (vacancy: IVacancy) => {
     setEditingId(vacancy.id)
     setEditFormData({
       title: vacancy.title,
@@ -55,7 +59,7 @@ const MyVacancy = () => {
   const handleUpdate = async (id: number) => {
     const result = await updateVacancy(id, {
       ...editFormData,
-      description: editFormData.description || '',
+      description: editFormData.description,
     })
     if (result) {
       setEditingId(undefined)
@@ -71,7 +75,7 @@ const MyVacancy = () => {
       title: '',
       description: '',
       location: '',
-      workType: '',
+      workType: EWorkType.REMOTE,
       salary: '',
     })
   }
@@ -122,12 +126,12 @@ const MyVacancy = () => {
       <h3 className="my-vacancy__title">Мои вакансии</h3>
       <p>Просматривайте и изменяйте свои вакансии.</p>
       <div className="my-vacancy__items">
-        {vacancies.map(vacancy => (
+        {vacancies.map((vacancy: IVacancy) => (
           <div className="my-vacancy__item" key={vacancy.id}>
             {editingId !== vacancy.id ? (
               <div>
                 <p>Вакансия: {vacancy.title}</p>
-                <p>Описание: {vacancy.description}</p>
+                <p>Описание: {vacancy.description || 'Нет описания'}</p>
                 <p>Локация: {vacancy.location}</p>
                 <p>Тип занятости: {getWorkType(vacancy.workType)}</p>
                 <p>Зарплата: {vacancy.salary}</p>
@@ -142,7 +146,7 @@ const MyVacancy = () => {
                   type="text"
                   id="description"
                   name="description"
-                  value={editFormData.description}
+                  value={editFormData.description || ''}
                   onChange={handleEditChange}
                 />
 

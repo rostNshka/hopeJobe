@@ -22,7 +22,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
   const { user, token } = useUser()
-  const { checkFavorite } = useCheckFavorite(vacancy?.id ?? 0)
+  const { checkFavorite } = useCheckFavorite(vacancy?.id)
 
   const checkStatus = useCallback(async () => {
     if (!token) {

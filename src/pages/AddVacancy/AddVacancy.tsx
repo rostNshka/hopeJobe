@@ -3,17 +3,18 @@ import { CiSquarePlus } from 'react-icons/ci'
 import Field from '@/components/Field'
 import React, { useState } from 'react'
 import { useAddVacancy } from '@/adapters/router/vacancyRouter.ts'
-import { EWorkType } from '@/types/entities/vacancy.types'
-import { IVacancyData } from '@/types/entities/vacancy.types'
+import { EWorkType, IVacancyCreateData } from '@/types/entities/vacancy.types'
 
 const AddVacancy = () => {
-  const [selectedWorkType, setSelectedWorkType] = useState<EWorkType | ''>('')
+  const [selectedWorkType, setSelectedWorkType] = useState<EWorkType>(
+    EWorkType.REMOTE
+  )
 
-  const [formData, setFormData] = useState<IVacancyData>({
+  const [formData, setFormData] = useState<IVacancyCreateData>({
     title: '',
     location: '',
     description: '',
-    workType: '',
+    workType: EWorkType.REMOTE,
     salary: '',
   })
 
@@ -104,7 +105,7 @@ const AddVacancy = () => {
       return
     }
 
-    const dataToSend: IVacancyData = {
+    const dataToSend: IVacancyCreateData = {
       title: formData.title,
       location: formData.location,
       description: formData.description,
@@ -120,9 +121,9 @@ const AddVacancy = () => {
           location: '',
           description: '',
           salary: '',
-          workType: '',
+          workType: EWorkType.REMOTE,
         })
-        setSelectedWorkType('')
+        setSelectedWorkType(EWorkType.REMOTE)
         alert('Вакансия успешно добавлена')
       } else {
         setLocalError('Ошибка добавления вакансии')

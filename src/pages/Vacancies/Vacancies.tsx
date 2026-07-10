@@ -5,13 +5,13 @@ import Cards from '@/sections/Cards'
 import VacanciesInput from '@/sections/VacanciesInput'
 import { useMemo, useState } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
-import { IVacancyInfo } from '@/types/entities/vacancy.types'
+import { IVacancy } from '@/types/entities/vacancy.types'
 
 const Vacancies = () => {
   const { vacancies, loading, error } = useVacancy()
   const [searchTerm, setSearchTerm] = useState<string>('')
 
-  const filteredVacancies = useMemo((): IVacancyInfo[] => {
+  const filteredVacancies = useMemo((): IVacancy[] => {
     if (!vacancies) {
       return []
     }

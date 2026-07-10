@@ -4,23 +4,30 @@ export enum EWorkType {
   OFFICE = 'OFFICE',
 }
 
-export interface IVacancyData {
-  id?: number
+export interface IVacancy {
+  id: number
   title: string
   salary: string
   location: string
-  workType: EWorkType | ''
+  workType: EWorkType
   description?: string
-}
-
-export interface IVacancyInfo extends IVacancyData {
-  id: number
-  createdAt?: string
-  updatedAt?: string
-  favoriteId?: number
+  createdAt: string
+  updatedAt: string
+  favoriteId: number
   employer: {
     companyName: string
+    employer: string
     email?: string
   }
   message?: string
 }
+
+export type VacancyPreview = Pick<
+  IVacancy,
+  'id' | 'employer' | 'location' | 'title' | 'salary' | 'workType'
+>
+
+export type IVacancyCreateData = Omit<
+  IVacancy,
+  'id' | 'createdAt' | 'updatedAt' | 'favoriteId' | 'employer' | 'message'
+>

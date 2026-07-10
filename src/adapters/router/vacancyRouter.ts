@@ -1,27 +1,7 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
-import { IVacancyData } from '@/pages/AddVacancy/AddVacancy.tsx'
-import { IVacancyCard } from '@/components/Card/Card.tsx'
-
-export interface IVacancyData extends IVacancyCard {
-  employer: {
-    companyName: string
-    employer: string
-    email: string
-  }
-}
-
-interface IVacancyResult {
-  data: IVacancyData[]
-  message?: string
-}
-
-interface ICheckResult {
-  data: {
-    isFavorite: boolean
-    message?: string
-  }
-}
+import { IVacancy, IVacancyCreateData } from '@/types/entities/vacancy.types'
+import { ICheckResult, IVacancyResult } from '@/types/entities/api.types'
 
 export function useVacancy() {
   const { data, loading, error, refetch } = useFetch<IVacancyResult>(
@@ -72,13 +52,13 @@ export function useMyVacancy() {
 }
 
 export function useAddVacancy() {
-  const { loading, error, data, refetch } = useFetch<IVacancyData>(
+  const { loading, error, data, refetch } = useFetch<IVacancyResult>(
     '/api/vacancies',
     { method: 'POST' },
     true
   )
 
-  const addVacancy = async (formData: IVacancyData) => {
+  const addVacancy = async (formData: IVacancyCreateData) => {
     try {
       const result = await refetch({
         body: JSON.stringify(formData),
@@ -98,13 +78,13 @@ export function useAddVacancy() {
 }
 
 export function useUpdateVacancy() {
-  const { loading, error, refetch } = useFetch<IVacancyData>(
+  const { loading, error, refetch } = useFetch<IVacancy>(
     undefined,
     { method: 'PUT' },
     true
   )
 
-  const updateVacancy = (id: number, updatedData: IVacancyData) => {
+  const updateVacancy = (id: number, updatedData: IVacancyCreateData) => {
     return refetch({
       url: `/api/vacancies/${id}`,
       body: JSON.stringify(updatedData),

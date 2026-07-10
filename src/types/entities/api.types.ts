@@ -1,5 +1,5 @@
 import { IUserUpdateData, TRole } from './user.types'
-import { IVacancyInfo } from './vacancy.types'
+import { IVacancy } from './vacancy.types'
 
 export interface ApiResponse<T> {
   data: T | null
@@ -46,13 +46,13 @@ export interface IRegisterResponse {
   }
 }
 
-export type IResponseResult = ApiResponse<IVacancyInfo>
+export type IResponseResult = ApiResponse<IVacancy>
 
 export type IResponseListResult = ApiResponse<IResponseItem[]>
 
 export interface IResponseItem {
   id: number
-  vacancy: IVacancyInfo
+  vacancy: IVacancy
 }
 
 export interface IAddResponseBody {
@@ -78,5 +78,16 @@ export interface IProfileResponse {
       role?: TRole
       email?: string
     }
+  }
+}
+export interface IVacancyResult {
+  data: IVacancy[]
+  message?: string
+}
+
+export interface ICheckResult {
+  data: {
+    isFavorite: boolean
+    message?: string
   }
 }

@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from 'react'
 import useFetch from '@/adapters/api/useFetch'
-import { IVacancyInfo } from '@/types/entities/vacancy.types'
+import { IVacancy } from '@/types/entities/vacancy.types'
 import {
   IResponseListResult,
   IResponseResult,
 } from '@/types/entities/api.types'
 
 export function useGetResponses() {
-  const [vacancies, setVacancies] = useState<IVacancyInfo[]>([])
+  const [vacancies, setVacancies] = useState<IVacancy[]>([])
   const { data, loading, error, refetch } = useFetch<IResponseListResult>(
     '/api/responses',
     {},

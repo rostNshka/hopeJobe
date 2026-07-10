@@ -1,5 +1,5 @@
-import { IVacancyInfo } from '@/types/entities/vacancy.types'
+import { VacancyPreview } from '@/types/entities/vacancy.types'
 
 export interface CardsProps {
-  vacancies: IVacancyInfo[]
+  vacancies: VacancyPreview[]
 }
