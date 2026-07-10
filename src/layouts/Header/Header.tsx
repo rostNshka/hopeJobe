@@ -7,16 +7,17 @@ import { CiStar, CiBookmarkPlus } from 'react-icons/ci'
 import ModalSection from '@/sections/ModalSection/ModalSection'
 import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
-import { useUser } from '@/context/UserContext.tsx'
+import { observer } from 'mobx-react-lite'
+import { userStore } from '@/stores/user-store'
 
-const Header = () => {
+const Header = observer(() => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isProfileModal, setIsProfileModal] = useState<boolean>(false)
   const [toastMessage, setToastMessage] = useState<string>('')
   const ref = useRef<HTMLDialogElement>(null)
 
-  const { user, logout, isAuthenticated } = useUser()
+  const { user, logout, isAuthenticated } = userStore
 
   useEffect(() => {
     if (isOpen) {
@@ -106,6 +107,6 @@ const Header = () => {
       />
     </header>
   )
-}
+})
 
 export default Header

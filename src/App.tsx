@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import React from 'react'
+import { observer } from 'mobx-react-lite'
 
 import Vacancies from '@/pages/Vacancies/Vacancies'
 import VacancyDetail from '@/pages/VacancyDetail'
@@ -10,7 +11,7 @@ import NotFound from '@/pages/NotFound/NotFound'
 import Content from '@/layouts/Content'
 
 import ProtectedRoutes from '@/context/ProtectedRoutes.tsx'
-import { UserProvider } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store'
 
 const router = createBrowserRouter([
   {
@@ -32,12 +33,12 @@ const router = createBrowserRouter([
   },
 ])
 
-const App: React.FC = () => {
-  return (
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
-  )
-}
+const App: React.FC = observer(() => {
+  if (userStore.loading) {
+    return <div>Загрузка...</div>
+  }
+
+  return <RouterProvider router={router} />
+})
 
 export default App

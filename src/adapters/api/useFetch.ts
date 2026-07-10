@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store'
 
 interface IFetchOptions extends RequestInit {
   url?: string
@@ -26,7 +26,7 @@ function useFetch<T>(
   const defaultOptionsRef = useRef(defaultOptions)
 
   const navigate = useNavigate()
-  const { logout, token } = useUser()
+  const { logout, token } = userStore
 
   const handleUnauthorized = useCallback((): void => {
     logout()

@@ -9,7 +9,7 @@ import {
   useAddResponse,
   useDeleteResponse,
 } from '@/adapters/router/responseRouter'
-import { useUser } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store'
 import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { ICardProps } from './CardProps'
 import { EWorkType } from '@/types/entities/vacancy.types'
@@ -21,7 +21,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
 
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
-  const { user, token } = useUser()
+  const { user, token } = userStore
   const { checkFavorite } = useCheckFavorite(vacancy?.id)
 
   const checkStatus = useCallback(async () => {

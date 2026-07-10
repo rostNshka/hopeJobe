@@ -2,7 +2,7 @@ import './LoginField.scss'
 import React, { useState, ChangeEvent } from 'react'
 import { useLogin } from '@/adapters/router/authRouter'
 import Field from '@/components/Field'
-import { useUser } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store'
 import { ILoginFieldProps } from './LoginFieldProps'
 import { IUserAssets, TRole } from '@/types/entities/user.types'
 
@@ -14,7 +14,6 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
   const [localError, setLocalError] = useState<string>('')
 
   const { execute: login, loading } = useLogin()
-  const { setUser, setToken } = useUser()
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,7 +61,7 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
       const result = await login(formData)
 
       if (result?.token && result?.user) {
-        setToken(result.token)
+        userStore.setToken(result.token)
 
         const { id, email, role, profile = {} } = result.user
 
@@ -78,7 +77,7 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
           description: profile?.description || '',
         }
 
-        setUser(userData)
+        userStore.setUser(userData)
 
         if (onSuccess) {
           onSuccess(userData)

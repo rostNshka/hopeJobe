@@ -5,7 +5,7 @@ import ToggleButton from '@/components/ToggleButton'
 import RoleDescription from '@/components/RoleDescription'
 import LoginField from '@/sections/LoginField'
 import RegistrationField from '@/sections/RegistrationField'
-import { useUser } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store'
 import roleStore from '@/stores/role-store.tsx'
 import { ModalSectionProps } from './ModalSectionProps'
 import { IUserContextData, IUserData, TRole } from '@/types/entities/user.types'
@@ -19,8 +19,6 @@ const ModalSection = ({
   const [registerModal, setRegisterModal] = useState<boolean>(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const { setUser } = useUser()
-
   const handleRoleChange = (newRole: TRole) => {
     roleStore.role = newRole
   }
@@ -30,7 +28,7 @@ const ModalSection = ({
   }
 
   const handleLoginSuccess = (user: IUserContextData) => {
-    setUser(user)
+    userStore.setUser(user)
 
     if (onLoginSuccess) {
       onLoginSuccess(user)

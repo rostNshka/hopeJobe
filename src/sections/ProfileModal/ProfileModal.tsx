@@ -3,14 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProfile, useProfileUpdate } from '@/adapters/router/userRouter'
 import Field from '@/components/Field'
-import { useUser } from '@/context/UserContext.tsx'
+import { userStore } from '@/stores/user-store.tsx'
 import { ProfileModalProps } from './ProfileModalProps.ts'
 import { IUserData } from '@/types/entities/user.types.ts'
 
 const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
   const navigate = useNavigate()
   const modalRef = useRef<HTMLDivElement>(null)
-  const { logout } = useUser()
 
   const { profile, loading, error, refetch } = useProfile(true)
   const { updateProfile, loading: updateLoading } = useProfileUpdate()
@@ -62,7 +61,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
   }
 
   const handleLogout = () => {
-    logout()
+    userStore.logout()
     navigate('/')
     onClose()
   }
