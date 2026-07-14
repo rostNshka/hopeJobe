@@ -163,7 +163,7 @@ const ProfileModal = ({ isOpen, onClose, userId }: ProfileModalProps) => {
         <div className="profile-modal__content" ref={modalRef}>
           <div className="profile-modal__error">
             <p>Ошибка: {error}</p>
-            <button onClick={void refetch()}>Попробовать снова</button>
+            <button onClick={void refetch}>Попробовать снова</button>
           </div>
         </div>
       </div>
