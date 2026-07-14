@@ -140,7 +140,7 @@ export function useCheckFavorite(vacancyId: number | undefined) {
       setIsFavorite(isFav)
       return { isFavorite: isFav }
     } catch (error) {
-      throw new Error(`Error checking favorite:, ${error}`)
+      console.error('Error checking favorite:', error)
       setIsFavorite(false)
       return { isFavorite: false }
     } finally {
