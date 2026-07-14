@@ -5,6 +5,7 @@ import {
   IResponseListResult,
   IResponseResult,
 } from '@/types/entities/api.types'
+import { userStore } from '@/stores/user-store'
 
 export function useGetResponses() {
   const [vacancies, setVacancies] = useState<IVacancy[]>([])
@@ -124,7 +125,7 @@ export function useCheckFavorite(vacancyId: number | undefined) {
 
     setLoading(true)
     try {
-      const token = localStorage.getItem('token')
+      const { token } = userStore
       if (!token) {
         setIsFavorite(false)
         setLoading(false)
