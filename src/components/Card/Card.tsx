@@ -43,6 +43,15 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
   }, [checkFavorite, token])
 
   useEffect(() => {
+    if (!token) {
+      setIsFavorite(false)
+      setIsChecking(false)
+    } else {
+      checkStatus()
+    }
+  }, [token])
+
+  useEffect(() => {
     checkStatus()
   }, [checkStatus, user])
 
