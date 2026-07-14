@@ -72,7 +72,6 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
         const userData = {
           id,
           email,
-          password: formData.password,
           role: role as TRole,
           firstName: profile?.firstName || '',
           lastName: profile?.lastName || '',
