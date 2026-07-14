@@ -5,6 +5,7 @@ import WorkType from '@/components/WorkType'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
 import React, { useState, useEffect, useCallback } from 'react'
+import { observer } from 'mobx-react-lite'
 import {
   useAddResponse,
   useDeleteResponse,
@@ -14,7 +15,7 @@ import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { ICardProps } from './CardProps'
 import { EWorkType } from '@/types/entities/vacancy.types'
 
-const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
+const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isChecking, setIsChecking] = useState<boolean>(false)
@@ -35,7 +36,7 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
       const result = await checkFavorite()
       setIsFavorite(result?.isFavorite || false)
     } catch (error) {
-      throw new Error(`Error checking favorite:, ${error}`)
+      console.error(`Error checking favorite:, ${error}`)
     } finally {
       setIsChecking(false)
     }
@@ -131,6 +132,6 @@ const Card = ({ vacancy, onFavoriteChange }: ICardProps) => {
       </div>
     </div>
   )
-}
+})
 
 export default Card
