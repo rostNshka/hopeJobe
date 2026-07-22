@@ -97,6 +97,18 @@
   &__burger-button {
     position: relative;
   }
+
+  &__toolbar {
+    display: flex;
+    flex-direction: row;
+    gap: fluid(6, 4);
+    align-items: center;
+    justify-content: center;
+
+    @include tablet {
+      flex-direction: column;
+    }
+  }
 }
 
 .active {

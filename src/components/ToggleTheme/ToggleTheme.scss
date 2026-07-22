@@ -1,0 +1,54 @@
+.theme-switcher {
+  padding: 4px;
+  width: fit-content;
+  display: flex;
+  gap: 2px;
+  border-radius: 9999px;
+  background-color: var(--color-violet-05);
+  transition: background-color 0.3s ease;
+
+  &_switch {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 0;
+    background: transparent;
+    color: var(--color-gray-20);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    .theme-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--color-gray-20);
+      transition: color 0.2s ease;
+    }
+
+    @include hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      
+      .theme-icon {
+        color: var(--color-violet-40);
+      }
+    }
+
+    &.active {
+      background-color: var(--color-violet-20);
+      
+      .theme-icon {
+        color: var(--color-white);
+      }
+
+      @include hover {
+        background-color: var(--color-violet-10);
+      }
+    }
+
+    &:focus-visible {
+      @include focus-visible;
+    }
+  }
+}

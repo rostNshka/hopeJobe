@@ -10,6 +10,7 @@ import ProfileModal from '@/sections/ProfileModal'
 import { observer } from 'mobx-react-lite'
 import { userStore } from '@/stores/user-store'
 import toastStore from '@/stores/toast-store'
+import ToggleTheme from '@/components/ToggleTheme'
 
 const Header = observer(() => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -75,15 +76,21 @@ const Header = observer(() => {
           </nav>
         )}
         {!user ? (
-          <RegistrationButton
-            color="violet"
-            onClick={() => setIsModalOpen(true)}>
-            Войти
-          </RegistrationButton>
+          <div className="header__toolbar">
+            <ToggleTheme />
+            <RegistrationButton
+              color="violet"
+              onClick={() => setIsModalOpen(true)}>
+              Войти
+            </RegistrationButton>
+          </div>
         ) : (
-          <ProfileButton onClick={() => setIsProfileModal(true)}>
-            {user?.lastName || user?.companyName} {user?.firstName || null}
-          </ProfileButton>
+          <div className="header__toolbar">
+            <ToggleTheme />
+            <ProfileButton onClick={() => setIsProfileModal(true)}>
+              {user?.lastName || user?.companyName} {user?.firstName || null}
+            </ProfileButton>
+          </div>
         )}
       </dialog>
       <BurgerButton
