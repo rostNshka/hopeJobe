@@ -3,23 +3,41 @@ import { useVacancy } from '@/adapters/router/vacancyRouter.js'
 import './Vacancies.scss'
 import Cards from '@/sections/Cards'
 import VacanciesInput from '@/sections/VacanciesInput'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
 import { IVacancy } from '@/types/entities/vacancy.types'
 
 const Vacancies = () => {
   const { vacancies, loading, error } = useVacancy()
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('')
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+
+    timerRef.current = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm)
+    }, 300)
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+    }
+  }, [searchTerm])
 
   const filteredVacancies = useMemo((): IVacancy[] => {
     if (!vacancies) {
       return []
     }
-    if (!searchTerm.trim()) {
+    if (!debouncedSearchTerm.trim()) {
       return vacancies
     }
 
-    const lowerSearchTerm = searchTerm.toLowerCase()
+    const lowerSearchTerm = debouncedSearchTerm.toLowerCase()
 
     return vacancies.filter(vacancy => {
       return (
@@ -29,7 +47,7 @@ const Vacancies = () => {
         vacancy.location?.toLowerCase().includes(lowerSearchTerm)
       )
     })
-  }, [vacancies, searchTerm])
+  }, [vacancies, debouncedSearchTerm])
 
   return (
     <div className="vacancies">
