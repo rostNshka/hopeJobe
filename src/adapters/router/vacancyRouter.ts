@@ -133,6 +133,7 @@ export function useCheckFavorite(vacancyId: number) {
       return {
         isFavorite: false,
         message: (error as Error).message || String(error),
+        error,
       }
     }
   }, [refetch])

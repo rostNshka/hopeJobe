@@ -50,7 +50,7 @@ export function useAddResponse() {
   const addResponse = useCallback(
     async (
       vacancyId: number
-    ): Promise<IResponseResult | { message: string }> => {
+    ): Promise<IResponseResult | { message: string; error: string }> => {
       setLoading(true)
       setError(null)
 
@@ -66,7 +66,7 @@ export function useAddResponse() {
         const errorMessage =
           error instanceof Error ? error.message : 'Неизвестная ошибка'
         setError(errorMessage)
-        return { message: errorMessage }
+        return { message: errorMessage, error: errorMessage }
       } finally {
         setLoading(false)
       }
@@ -83,7 +83,7 @@ export function useDeleteResponse() {
   const { refetch } = useFetch()
 
   const deleteResponse = useCallback(
-    async (vacancyId: number): Promise<{ message: string }> => {
+    async (vacancyId: number): Promise<{ message: string; error?: string }> => {
       setLoading(true)
       setError(null)
 
@@ -98,7 +98,7 @@ export function useDeleteResponse() {
         const errorMessage =
           error instanceof Error ? error.message : 'Неизвестная ошибка'
         setError(errorMessage)
-        return { message: errorMessage }
+        return { message: errorMessage, error: errorMessage }
       } finally {
         setLoading(false)
       }

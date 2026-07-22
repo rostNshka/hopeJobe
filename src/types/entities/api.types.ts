@@ -5,6 +5,7 @@ export interface ApiResponse<T> {
   data: T | null
   token?: string
   message?: string
+  error?: string
 }
 
 export type IAuthResponse = ApiResponse<IUserData>

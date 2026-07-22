@@ -27,7 +27,7 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
   const { checkFavorite } = useCheckFavorite(vacancy?.id)
 
   const checkStatus = useCallback(async () => {
-    if (!token) {
+    if (!token || !user) {
       setIsFavorite(false)
       setIsChecking(false)
       return
@@ -38,31 +38,33 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
       setIsFavorite(result?.isFavorite || false)
     } catch (error) {
       console.error(`Error checking favorite:, ${error}`)
+      setIsFavorite(false)
     } finally {
       setIsChecking(false)
     }
-  }, [checkFavorite, token])
+  }, [checkFavorite, token, user])
 
   useEffect(() => {
-    if (!token) {
+    if (token && user) {
+      checkStatus()
+    } else {
       setIsFavorite(false)
       setIsChecking(false)
-    } else {
-      checkStatus()
+      setIsLoading(false)
     }
-  }, [token])
-
-  useEffect(() => {
-    checkStatus()
-  }, [checkStatus, user])
+  }, [token, user, checkStatus])
 
   useEffect(() => {
     const handleStorageChange = () => {
-      if (!token) {
+      const currentToken = userStore.token
+      const currentUser = userStore.user
+
+      if (currentToken && currentUser) {
+        checkStatus()
+      } else {
         setIsFavorite(false)
         setIsChecking(false)
-      } else {
-        checkStatus()
+        setIsLoading(false)
       }
     }
 
@@ -73,7 +75,7 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
       window.removeEventListener('storage', handleStorageChange)
       window.removeEventListener('localStorageChange', handleStorageChange)
     }
-  }, [checkStatus, token])
+  }, [checkStatus])
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -81,29 +83,41 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
     setIsLoading(true)
 
     const wasFavorite: boolean = isFavorite
-    setIsFavorite(!wasFavorite)
-
     const vacancyId: number = Number(vacancy.id)
 
-    if (wasFavorite) {
-      const result = await deleteResponse(vacancyId)
-      if (result?.message) {
-        setIsFavorite(wasFavorite)
-        toastStore.showInfo(result.message)
-      } else {
-        await onFavoriteChange?.()
-      }
-    } else {
-      const result = await addResponse(vacancyId)
-      if (result?.message) {
-        setIsFavorite(wasFavorite)
-        toastStore.showInfo(result.message)
-      } else {
-        await onFavoriteChange?.()
-      }
-    }
+    try {
+      if (wasFavorite) {
+        const result = await deleteResponse(vacancyId)
 
-    setIsLoading(false)
+        if (result.error) {
+          toastStore.showInfo(
+            result.message || 'Ошибка при удалении из избранного'
+          )
+          setIsFavorite(true)
+        } else {
+          toastStore.showInfo(result.message || 'Удалено из избранного')
+          setIsFavorite(false)
+          await onFavoriteChange?.()
+        }
+      } else {
+        const result = await addResponse(vacancyId)
+
+        if (result.error) {
+          toastStore.showInfo('Ошибка при добавлении в избранное')
+          setIsFavorite(false)
+        } else {
+          toastStore.showInfo('Добавлено в избранное')
+          setIsFavorite(true)
+          await onFavoriteChange?.()
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      toastStore.showInfo('Произошла ошибка. Попробуйте позже.')
+      await checkStatus()
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isChecking) {
