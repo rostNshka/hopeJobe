@@ -13,8 +13,10 @@ import {
   IVacancyCreateData,
   IVacancy,
 } from '@/types/entities/vacancy.types'
+import { observer } from 'mobx-react-lite'
+import toastStore from '@/stores/toast-store'
 
-const MyVacancy = () => {
+const MyVacancy = observer(() => {
   const [editingId, setEditingId] = useState<number | undefined>(undefined)
   const [editFormData, setEditFormData] = useState<IVacancyCreateData>({
     title: '',
@@ -65,7 +67,7 @@ const MyVacancy = () => {
       setEditingId(undefined)
       refetch()
     } else {
-      alert('Ошибка обновления')
+      toastStore.showError('Ошибка обновления')
     }
   }
 
@@ -86,7 +88,7 @@ const MyVacancy = () => {
       if (result) {
         refetch()
       } else {
-        alert('Ошибка удаления')
+        toastStore.showError('Ошибка удаления')
       }
     }
   }
@@ -228,6 +230,6 @@ const MyVacancy = () => {
       <div className="circle circle-3"></div>
     </div>
   )
-}
+})
 
 export default MyVacancy

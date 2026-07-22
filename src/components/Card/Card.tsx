@@ -14,6 +14,7 @@ import { userStore } from '@/stores/user-store'
 import { useCheckFavorite } from '@/adapters/router/vacancyRouter.ts'
 import { ICardProps } from './CardProps'
 import { EWorkType } from '@/types/entities/vacancy.types'
+import toastStore from '@/stores/toast-store'
 
 const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -88,7 +89,7 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
       const result = await deleteResponse(vacancyId)
       if (result?.message) {
         setIsFavorite(wasFavorite)
-        alert(result.message)
+        toastStore.showInfo(result.message)
       } else {
         await onFavoriteChange?.()
       }
@@ -96,7 +97,7 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
       const result = await addResponse(vacancyId)
       if (result?.message) {
         setIsFavorite(wasFavorite)
-        alert(result.message)
+        toastStore.showInfo(result.message)
       } else {
         await onFavoriteChange?.()
       }

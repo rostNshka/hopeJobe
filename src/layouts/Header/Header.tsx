@@ -9,12 +9,12 @@ import ProfileButton from '@/components/ProfileButton'
 import ProfileModal from '@/sections/ProfileModal'
 import { observer } from 'mobx-react-lite'
 import { userStore } from '@/stores/user-store'
+import toastStore from '@/stores/toast-store'
 
 const Header = observer(() => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isProfileModal, setIsProfileModal] = useState<boolean>(false)
-  const [toastMessage, setToastMessage] = useState<string>('')
   const ref = useRef<HTMLDialogElement>(null)
 
   const { user, logout, isAuthenticated } = userStore
@@ -33,14 +33,13 @@ const Header = observer(() => {
 
   const handleLoginSuccess = () => {
     setIsModalOpen(false)
-    setToastMessage(`Добро пожаловать!`)
-
-    setTimeout(() => setToastMessage(''), 3000)
+    toastStore.showSuccess(`Добро пожаловать!`)
   }
 
   const handleRegistrationSuccess = () => {
-    setToastMessage(`Регистрация успешно завершена! Теперь вы можете войти`)
-    setTimeout(() => setToastMessage(''), 3000)
+    toastStore.showSuccess(
+      `Регистрация успешно завершена! Теперь вы можете войти`
+    )
   }
 
   const handleLogout = () => {
@@ -50,8 +49,6 @@ const Header = observer(() => {
 
   return (
     <header className="header">
-      {toastMessage && <div className="toast-message">{toastMessage}</div>}
-
       <img src="/logo.svg" alt="logo" className="header__logo" />
       <dialog className="header__overlay-menu-dialog" ref={ref}>
         {isAuthenticated && (

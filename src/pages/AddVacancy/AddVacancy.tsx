@@ -4,8 +4,10 @@ import Field from '@/components/Field'
 import React, { useState } from 'react'
 import { useAddVacancy } from '@/adapters/router/vacancyRouter.ts'
 import { EWorkType, IVacancyCreateData } from '@/types/entities/vacancy.types'
+import { observer } from 'mobx-react-lite'
+import toastStore from '@/stores/toast-store'
 
-const AddVacancy = () => {
+const AddVacancy = observer(() => {
   const [selectedWorkType, setSelectedWorkType] = useState<EWorkType>(
     EWorkType.REMOTE
   )
@@ -124,7 +126,7 @@ const AddVacancy = () => {
           workType: EWorkType.REMOTE,
         })
         setSelectedWorkType(EWorkType.REMOTE)
-        alert('Вакансия успешно добавлена')
+        toastStore.showSuccess('Вакансия успешно добавлена')
       } else {
         setLocalError('Ошибка добавления вакансии')
       }
@@ -218,6 +220,6 @@ const AddVacancy = () => {
       <div className="circle circle-3"></div>
     </div>
   )
-}
+})
 
 export default AddVacancy
