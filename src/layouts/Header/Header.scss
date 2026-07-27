@@ -10,18 +10,10 @@
   padding-block: fluid(22, 14);
   padding-inline: fluid(22, 14);
   animation-name: scrolling-header;
+      background-color: var(--color-header);
   animation-fill-mode: both;
-  animation-timeline: scroll();
-  animation-range: 0 100px;
   -webkit-user-select: none;
   user-select: none;
-
-  @keyframes scrolling-header {
-    to {
-      background-color: var(--color-menu);
-      border-color: var(--color-gray-20);
-    }
-  }
 
   &__logo {
     background-color: var(--color-violet-05);
