@@ -13,6 +13,9 @@ import Content from '@/layouts/Content'
 import ProtectedRoutes from '@/context/ProtectedRoutes.tsx'
 import { userStore } from '@/stores/user-store'
 
+import { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -38,7 +41,11 @@ const App: React.FC = observer(() => {
     return <div>Загрузка...</div>
   }
 
-  return <RouterProvider router={router} />
+  return (
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <RouterProvider router={router} />
+    </SkeletonTheme>
+  )
 })
 
 export default App

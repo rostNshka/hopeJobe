@@ -2,6 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useVacancyId } from '@/adapters/router/vacancyRouter.ts'
 import './VacancyDetail.scss'
 import { EWorkType } from '@/types/entities/vacancy.types'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const VacancyDetail = () => {
   const { detailId } = useParams()
@@ -22,7 +24,19 @@ const VacancyDetail = () => {
   if (loading) {
     return (
       <div className="vacancy-detail">
-        <div className="vacancy-detail__loading">Загрузка вакансии...</div>
+        <button className="vacancy-detail__back">← Назад</button>
+        <div className="vacancy-detail__content">
+          <Skeleton width={320} height={36} style={{ marginBlock: '32px' }} />
+          <Skeleton width={180} height={20} style={{ marginBottom: '24px' }} />
+          <Skeleton width={180} height={20} style={{ marginBottom: '24px' }} />
+          <Skeleton width={180} height={20} style={{ marginBottom: '24px' }} />
+          <Skeleton width={100} height={20} style={{ marginBottom: '24px' }} />
+          <Skeleton width={320} height={20} style={{ marginBottom: '24px' }} />
+          <Skeleton width={180} height={20} style={{ marginBottom: '24px' }} />
+        </div>
+        <div className="circle circle-1"></div>
+        <div className="circle circle-2"></div>
+        <div className="circle circle-3"></div>
       </div>
     )
   }
@@ -52,7 +66,6 @@ const VacancyDetail = () => {
       <button onClick={() => navigate(-1)} className="vacancy-detail__back">
         ← Назад
       </button>
-
       <div className="vacancy-detail__content">
         <h2>{vacancy.title}</h2>
         <p>Компания: {vacancy.employer?.companyName}</p>

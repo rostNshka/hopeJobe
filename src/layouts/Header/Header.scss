@@ -107,7 +107,7 @@
   pointer-events: none;
 }
 
-span {
+.header__span {
   @include tablet-above {
     position: absolute;
     z-index: -1;

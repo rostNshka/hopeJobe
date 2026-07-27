@@ -72,7 +72,7 @@ const Header = observer(() => {
               <CiBookmarkPlus />
               Новая вакансия
             </NavLink>
-            <span></span>
+            <span className="header__span"></span>
           </nav>
         )}
         {!user ? (

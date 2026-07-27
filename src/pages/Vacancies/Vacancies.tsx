@@ -7,6 +7,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
 import { IVacancy } from '@/types/entities/vacancy.types'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import VacanciesCardsSkeleton from '@/utils/VacanciesCardsSkeleton'
 
 const Vacancies = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -90,7 +91,7 @@ const Vacancies = () => {
           onSearchChange={setSearchTerm}
         />
         <VacanciesStatistics />
-        <p className="vacancies__loading">Загрузка вакансий...</p>
+        <VacanciesCardsSkeleton count={9} />
       </div>
     )
   }
@@ -116,11 +117,7 @@ const Vacancies = () => {
           dataLength={allVacancies.length}
           next={loadMore}
           hasMore={hasMore}
-          loader={
-            <div className="vacancies__loading-more">
-              <p>Загрузка еще...</p>
-            </div>
-          }
+          loader={<VacanciesCardsSkeleton count={3} />}
           scrollThreshold={0.9}
           pullDownToRefresh={false}>
           <Cards vacancies={allVacancies} />

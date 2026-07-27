@@ -2,10 +2,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
-  column-gap: 64px;
-  row-gap: 32px;
+  gap: fluid(64,20) fluid(30,5);
   padding-block: var(--section-padding-y);
   padding-inline: var(--section-padding-y);
+
+  .react-loading-skeleton {
+    line-height: 1;
+  }
 
   @include tablet {
     grid-template-columns: repeat(2, 1fr);
