@@ -1,44 +1,91 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import Vacancies from '@/pages/Vacancies/Vacancies'
-import VacancyDetail from '@/pages/VacancyDetail'
-import Favorites from '@/pages/Favorites'
-import AddVacancy from '@/pages/AddVacancy'
-import MyVacancy from '@/pages/MyVacancy'
-import NotFound from '@/pages/NotFound/NotFound'
-import Content from '@/layouts/Content'
+const Vacancies = lazy(() => import('@/pages/Vacancies/Vacancies'))
+const VacancyDetail = lazy(() => import('@/pages/VacancyDetail'))
+const Favorites = lazy(() => import('@/pages/Favorites'))
+const AddVacancy = lazy(() => import('@/pages/AddVacancy'))
+const MyVacancy = lazy(() => import('@/pages/MyVacancy'))
+const NotFound = lazy(() => import('@/pages/NotFound/NotFound'))
+const Content = lazy(() => import('@/layouts/Content'))
 
 import ProtectedRoutes from '@/context/ProtectedRoutes.tsx'
 import { userStore } from '@/stores/user-store'
 
 import { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import SpinLoading from './components/SpinLoading'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Content />,
+    element: (
+      <Suspense fallback={<SpinLoading />}>
+        <Content />
+      </Suspense>
+    ),
     children: [
-      { index: true, element: <Vacancies /> },
-      { path: 'vacancies/:detailId', element: <VacancyDetail /> },
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<SpinLoading />}>
+            <Vacancies />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'vacancies/:detailId',
+        element: (
+          <Suspense fallback={<SpinLoading />}>
+            <VacancyDetail />
+          </Suspense>
+        ),
+      },
       {
         element: <ProtectedRoutes />,
         children: [
-          { path: 'favorites', element: <Favorites /> },
-          { path: 'add-vacancy', element: <AddVacancy /> },
-          { path: 'my-vacancy', element: <MyVacancy /> },
+          {
+            path: 'favorites',
+            element: (
+              <Suspense fallback={<SpinLoading />}>
+                <Favorites />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'add-vacancy',
+            element: (
+              <Suspense fallback={<SpinLoading />}>
+                <AddVacancy />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'my-vacancy',
+            element: (
+              <Suspense fallback={<SpinLoading />}>
+                <MyVacancy />
+              </Suspense>
+            ),
+          },
         ],
       },
-      { path: '*', element: <NotFound /> },
+      {
+        path: '*',
+        element: (
+          <Suspense fallback={<SpinLoading />}>
+            <NotFound />
+          </Suspense>
+        ),
+      },
     ],
   },
 ])
 
 const App: React.FC = observer(() => {
   if (userStore.loading) {
-    return <div>Загрузка...</div>
+    return <SpinLoading />
   }
 
   return (
