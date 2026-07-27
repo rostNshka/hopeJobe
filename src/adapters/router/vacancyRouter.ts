@@ -1,21 +1,74 @@
+import { IPagination } from '@/types/entities/api.types'
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
 import { IVacancy, IVacancyCreateData } from '@/types/entities/vacancy.types'
 import { ICheckResult, IVacancyResult } from '@/types/entities/api.types'
+import { useState, useEffect, useRef } from 'react'
 
-export function useVacancy() {
-  const { data, loading, error, refetch } = useFetch<IVacancyResult>(
-    '/api/vacancies',
-    {
-      method: 'GET',
+export function useVacancy(searchQuery?: string, page: number = 1) {
+  const [vacancies, setVacancies] = useState<IVacancy[]>([])
+  const [pagination, setPagination] = useState<IPagination>({
+    page: 1,
+    limit: 9,
+    total: 0,
+    totalPages: 0,
+  })
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const prevSearchQuery = useRef<string | undefined>(searchQuery)
+  const prevPage = useRef<number>(page)
+
+  const buildUrl = useCallback((pageNum: number, search?: string) => {
+    let url = `/api/vacancies/?page=${pageNum}&limit=9`
+    if (search && search.trim()) {
+      url += `&search=${encodeURIComponent(search.trim())}`
     }
-  )
+    return url
+  }, [])
+
+  const {
+    data,
+    loading,
+    error: fetchError,
+    refetch,
+  } = useFetch<IVacancyResult>(buildUrl(page, searchQuery), {
+    method: 'GET',
+  })
+
+  useEffect(() => {
+    if (data) {
+      setVacancies(data.data)
+      setPagination(data.pagination)
+      setIsLoading(false)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (fetchError) {
+      setError(fetchError)
+      setIsLoading(false)
+    }
+  }, [fetchError])
+
+  useEffect(() => {
+    if (searchQuery !== prevSearchQuery.current || page !== prevPage.current) {
+      prevSearchQuery.current = searchQuery
+      prevPage.current = page
+      setIsLoading(true)
+      setError(null)
+      refetch({
+        url: buildUrl(page, searchQuery),
+      })
+    }
+  }, [searchQuery, page, refetch, buildUrl])
 
   return {
-    vacancies: data?.data || [],
-    loading,
+    vacancies,
+    pagination,
+    loading: isLoading || loading,
     error,
-    refetch,
+    refetch: () => refetch({ url: buildUrl(page, searchQuery) }),
   }
 }
 
@@ -28,7 +81,7 @@ export function useVacancyId(id: string) {
   )
 
   return {
-    vacancies: data?.data || [],
+    vacancies: data?.data?.[0] || data?.data || null,
     loading,
     error,
     refetch,

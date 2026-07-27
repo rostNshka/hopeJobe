@@ -6,12 +6,19 @@ import VacanciesInput from '@/sections/VacanciesInput'
 import { useMemo, useState, useRef, useEffect } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
 import { IVacancy } from '@/types/entities/vacancy.types'
+import ReactPaginate from 'react-paginate'
 
 const Vacancies = () => {
-  const { vacancies, loading, error } = useVacancy()
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('')
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const searchQuery = debouncedSearchTerm.trim() || undefined
+
+  const { vacancies, pagination, loading, error } = useVacancy(
+    searchQuery,
+    currentPage
+  )
 
   useEffect(() => {
     if (timerRef.current) {
@@ -20,6 +27,7 @@ const Vacancies = () => {
 
     timerRef.current = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm)
+      setCurrentPage(1)
     }, 300)
 
     return () => {
@@ -33,21 +41,13 @@ const Vacancies = () => {
     if (!vacancies) {
       return []
     }
-    if (!debouncedSearchTerm.trim()) {
-      return vacancies
-    }
+    return vacancies
+  }, [vacancies])
 
-    const lowerSearchTerm = debouncedSearchTerm.toLowerCase()
-
-    return vacancies.filter(vacancy => {
-      return (
-        vacancy.title?.toLowerCase().includes(lowerSearchTerm) ||
-        vacancy.employer?.companyName.toLowerCase().includes(lowerSearchTerm) ||
-        vacancy.description?.toLowerCase().includes(lowerSearchTerm) ||
-        vacancy.location?.toLowerCase().includes(lowerSearchTerm)
-      )
-    })
-  }, [vacancies, debouncedSearchTerm])
+  const handlePageChange = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected + 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div className="vacancies">
@@ -70,7 +70,35 @@ const Vacancies = () => {
               По вашему запросу ничего не найдено
             </p>
           ) : (
-            <Cards vacancies={filteredVacancies} />
+            <>
+              <Cards vacancies={filteredVacancies} />
+
+              {pagination && pagination.totalPages > 1 && (
+                <ReactPaginate
+                  pageCount={pagination.totalPages}
+                  pageRangeDisplayed={3}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageChange}
+                  forcePage={currentPage - 1}
+                  containerClassName="pagination"
+                  pageClassName="pagination__item"
+                  pageLinkClassName="pagination__link"
+                  activeClassName="pagination__item--active"
+                  activeLinkClassName="pagination__link--active"
+                  previousClassName="pagination__previous"
+                  nextClassName="pagination__next"
+                  previousLinkClassName="pagination__link"
+                  nextLinkClassName="pagination__link"
+                  disabledClassName="pagination__item--disabled"
+                  breakClassName="pagination__break"
+                  breakLinkClassName="pagination__link"
+                  previousLabel="Назад"
+                  nextLabel="Вперед"
+                  breakLabel="..."
+                  renderOnZeroPageCount={null}
+                />
+              )}
+            </>
           )}
         </>
       )}

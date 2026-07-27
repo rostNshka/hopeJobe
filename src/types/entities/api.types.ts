@@ -81,8 +81,16 @@ export interface IProfileResponse {
     }
   }
 }
+
+export interface IPagination {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
 export interface IVacancyResult {
   data: IVacancy[]
+  pagination: IPagination
   message?: string
 }
 

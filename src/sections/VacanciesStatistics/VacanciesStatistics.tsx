@@ -5,14 +5,14 @@ import { LiaUserTieSolid, LiaUserFriendsSolid } from 'react-icons/lia'
 import { useStatistics } from '@/adapters/router/userRouter'
 
 const VacanciesStatistics = () => {
-  const { vacancies } = useVacancy()
+  const { pagination } = useVacancy()
   const { stats } = useStatistics()
   return (
     <div className="vacancies-statistics">
       <div className="vacancies-statistics__item">
         <div className="vacancies-statistics__item-icon">
           <FaBriefcase />
-          {vacancies?.length}
+          {pagination?.total || 0}
         </div>
         вакансий
       </div>
