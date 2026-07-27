@@ -4,133 +4,14 @@
   align-items: center;
   justify-content: center;
   padding-block: var(--section-padding-y);
+  overflow-x: hidden;
 
   &__empty {
     padding-top: fluid(16, 8);
   }
-}
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 40px;
-  padding: 20px 0;
-  list-style: none;
-  flex-wrap: wrap;
-
-  &__item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
-    border-radius: var(--border-radius-xxs);
-    transition: all var(--transition-duration) ease;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    background-color: var(--color-card-bgc);
-    border: var(--card-border);
-    color: var(--color-text);
-
-    @include hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      color: var(--color-white);
-      border-color: var(--color-violet-20);
-    }
-
-    &--active {
-      background-color: var(--color-violet-10);
-      color: var(--color-white);
-      border-color: var(--color-violet-20);
-      box-shadow: 0 0 15px rgba(109, 40, 217, 0.3);
-
-      .pagination__link {
-        color: var(--color-white);
-      }
-
-      @include hover {
-        background-color: var(--color-violet-20);
-        box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
-      }
-    }
-
-    &--disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      pointer-events: none;
-      border-color: transparent;
-    }
-  }
-
-  &__link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .infinite-scroll-component {
     width: 100%;
-    height: 100%;
-    color: var(--color-text);
-    text-decoration: none;
-    padding: 0 8px;
-    transition: color var(--transition-duration) ease;
-  }
-
-  &__previous,
-  &__next {
-    font-weight: 600;
-    cursor: pointer;
-
-    .pagination__link {
-      padding: 0 16px;
-    }
-  }
-
-  &__break {
-    cursor: default;
-    background-color: transparent;
-    border-color: transparent;
-
-    .pagination__link {
-      cursor: default;
-      color: var(--color-gray-20);
-    }
-  }
-
-  @include tablet {
-    gap: 4px;
-    margin-top: 30px;
-    padding: 15px 0;
-
-    &__item {
-      min-width: 35px;
-      height: 35px;
-      font-size: 14px;
-      border-radius: var(--border-radius-xs);
-    }
-
-    &__previous,
-    &__next {
-      .pagination__link {
-        padding: 0 12px;
-      }
-    }
-  }
-
-  @include mobile {
-    &__item {
-      min-width: 30px;
-      height: 30px;
-      font-size: 13px;
-    }
-
-    &__previous,
-    &__next {
-      .pagination__link {
-        padding: 0 8px;
-        font-size: 13px;
-      }
-    }
+    overflow: hidden !important;
   }
 }

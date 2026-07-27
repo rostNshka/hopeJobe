@@ -3,15 +3,18 @@ import { useVacancy } from '@/adapters/router/vacancyRouter.js'
 import './Vacancies.scss'
 import Cards from '@/sections/Cards'
 import VacanciesInput from '@/sections/VacanciesInput'
-import { useMemo, useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import VacanciesStatistics from '@/sections/VacanciesStatistics'
 import { IVacancy } from '@/types/entities/vacancy.types'
-import ReactPaginate from 'react-paginate'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const Vacancies = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('')
+  const [allVacancies, setAllVacancies] = useState<IVacancy[]>([])
+  const [hasMore, setHasMore] = useState<boolean>(true)
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const searchQuery = debouncedSearchTerm.trim() || undefined
 
@@ -21,13 +24,41 @@ const Vacancies = () => {
   )
 
   useEffect(() => {
+    if (vacancies && vacancies.length > 0) {
+      setAllVacancies(prev => {
+        if (currentPage === 1) {
+          return vacancies
+        }
+        const existingIds = new Set(prev.map(v => v.id))
+        const newVacancies = vacancies.filter(v => !existingIds.has(v.id))
+        return [...prev, ...newVacancies]
+      })
+      setIsInitialLoad(false)
+    } else if (!loading && currentPage === 1) {
+      setAllVacancies([])
+      setIsInitialLoad(false)
+    }
+  }, [vacancies, currentPage, loading])
+
+  useEffect(() => {
+    if (pagination) {
+      setHasMore(currentPage < pagination.totalPages)
+    }
+  }, [pagination, currentPage])
+
+  useEffect(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current)
     }
 
     timerRef.current = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm)
-      setCurrentPage(1)
+      if (searchTerm !== debouncedSearchTerm) {
+        setDebouncedSearchTerm(searchTerm)
+        setCurrentPage(1)
+        setAllVacancies([])
+        setIsInitialLoad(true)
+        setHasMore(true)
+      }
     }, 300)
 
     return () => {
@@ -37,16 +68,31 @@ const Vacancies = () => {
     }
   }, [searchTerm])
 
-  const filteredVacancies = useMemo((): IVacancy[] => {
-    if (!vacancies) {
-      return []
+  const loadMore = useCallback(() => {
+    if (!loading && hasMore) {
+      setCurrentPage(prev => prev + 1)
     }
-    return vacancies
-  }, [vacancies])
+  }, [loading, hasMore])
 
-  const handlePageChange = (selectedItem: { selected: number }) => {
-    setCurrentPage(selectedItem.selected + 1)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+  useEffect(() => {
+    if (error) {
+      setAllVacancies([])
+      setIsInitialLoad(false)
+    }
+  }, [error])
+
+  if (isInitialLoad && loading) {
+    return (
+      <div className="vacancies">
+        <VacanciesTitle />
+        <VacanciesInput
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
+        <VacanciesStatistics />
+        <p className="vacancies__loading">Загрузка вакансий...</p>
+      </div>
+    )
   }
 
   return (
@@ -55,52 +101,30 @@ const Vacancies = () => {
       <VacanciesInput searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       <VacanciesStatistics />
 
-      {loading && <p className="vacancies__loading">Загрузка вакансий</p>}
-
       {error && (
         <p className="vacancies__error">
           К сожалению, произошла ошибка: {error} :(
         </p>
       )}
 
-      {!loading && !error && (
-        <>
-          {filteredVacancies.length === 0 ? (
-            <p className="vacancies__empty">
-              По вашему запросу ничего не найдено
-            </p>
-          ) : (
-            <>
-              <Cards vacancies={filteredVacancies} />
+      {!error && !isInitialLoad && allVacancies.length === 0 && (
+        <p className="vacancies__empty">По вашему запросу ничего не найдено</p>
+      )}
 
-              {pagination && pagination.totalPages > 1 && (
-                <ReactPaginate
-                  pageCount={pagination.totalPages}
-                  pageRangeDisplayed={3}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageChange}
-                  forcePage={currentPage - 1}
-                  containerClassName="pagination"
-                  pageClassName="pagination__item"
-                  pageLinkClassName="pagination__link"
-                  activeClassName="pagination__item--active"
-                  activeLinkClassName="pagination__link--active"
-                  previousClassName="pagination__previous"
-                  nextClassName="pagination__next"
-                  previousLinkClassName="pagination__link"
-                  nextLinkClassName="pagination__link"
-                  disabledClassName="pagination__item--disabled"
-                  breakClassName="pagination__break"
-                  breakLinkClassName="pagination__link"
-                  previousLabel="Назад"
-                  nextLabel="Вперед"
-                  breakLabel="..."
-                  renderOnZeroPageCount={null}
-                />
-              )}
-            </>
-          )}
-        </>
+      {!error && allVacancies.length > 0 && (
+        <InfiniteScroll
+          dataLength={allVacancies.length}
+          next={loadMore}
+          hasMore={hasMore}
+          loader={
+            <div className="vacancies__loading-more">
+              <p>Загрузка еще...</p>
+            </div>
+          }
+          scrollThreshold={0.9}
+          pullDownToRefresh={false}>
+          <Cards vacancies={allVacancies} />
+        </InfiniteScroll>
       )}
     </div>
   )
