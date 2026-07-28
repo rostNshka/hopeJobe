@@ -138,16 +138,18 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
           </div>
         </div>
 
-        <button
-          className="card-header__favorite-btn"
-          onClick={handleFavoriteClick}
-          disabled={isLoading}>
-          {isFavorite ? (
-            <FaHeart className="card-header__heart active" />
-          ) : (
-            <CiHeart className="card-header__heart" />
-          )}
-        </button>
+        {userStore.user?.role === 'USER' ? (
+          <button
+            className="card-header__favorite-btn"
+            onClick={handleFavoriteClick}
+            disabled={isLoading}>
+            {isFavorite ? (
+              <FaHeart className="card-header__heart active" />
+            ) : (
+              <CiHeart className="card-header__heart" />
+            )}
+          </button>
+        ) : null}
       </div>
       <div className="card-body">
         <div className="card-body__title">{vacancy.title}</div>
