@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import React, { lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
+import Content from '@/layouts/Content'
 
 const Vacancies = lazy(() => import('@/pages/Vacancies/Vacancies'))
 const VacancyDetail = lazy(() => import('@/pages/VacancyDetail'))
@@ -8,7 +9,6 @@ const Favorites = lazy(() => import('@/pages/Favorites'))
 const AddVacancy = lazy(() => import('@/pages/AddVacancy'))
 const MyVacancy = lazy(() => import('@/pages/MyVacancy'))
 const NotFound = lazy(() => import('@/pages/NotFound/NotFound'))
-const Content = lazy(() => import('@/layouts/Content'))
 
 import ProtectedRoutes from '@/context/ProtectedRoutes.tsx'
 import { userStore } from '@/stores/user-store'
@@ -20,11 +20,7 @@ import SpinLoading from './components/SpinLoading'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <Suspense fallback={<SpinLoading />}>
-        <Content />
-      </Suspense>
-    ),
+    element: <Content />,
     children: [
       {
         index: true,

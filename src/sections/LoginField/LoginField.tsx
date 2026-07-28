@@ -64,8 +64,8 @@ const LoginField = ({ onSuccess }: ILoginFieldProps) => {
         return
       }
 
-      if (result?.token && result?.user) {
-        userStore.setToken(result.token)
+      if (result?.refreshToken && result?.accessToken && result?.user) {
+        userStore.setTokens(result.accessToken, result.refreshToken)
 
         const { id, email, role, profile = {} } = result.user
 

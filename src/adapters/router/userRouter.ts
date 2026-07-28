@@ -1,15 +1,22 @@
+import { useEffect } from 'react'
 import useFetch from '@/adapters/api/useFetch'
 import { IProfileResponse, IStats } from '@/types/entities/api.types'
 import { IUserData } from '@/types/entities/user.types'
+import { userStore } from '@/stores/user-store'
 
-export function useProfile(skipFetch = false) {
+export function useProfile() {
   const { data, loading, error, refetch } = useFetch<IProfileResponse>(
     '/api/users/profile',
     {
       method: 'GET',
-    },
-    skipFetch
+    }
   )
+
+  useEffect(() => {
+    if (!userStore.loading && userStore.accessToken) {
+      refetch()
+    }
+  }, [userStore.loading, userStore.accessToken, refetch])
 
   return {
     profile: data?.data || null,

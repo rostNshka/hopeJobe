@@ -23,11 +23,11 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
 
   const { addResponse } = useAddResponse()
   const { deleteResponse } = useDeleteResponse()
-  const { user, token } = userStore
+  const { user, accessToken } = userStore
   const { checkFavorite } = useCheckFavorite(vacancy?.id)
 
   const checkStatus = useCallback(async () => {
-    if (!token || !user) {
+    if (!accessToken || !user) {
       setIsFavorite(false)
       setIsChecking(false)
       return
@@ -42,21 +42,21 @@ const Card = observer(({ vacancy, onFavoriteChange }: ICardProps) => {
     } finally {
       setIsChecking(false)
     }
-  }, [checkFavorite, token, user])
+  }, [checkFavorite, accessToken, user])
 
   useEffect(() => {
-    if (token && user) {
+    if (accessToken && user) {
       checkStatus()
     } else {
       setIsFavorite(false)
       setIsChecking(false)
       setIsLoading(false)
     }
-  }, [token, user, checkStatus])
+  }, [accessToken, user, checkStatus])
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const currentToken = userStore.token
+      const currentToken = userStore.refreshToken
       const currentUser = userStore.user
 
       if (currentToken && currentUser) {

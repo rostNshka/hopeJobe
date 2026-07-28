@@ -125,8 +125,8 @@ export function useCheckFavorite(vacancyId: number | undefined) {
 
     setLoading(true)
     try {
-      const { token } = userStore
-      if (!token) {
+      const { accessToken } = userStore
+      if (!accessToken) {
         setIsFavorite(false)
         setLoading(false)
         return { isFavorite: false }

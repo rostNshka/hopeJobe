@@ -20,7 +20,8 @@ export interface IAuthReturn<T> {
 
 export interface ILoginResponse {
   message: string
-  token: string
+  accessToken: string
+  refreshToken: string
   user: {
     id: number
     email: string
@@ -37,7 +38,11 @@ export interface ILoginResponse {
 
 export interface IRegisterResponse {
   message?: string
+  accessToken: string
+  refreshToken: string
   data: {
+    id: number
+    email: string
     firstName?: string
     lastName?: string
     patronymic?: string

@@ -1,7 +1,12 @@
 import useFetch from '@/adapters/api/useFetch'
 import { useCallback } from 'react'
-import { IUserAssets, IUserData } from '@/types/entities/user.types'
+import {
+  IUserAssets,
+  IUserContextData,
+  IUserData,
+} from '@/types/entities/user.types'
 import { ILoginResponse, IRegisterResponse } from '@/types/entities/api.types'
+import { userStore } from '@/stores/user-store'
 
 export function useRegister() {
   const { data, loading, error, refetch } = useFetch<IRegisterResponse>(
@@ -14,14 +19,23 @@ export function useRegister() {
     async (userData: IUserData): Promise<IRegisterResponse> => {
       const result: IRegisterResponse = await refetch({
         body: JSON.stringify(userData),
+        skipAuth: true,
       })
+
+      if (result.accessToken && result.refreshToken) {
+        userStore.setTokens(result.accessToken, result.refreshToken)
+        userStore.setUser(result.data as IUserContextData)
+      }
+
       return result
     },
     [refetch]
   )
 
   return {
-    user: data,
+    user: data?.data,
+    accessToken: data?.accessToken,
+    refreshToken: data?.refreshToken,
     loading,
     error,
     execute: register,
@@ -41,6 +55,12 @@ export function useLogin() {
         body: JSON.stringify(credentials),
         skipAuth: true,
       })
+
+      if (result.accessToken && result.refreshToken) {
+        userStore.setTokens(result.accessToken, result.refreshToken)
+        userStore.setUser(result.user)
+      }
+
       return result
     },
     [refetch]
@@ -48,7 +68,8 @@ export function useLogin() {
 
   return {
     user: data?.user,
-    token: data?.token,
+    accessToken: data?.accessToken,
+    refreshToken: data?.refreshToken,
     loading,
     error,
     execute: login,

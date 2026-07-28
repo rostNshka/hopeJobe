@@ -1,39 +1,48 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { IUserContextData } from '@/types/entities/user.types'
 
+const STORAGE_KEYS = {
+  USER: 'user',
+  REFRESH_TOKEN: 'refreshToken',
+} as const
+
 class UserStore {
   user: IUserContextData | null = null
-  token: string | null = null
+  refreshToken: string | null = null
+  accessToken: string | null = null
   loading: boolean = true
+
+  private boundHandleStorageChange = this.handleStorageChange.bind(this)
 
   constructor() {
     makeAutoObservable(this)
     this.loadFromStorage()
-
-    window.addEventListener('storage', this.handleStorageChange.bind(this))
+    window.addEventListener('storage', this.boundHandleStorageChange)
   }
 
   private loadFromStorage() {
     try {
-      const userItem = localStorage.getItem('user')
-      const tokenItem = localStorage.getItem('token')
+      const userItem = localStorage.getItem(STORAGE_KEYS.USER)
+      const refreshTokenItem = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN)
 
       runInAction(() => {
         this.user = userItem ? JSON.parse(userItem) : null
-        this.token = tokenItem || null
+        this.refreshToken = refreshTokenItem || null
+        this.accessToken = null
         this.loading = false
       })
     } catch {
       runInAction(() => {
         this.user = null
-        this.token = null
+        this.refreshToken = null
+        this.accessToken = null
         this.loading = false
       })
     }
   }
 
   private handleStorageChange(e: StorageEvent) {
-    if (e.key === 'user') {
+    if (e.key === STORAGE_KEYS.USER) {
       runInAction(() => {
         try {
           this.user = e.newValue ? JSON.parse(e.newValue) : null
@@ -42,9 +51,13 @@ class UserStore {
         }
       })
     }
-    if (e.key === 'token') {
+    if (e.key === STORAGE_KEYS.REFRESH_TOKEN) {
       runInAction(() => {
-        this.token = e.newValue
+        this.refreshToken = e.newValue
+        if (e.newValue === null) {
+          this.accessToken = null
+          this.user = null
+        }
       })
     }
   }
@@ -52,34 +65,62 @@ class UserStore {
   setUser(user: IUserContextData | null) {
     runInAction(() => {
       this.user = user
-      if (user === null) {
-        localStorage.removeItem('user')
-      } else {
-        localStorage.setItem('user', JSON.stringify(user))
-      }
     })
+
+    if (user === null) {
+      localStorage.removeItem(STORAGE_KEYS.USER)
+    } else {
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user))
+    }
+
     this.notifyOtherTabs()
   }
 
-  setToken(token: string | null) {
+  setTokens(accessToken: string | null, refreshToken: string | null) {
     runInAction(() => {
-      this.token = token
-      if (token === null) {
-        localStorage.removeItem('token')
-      } else {
-        localStorage.setItem('token', token)
-      }
+      this.accessToken = accessToken
+      this.refreshToken = refreshToken
     })
+
+    if (refreshToken === null) {
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
+    } else {
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
+    }
+
+    this.notifyOtherTabs()
+  }
+
+  setAccessToken(accessToken: string | null) {
+    runInAction(() => {
+      this.accessToken = accessToken
+    })
+  }
+
+  setRefreshToken(refreshToken: string | null) {
+    runInAction(() => {
+      this.refreshToken = refreshToken
+    })
+
+    if (refreshToken === null) {
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
+    } else {
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
+    }
+
     this.notifyOtherTabs()
   }
 
   logout() {
+    localStorage.removeItem(STORAGE_KEYS.USER)
+    localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
+
     runInAction(() => {
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
       this.user = null
-      this.token = null
+      this.accessToken = null
+      this.refreshToken = null
     })
+
     this.notifyOtherTabs()
   }
 
@@ -88,11 +129,11 @@ class UserStore {
   }
 
   get isAuthenticated(): boolean {
-    return !!this.user && !!this.token
+    return !!this.user && !!this.accessToken
   }
 
   dispose() {
-    window.removeEventListener('storage', this.handleStorageChange.bind(this))
+    window.removeEventListener('storage', this.boundHandleStorageChange)
   }
 }
 

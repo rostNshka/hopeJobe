@@ -4,6 +4,7 @@ import { useCallback } from 'react'
 import { IVacancy, IVacancyCreateData } from '@/types/entities/vacancy.types'
 import { ICheckResult, IVacancyResult } from '@/types/entities/api.types'
 import { useState, useEffect, useRef } from 'react'
+import { userStore } from '@/stores/user-store'
 
 export function useVacancy(searchQuery?: string, page: number = 1) {
   const [vacancies, setVacancies] = useState<IVacancy[]>([])
@@ -107,9 +108,17 @@ export function useMyVacancy() {
 export function useAddVacancy() {
   const { loading, error, data, refetch } = useFetch<IVacancyResult>(
     '/api/vacancies',
-    { method: 'POST' },
-    true
+    { method: 'POST' }
   )
+
+  const user = userStore.user
+  if (!user) {
+    return { message: 'Пожалуйста, авторизуйтесь' }
+  }
+
+  if (user.role !== 'EMPLOYER' && user.role !== 'USER') {
+    return { message: 'Только работодатели могут создавать вакансии' }
+  }
 
   const addVacancy = async (formData: IVacancyCreateData) => {
     try {

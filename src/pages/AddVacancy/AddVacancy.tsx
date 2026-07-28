@@ -107,6 +107,11 @@ const AddVacancy = observer(() => {
       return
     }
 
+    if (!addVacancy) {
+      toastStore.showError('Функция добавления вакансии недоступна')
+      return
+    }
+
     const dataToSend: IVacancyCreateData = {
       title: formData.title,
       location: formData.location,
@@ -117,7 +122,7 @@ const AddVacancy = observer(() => {
 
     try {
       const result = await addVacancy(dataToSend)
-      if (result) {
+      if (result?.data) {
         setFormData({
           title: '',
           location: '',
@@ -126,12 +131,13 @@ const AddVacancy = observer(() => {
           workType: EWorkType.REMOTE,
         })
         setSelectedWorkType(EWorkType.REMOTE)
+        setSalaryDisplay('')
         toastStore.showSuccess('Вакансия успешно добавлена')
       } else {
-        setLocalError('Ошибка добавления вакансии')
+        toastStore.showError(result?.message)
       }
     } catch {
-      setLocalError('Ошибка соединения с сервером')
+      toastStore.showError('Ошибка соединения с сервером')
     }
   }
 

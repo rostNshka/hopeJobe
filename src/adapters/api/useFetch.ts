@@ -16,6 +16,11 @@ interface IUseFetchReturn<T> {
   refetch: (customOptions?: IFetchOptions) => Promise<T>
 }
 
+type QueueItem = {
+  resolve: (value: string) => void
+  reject: (reason?: unknown) => void
+}
+
 function useFetch<T>(
   url?: string,
   defaultOptions: IFetchOptions = {},
@@ -25,14 +30,57 @@ function useFetch<T>(
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<string | null>(null)
   const defaultOptionsRef = useRef(defaultOptions)
+  const isRefreshing = useRef(false)
+
+  const failedQueue = useRef<Array<QueueItem>>([])
 
   const navigate = useNavigate()
-  const { logout, token } = userStore
+
+  const processQueue = useCallback(
+    (error: Error | null, token: string | null = null) => {
+      failedQueue.current.forEach(item => {
+        if (error) {
+          item.reject(error)
+        } else if (token) {
+          item.resolve(token)
+        }
+      })
+      failedQueue.current = []
+    },
+    []
+  )
 
   const handleUnauthorized = useCallback((): void => {
-    logout()
+    userStore.logout()
     navigate('/')
-  }, [logout, navigate])
+  }, [navigate])
+
+  const refreshAccessToken = useCallback(async (): Promise<string> => {
+    if (!userStore.refreshToken) {
+      throw new Error('No refresh token available')
+    }
+
+    try {
+      const response = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refreshToken: userStore.refreshToken }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Refresh failed')
+      }
+
+      const data = await response.json()
+      userStore.setTokens(data.accessToken, data.refreshToken)
+      return data.accessToken
+    } catch (error) {
+      handleUnauthorized()
+      throw error
+    }
+  }, [handleUnauthorized])
 
   const buildUrlWithParams = useCallback(
     (
@@ -64,7 +112,6 @@ function useFetch<T>(
       const { params, skipAuth = false } = customOptions
 
       let finalUrl: string = customOptions.url || url || ''
-
       if (!finalUrl) {
         throw new Error('URL is required')
       }
@@ -73,9 +120,13 @@ function useFetch<T>(
         finalUrl = buildUrlWithParams(finalUrl, params)
       }
 
+      let currentToken = userStore.accessToken
+
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
-        ...(token && !skipAuth ? { Authorization: `Bearer ${token}` } : {}),
+        ...(currentToken && !skipAuth
+          ? { Authorization: `Bearer ${currentToken}` }
+          : {}),
         ...defaultOptions.headers,
         ...customOptions.headers,
       }
@@ -96,7 +147,45 @@ function useFetch<T>(
       }
 
       try {
-        const response = await fetch(finalUrl, options)
+        let response = await fetch(finalUrl, options)
+
+        if (response.status === 401 && !skipAuth) {
+          if (!isRefreshing.current) {
+            isRefreshing.current = true
+
+            try {
+              const newToken = await refreshAccessToken()
+              currentToken = newToken
+
+              options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${newToken}`,
+              }
+
+              processQueue(null, newToken)
+              response = await fetch(finalUrl, options)
+            } catch (refreshError) {
+              processQueue(refreshError as Error, null)
+              throw refreshError
+            } finally {
+              isRefreshing.current = false
+            }
+          } else {
+            try {
+              const newToken = await new Promise<string>((resolve, reject) => {
+                failedQueue.current.push({ resolve, reject })
+              })
+
+              options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${newToken}`,
+              }
+              response = await fetch(finalUrl, options)
+            } catch (queueError) {
+              throw queueError
+            }
+          }
+        }
 
         let result: T
         const contentType = response.headers.get('content-type')
@@ -155,7 +244,13 @@ function useFetch<T>(
         setLoading(false)
       }
     },
-    [url, handleUnauthorized, token, buildUrlWithParams]
+    [
+      url,
+      handleUnauthorized,
+      buildUrlWithParams,
+      refreshAccessToken,
+      processQueue,
+    ]
   )
 
   useEffect(() => {
