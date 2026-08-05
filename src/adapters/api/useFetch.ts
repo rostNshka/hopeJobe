@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiClient } from './apiClient'
-import { authMiddleware } from './middleware/auth.middleware'
-import { loggingMiddleware } from './middleware/logging.middleware'
-import { errorMiddleware, handleError } from './middleware/error.middleware'
+import { apiClient } from './apiClient.instance'
+import { handleError } from './middleware/error.middleware'
 import {
   IFetchOptions,
   IUseFetchReturn,
@@ -21,18 +19,6 @@ function useFetch<T>(
   const defaultOptionsRef = useRef(defaultOptions)
 
   const navigate = useNavigate()
-
-  const apiClient = useRef(
-    new ApiClient({
-      baseURL: '/api',
-      defaultHeaders: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .use(authMiddleware)
-      .use(loggingMiddleware)
-      .use(errorMiddleware)
-  )
 
   const fetchData = useCallback(
     async (customOptions: IFetchOptions = {}): Promise<T> => {
@@ -53,8 +39,7 @@ function useFetch<T>(
           skipAuth,
         }
 
-        const requestFn = () =>
-          apiClient.current.request<T>(finalUrl, requestOptions)
+        const requestFn = () => apiClient.request<T>(finalUrl, requestOptions)
 
         const result = await handleError(requestFn, skipAuth, navigate)
         setData(result)
@@ -74,7 +59,7 @@ function useFetch<T>(
         setLoading(false)
       }
     },
-    [url]
+    [url, navigate]
   )
 
   useEffect(() => {

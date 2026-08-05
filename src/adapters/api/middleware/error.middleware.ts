@@ -1,6 +1,7 @@
 import { Middleware } from '@/types/entities/api.client.types'
 import { userStore } from '@/stores/user-store'
 import { QueueItem } from '@/types/entities/api.client.types'
+import { apiClient } from '../apiClient.instance'
 
 let isRefreshing = false
 let failedQueue: QueueItem[] = []
@@ -24,22 +25,17 @@ const refreshAccessToken = async (): Promise<string> => {
     throw new Error('No refresh token available')
   }
 
-  const response = await fetch('/api/auth/refresh', {
+  const response = await apiClient.request<{
+    accessToken: string
+    refreshToken: string
+  }>('/auth/refresh', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ refreshToken: userStore.refreshToken }),
+    body: { refreshToken: userStore.refreshToken },
+    skipAuth: true,
   })
 
-  if (!response.ok) {
-    throw new Error('Refresh failed')
-  }
-
-  const data: { accessToken: string; refreshToken: string } =
-    await response.json()
-  userStore.setTokens(data.accessToken, data.refreshToken)
-  return data.accessToken
+  userStore.setTokens(response.accessToken, response.refreshToken)
+  return response.accessToken
 }
 
 export const errorMiddleware: Middleware = request => {
