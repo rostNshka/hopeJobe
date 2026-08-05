@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ApiClient } from './apiClient'
 import { authMiddleware } from './middleware/auth.middleware'
 import { loggingMiddleware } from './middleware/logging.middleware'
-import { errorMiddleware } from './middleware/error.middleware'
-import { createErrorInterceptor } from './interceptors/error.interceptor'
+import { errorMiddleware, handleError } from './middleware/error.middleware'
 import {
   IFetchOptions,
   IUseFetchReturn,
@@ -22,8 +21,6 @@ function useFetch<T>(
   const defaultOptionsRef = useRef(defaultOptions)
 
   const navigate = useNavigate()
-
-  const errorInterceptor = useRef(createErrorInterceptor(navigate))
 
   const apiClient = useRef(
     new ApiClient({
@@ -59,7 +56,7 @@ function useFetch<T>(
         const requestFn = () =>
           apiClient.current.request<T>(finalUrl, requestOptions)
 
-        const result = await errorInterceptor.current(requestFn, skipAuth)
+        const result = await handleError(requestFn, skipAuth, navigate)
         setData(result)
         setError(null)
         return result
