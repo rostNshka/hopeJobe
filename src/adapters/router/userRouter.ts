@@ -6,7 +6,7 @@ import { userStore } from '@/stores/user-store'
 
 export function useProfile() {
   const { data, loading, error, refetch } = useFetch<IProfileResponse>(
-    '/api/users/profile',
+    '/users/profile',
     {
       method: 'GET',
     }
@@ -28,7 +28,7 @@ export function useProfile() {
 
 export function useProfileUpdate() {
   const { data, loading, error, refetch } = useFetch<IProfileResponse>(
-    '/api/users/profile',
+    '/users/profile',
     {
       method: 'PUT',
     },
@@ -55,10 +55,9 @@ export function useProfileUpdate() {
 }
 
 export function useStatistics() {
-  const { data, loading, error, refetch } = useFetch<IStats>(
-    '/api/users/stats',
-    { method: 'GET' }
-  )
+  const { data, loading, error, refetch } = useFetch<IStats>('/users/stats', {
+    method: 'GET',
+  })
 
   return {
     stats: data?.data || null,

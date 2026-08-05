@@ -21,7 +21,7 @@ export function useVacancy(searchQuery?: string, page: number = 1) {
   const prevPage = useRef<number>(page)
 
   const buildUrl = useCallback((pageNum: number, search?: string) => {
-    let url = `/api/vacancies/?page=${pageNum}&limit=9`
+    let url = `/vacancies/?page=${pageNum}&limit=9`
     if (search && search.trim()) {
       url += `&search=${encodeURIComponent(search.trim())}`
     }
@@ -75,7 +75,7 @@ export function useVacancy(searchQuery?: string, page: number = 1) {
 
 export function useVacancyId(id: string) {
   const { data, loading, error, refetch } = useFetch<IVacancyResult>(
-    `/api/vacancies/${id}`,
+    `/vacancies/${id}`,
     {
       method: 'GET',
     }
@@ -91,7 +91,7 @@ export function useVacancyId(id: string) {
 
 export function useMyVacancy() {
   const { data, loading, error, refetch } = useFetch<IVacancyResult>(
-    '/api/vacancies/employer/my-vacancies',
+    '/vacancies/employer/my-vacancies',
     {
       method: 'GET',
     }
@@ -107,7 +107,7 @@ export function useMyVacancy() {
 
 export function useAddVacancy() {
   const { loading, error, data, refetch } = useFetch<IVacancyResult>(
-    '/api/vacancies',
+    '/vacancies',
     { method: 'POST' }
   )
 
@@ -148,7 +148,7 @@ export function useUpdateVacancy() {
 
   const updateVacancy = (id: number, updatedData: IVacancyCreateData) => {
     return refetch({
-      url: `/api/vacancies/${id}`,
+      url: `/vacancies/${id}`,
       body: JSON.stringify(updatedData),
     })
   }
@@ -169,7 +169,7 @@ export function useDeleteVacancy() {
 
   const deleteVacancy = (id: number) => {
     return refetch({
-      url: `/api/vacancies/${id}`,
+      url: `/vacancies/${id}`,
     })
   }
 
@@ -182,7 +182,7 @@ export function useDeleteVacancy() {
 
 export function useCheckFavorite(vacancyId: number) {
   const { data, loading, error, refetch } = useFetch<ICheckResult>(
-    `/api/responses/check/${vacancyId}`,
+    `/responses/check/${vacancyId}`,
     { method: 'GET' },
     true
   )

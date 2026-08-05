@@ -10,7 +10,7 @@ import { userStore } from '@/stores/user-store'
 export function useGetResponses() {
   const [vacancies, setVacancies] = useState<IVacancy[]>([])
   const { data, loading, error, refetch } = useFetch<IResponseListResult>(
-    '/api/responses',
+    '/responses',
     {},
     true
   )
@@ -56,7 +56,7 @@ export function useAddResponse() {
 
       try {
         const result = await refetch({
-          url: '/api/responses',
+          url: '/responses',
           method: 'POST',
           body: JSON.stringify({ vacancyId }),
         })
@@ -89,7 +89,7 @@ export function useDeleteResponse() {
 
       try {
         await refetch({
-          url: `/api/responses/${vacancyId}`,
+          url: `/responses/${vacancyId}`,
           method: 'DELETE',
         })
 
@@ -133,7 +133,7 @@ export function useCheckFavorite(vacancyId: number | undefined) {
       }
 
       const result = await refetch({
-        url: `/api/responses/check/${vacancyId}`,
+        url: `/responses/check/${vacancyId}`,
         method: 'GET',
       })
 

@@ -10,7 +10,7 @@ import { userStore } from '@/stores/user-store'
 
 export function useRegister() {
   const { data, loading, error, refetch } = useFetch<IRegisterResponse>(
-    '/api/auth/register',
+    '/auth/register',
     { method: 'POST' },
     true
   )
@@ -44,7 +44,7 @@ export function useRegister() {
 
 export function useLogin() {
   const { data, loading, error, refetch } = useFetch<ILoginResponse>(
-    '/api/auth/login',
+    '/auth/login',
     { method: 'POST' },
     true
   )

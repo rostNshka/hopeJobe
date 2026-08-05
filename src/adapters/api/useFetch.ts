@@ -27,6 +27,7 @@ function useFetch<T>(
 
   const apiClient = useRef(
     new ApiClient({
+      baseURL: '/api',
       defaultHeaders: {
         'Content-Type': 'application/json',
       },

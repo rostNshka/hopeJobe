@@ -73,9 +73,12 @@ export class ApiClient {
       request.body = JSON.stringify(request.body)
     }
 
+    if (!request.url) {
+      throw new Error('Request URL is required')
+    }
     const { url: _, skipAuth, ...fetchOptions } = request
 
-    const response = await fetch(fullUrl, fetchOptions as RequestInit)
+    const response = await fetch(request.url, fetchOptions as RequestInit)
 
     let result: T
     const contentType = response.headers.get('content-type')
