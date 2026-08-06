@@ -6,7 +6,7 @@ import { userStore } from '@/stores/user-store'
 
 export function useProfile() {
   const { data, loading, error, refetch } = useFetch<IProfileResponse>(
-    '/users/profile',
+    userStore.isAuthenticated ? '/users/profile' : undefined,
     {
       method: 'GET',
     }
