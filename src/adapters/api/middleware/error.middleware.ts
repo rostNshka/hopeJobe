@@ -1,7 +1,6 @@
-import { Middleware } from '@/types/entities/api.client.types'
+import { Middleware, QueueItem } from '@/types/entities/api.client.types'
 import { userStore } from '@/stores/user-store'
-import { QueueItem } from '@/types/entities/api.client.types'
-import { apiClient } from '../apiClient.instance'
+import { sessionService } from '../sessionService'
 
 let isRefreshing = false
 let failedQueue: QueueItem[] = []
@@ -18,24 +17,6 @@ const processQueue = (
     }
   }
   failedQueue = []
-}
-
-const refreshAccessToken = async (): Promise<string> => {
-  if (!userStore.refreshToken) {
-    throw new Error('No refresh token available')
-  }
-
-  const response = await apiClient.request<{
-    accessToken: string
-    refreshToken: string
-  }>('/auth/refresh', {
-    method: 'POST',
-    body: { refreshToken: userStore.refreshToken },
-    skipAuth: true,
-  })
-
-  userStore.setTokens(response.accessToken, response.refreshToken)
-  return response.accessToken
 }
 
 export const errorMiddleware: Middleware = request => {
@@ -55,11 +36,21 @@ export const handleError = async <T>(
     const apiError = error as Error & { status?: number }
 
     if (apiError.status === 401 && !skipAuth) {
+      if (!userStore.user) {
+        throw error
+      }
+
       if (!isRefreshing) {
         isRefreshing = true
 
         try {
-          const newToken = await refreshAccessToken()
+          await sessionService.refreshSession()
+
+          const newToken = userStore.accessToken
+          if (!newToken) {
+            throw new Error('No access token after refresh')
+          }
+
           processQueue(null, newToken)
           isRefreshing = false
           return await requestFn()
