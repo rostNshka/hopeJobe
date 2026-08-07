@@ -56,7 +56,7 @@ export function useAddResponse() {
 
       try {
         const result = await refetch({
-          url: '/responses',
+          url: '/api/responses',
           method: 'POST',
           body: JSON.stringify({ vacancyId }),
         })
@@ -89,7 +89,7 @@ export function useDeleteResponse() {
 
       try {
         await refetch({
-          url: `/responses/${vacancyId}`,
+          url: `/api/responses/${vacancyId}`,
           method: 'DELETE',
         })
 
